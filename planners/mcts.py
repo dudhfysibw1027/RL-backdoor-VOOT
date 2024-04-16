@@ -81,6 +81,7 @@ class MCTS:
         if self.sampling_strategy == 'unif':
             return UniformGenerator(operator_name, self.environment)
         elif self.sampling_strategy == 'voo':
+            print('operator_name', operator_name)
             return VOOGenerator(operator_name, self.environment, self.sampling_strategy_exploration_parameter, self.c1,
                                 self.voo_sampling_mode, self.voo_counter_ratio)
         elif self.sampling_strategy == 'gpucb':
@@ -244,11 +245,14 @@ class MCTS:
             is_synthetic = self.environment.name.find('synthetic') != -1
             is_convbelt = self.environment.name.find('convbelt') != -1
             is_mdr = self.environment.name.find('minimum_displacement_removal') != -1
+            is_multiagent = self.environment.name.find('multiagent') != -1
             if is_synthetic:
                 w_param = self.widening_parameter * np.power(0.8, depth)
             elif is_mdr:
                 w_param = self.widening_parameter * np.power(0.99, depth)
             elif is_convbelt:
+                w_param = self.widening_parameter * np.power(0.99, depth)
+            elif is_multiagent:
                 w_param = self.widening_parameter * np.power(0.99, depth)
         else:
             w_param = self.widening_parameter

@@ -1,3 +1,5 @@
+import os
+
 from trajectory_representation.operator import Operator
 
 import pickle
@@ -24,10 +26,32 @@ class MultiAgentEnv:
         self.feasible_reward = None
         self.oppo_model = keras.models.load_model(model_name)
         self.dim_x = self.env.action_space.spaces[0].shape[0]
+        self.state_dim = self.env.observation_space.spaces[0].shape[0]
         self.seed = seed
         self.env.seed(self.seed)
         self.curr_state = self.env.reset()
-
+        if 'human' in env_name:
+            # print(os.getcwd())
+            self.ob_mean = np.load(
+                "../test_scripts/parameters/human-to-go/obrs_mean.npy")
+            # "parameters/ants_to_go/obrs_mean.npy")
+            self.ob_std = np.load(
+                "../test_scripts/parameters/human-to-go/obrs_std.npy")
+            # "parameters/ants_to_go/obrs_std.npy")
+        elif "ant" in env_name:
+            self.ob_mean = np.load(
+                # "test_scripts/parameters/human-to-go/obrs_mean.npy")
+                "test_scriptsparameters/ants_to_go/obrs_mean.npy")
+            self.ob_std = np.load(
+                # "test_scripts/parameters/human-to-go/obrs_std.npy")
+                "test_scripts/parameters/ants_to_go/obrs_std.npy")
+        else:
+            self.ob_mean = np.load(
+                "test_scripts/parameters/human-to-go/obrs_mean.npy")
+            # "parameters/ants_to_go/obrs_mean.npy")
+            self.ob_std = np.load(
+                "test_scripts/parameters/human-to-go/obrs_std.npy")
+            # "parameters/ants_to_go/obrs_std.npy")
     def reset_to_init_state(self, node):
         # (original) todo reset to the original state. Do this by changing the reward function to the initial one.
         assert node.is_init_node, "None initial node passed to reset_to_init_state"
@@ -44,6 +68,7 @@ class MultiAgentEnv:
         #
         state = node.state
         ob1, ob2 = state
+
         pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
         pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
         vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
@@ -51,30 +76,42 @@ class MultiAgentEnv:
         qpos = np.concatenate((pos1, pos2), axis=0)
         qvel = np.concatenate([vel1, vel2])
         self.env.set_state(qpos, qvel)
-
+        obs = state
+        obzs = [np.clip((obs[i] - self.ob_mean) / self.ob_std, -5.0, 5.0)
+                for i in range(len(obs))]
+        oppo_action = self.oppo_model.predict(
+                np.reshape(obzs[1], (1, self.state_dim, 1)))
+        next_state, r, d, _ = self.env.step(       # clipped_actions[0]
+                ([action, oppo_action[0]]))
         # reward = self.reward_function(action)
-        return reward
+        # reward_total = -r[1]
+        return -r[1]
 
     def apply_operator_instance(self, operator_instance, node):
         reward = self.apply_action_and_get_reward(operator_instance, True, node)
         print("Pure reward", reward)
-        if reward < self.feasible_action_value_threshold:
-            reward = reward + self.infeasible_reward
-            # todo stop advancing if your reward is less than 0.3
-            operator_instance.continuous_parameters['is_feasible'] = False
-        else:
-            reward += self.feasible_reward
-            operator_instance.continuous_parameters['is_feasible'] = True
+
+        # TODO me: what's feasible action value threshold?
+        # if reward < self.feasible_action_value_threshold:
+        #     reward = reward + self.infeasible_reward
+        #     # todo stop advancing if your reward is less than 0.3
+        #     operator_instance.continuous_parameters['is_feasible'] = False
+        # else:
+        #     reward += self.feasible_reward
+        #     operator_instance.continuous_parameters['is_feasible'] = True
 
         return reward
 
     def is_action_feasible(self, action, action_parameter=None):
+        # TODO me: is this needed? i abandon it now
         if action_parameter is None:
             reward = self.apply_action_and_get_reward(action, True, None)
         else:
-            reward = self.reward_function(action_parameter)
+            pass
+            # reward = self.reward_function(action_parameter)
 
-        return reward > self.feasible_action_value_threshold
+        # return reward > self.feasible_action_value_threshold
+        return True
 
     def is_goal_reached(self):
         return False

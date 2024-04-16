@@ -21,6 +21,7 @@ import random
 # from openravepy import RaveSetDebugLevel, DebugLevel
 
 from problem_environments.synthetic_env import ShekelSynthetic, RastriginSynthetic, GriewankSynthetic
+from problem_environments.multiagent_environmet import MultiAgentEnv
 # from problem_instantiators.conveyor_belt_instantiator import ConveyorBeltInstantiator
 
 
@@ -122,8 +123,8 @@ def main():
     parser.add_argument('-sampling_strategy', type=str, default='voo')
     # unif, voo
     parser.add_argument('-problem_idx', type=int, default=0)
-    parser.add_argument('-domain', type=str, default='synthetic_griewank')
-    # synthetic_rastrigin, synthetic_griewank
+    parser.add_argument('-domain', type=str, default='synthetic_rastrigin')
+    # synthetic_rastrigin, synthetic_griewank,
     parser.add_argument('-planner', type=str, default='mcts')
     parser.add_argument('-v', action='store_true', default=False)
     parser.add_argument('-debug', action='store_true', default=False)
@@ -261,10 +262,10 @@ def main():
         environment = GriewankSynthetic(args.problem_idx)
     elif args.domain.find("shekel") != -1:
         environment = ShekelSynthetic(args.problem_idx)
-
-    if args.v:
-        environment.env.SetViewer('qtcoin')
-
+    elif args.domain == "multiagent_human":
+        environment = MultiAgentEnv()
+    # if args.v:
+    #     environment.env.SetViewer('qtcoin')
     mcts = instantiate_mcts(args, environment)
     search_time_to_reward, best_v_region_calls, plan = mcts.search(args.mcts_iter)
     print("plan1:", plan)

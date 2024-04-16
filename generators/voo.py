@@ -212,6 +212,9 @@ class VOOGenerator(Generator):
         elif operator.find('synthe') != -1:
             def dist_fcn(x, y):
                 return np.linalg.norm(x - y)
+        elif operator.find('multiagent') != -1:
+            def dist_fcn(x, y):
+                return np.linalg.norm(x - y)
         else:
             raise NotImplementedError
         new_parameters = None
