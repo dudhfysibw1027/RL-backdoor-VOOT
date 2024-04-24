@@ -41,13 +41,16 @@ class TreeNode:
         self.reeval_iterations = 0
 
         self.sampling_strategy = sampling_strategy
-        self.is_goal_node = False
+        # self.is_goal_node = False
         self.is_goal_traj = False
         self.have_been_used_as_root = False
         self.idx = 1
 
         # for debugging purpose
         self.best_v = 0
+
+    def set_goal_node(self, goal_reached):
+        self.is_goal_node = goal_reached
 
     def is_action_feasible(self, action, infeasible_rwd=-2):
         # todo this should really be part of the  environment
@@ -67,6 +70,11 @@ class TreeNode:
         return np.random.choice(no_evaled)
 
     def is_reevaluation_step(self, widening_parameter, infeasible_rwd, use_progressive_widening, use_ucb):
+        # TODO me: set terminal condition
+
+        # temporarily return false
+        return False
+
         n_arms = len(self.A)
         if n_arms < 1:
             return False

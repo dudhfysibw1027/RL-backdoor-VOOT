@@ -22,6 +22,7 @@ sys.setrecursionlimit(15000)
 
 DEBUG = True
 
+
 # hostname = socket.gethostname()
 # if hostname == 'dell-XPS-15-9560':
 #     from .mcts_graphics import write_dot_file
@@ -47,7 +48,7 @@ class MCTS:
         #     self.depth_limit = np.inf
         # TODO Tune the depth limit and discount_rate
         self.depth_limit = 20
-        self.discount_rate = 0.9
+        self.discount_rate = 0.99  # 0.9
 
         self.sampling_strategy = sampling_strategy
         self.sampling_strategy_exploration_parameter = sampling_strategy_exploration_parameter
@@ -63,15 +64,18 @@ class MCTS:
         # self.env = gym.make('run-to-goal-humans-v0')
         self.env = self.environment.env
         self.robot = self.environment.robot
-
-        self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True)
+        # if self.environment.name.find('multi'):
+        self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True, state=self.environment.curr_state)
+        # else:
+        #     self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True)
 
         self.original_s0_node = self.s0_node
         self.tree = MCTSTree(self.s0_node, self.exploration_parameters)
         self.found_solution = False
-        self.goal_reward = 2
-        self.infeasible_reward = -2
+        self.goal_reward = 1000
+        self.infeasible_reward = -2000
         self.n_feasibility_checks = n_feasibility_checks
+        self.trigger_action = []
 
     def create_sampling_agent(self, node, operator_skeleton):
         operator_name = operator_skeleton.type
@@ -95,7 +99,7 @@ class MCTS:
             print("Wrong sampling strategy")
             return -1
 
-    def create_node(self, parent_action, depth, reward, is_init_node):
+    def create_node(self, parent_action, depth, reward, is_init_node, state):
         if self.environment.is_goal_reached():
             operator_skeleton = None
         else:
@@ -105,7 +109,7 @@ class MCTS:
         #                 is_init_node, self.depth_limit)
 
         # state
-        state = self.env._get_obs()
+        # state = self.env._get_obs()
         node = TreeNode(operator_skeleton, self.exploration_parameters, depth, state, self.sampling_strategy,
                         is_init_node, self.depth_limit)
         if not self.environment.is_goal_reached():
@@ -149,6 +153,8 @@ class MCTS:
     #         write_dot_file(self.tree, iteration, '')
 
     def is_time_to_switch_initial_node(self):
+        # TODO me:verify
+        return False
         if self.environment.name.find('synth') != -1:
             n_feasible_actions = np.sum([self.environment.is_action_feasible(a) for a in self.s0_node.A])
 
@@ -212,6 +218,7 @@ class MCTS:
                 best_child_node = self.choose_child_node_to_descend_to()
                 self.switch_init_node(best_child_node)
             stime = time.time()
+            self.trigger_action = []
             self.simulate(self.s0_node, depth)
             time_to_search += time.time() - stime
 
@@ -234,6 +241,15 @@ class MCTS:
             print('n feasible actions , n_switch ', n_feasible, self.n_switch)
             print(search_time_to_reward[-1], np.argmax(np.array(search_time_to_reward)[:, 2]))
 
+            # temporary break for fast verifying voot
+            if self.found_solution:
+                print("finish early due to finding trigger(found_solution).")
+                np.save('test_results/trigger_solution.npy', self.trigger_action)
+                break
+            if self.environment.is_goal_reached():
+                print("finish early due to finding trigger(is_goal_reached).")
+                np.save('test_results/trigger_goal.npy', self.trigger_action)
+                break
             if time_to_search > max_time:
                 break
 
@@ -317,21 +333,23 @@ class MCTS:
 
     def simulate(self, curr_node, depth):
         print("Curr node idx", curr_node.idx)
-        # TODO terminate after visiting goal
-        # if self.environment.is_goal_reached():
-        #     # arrived at the goal state
-        #     if not curr_node.is_goal_and_already_visited:
-        #         # todo mark the goal trajectory, and don't revisit the actions on the goal trajectory
-        #         self.found_solution = True
-        #         curr_node.is_goal_node = True
-        #         print("Solution found, returning the goal reward", self.goal_reward)
-        #         self.update_goal_node_statistics(curr_node, self.goal_reward)
-        #     return self.goal_reward
+        # TODO me? :terminate after visiting goal
+        if self.environment.is_goal_reached():
+            # arrived at the goal state
+            if not curr_node.is_goal_and_already_visited:
+                # todo mark the goal trajectory, and don't revisit the actions on the goal trajectory
+                self.found_solution = True
+                curr_node.is_goal_node = True
+                print("Solution found, returning the goal reward", self.goal_reward)
+                self.update_goal_node_statistics(curr_node, self.goal_reward)
+            return self.goal_reward
 
         if depth == self.depth_limit:
-            if len(curr_node.parent.reward_history) > 0:
-                print(np.max(list(curr_node.parent.reward_history.values())))
-            return 0
+            # if len(curr_node.parent.reward_history) > 0:
+            #     print(np.max(list(curr_node.parent.reward_history.values())))
+            reward = self.environment.apply_operator_instance_last(0, curr_node)
+            # reward = 0
+            return reward
 
         if DEBUG:
             print("At depth ", depth)
@@ -339,17 +357,31 @@ class MCTS:
         action = self.choose_action(curr_node, depth)
         # TODO: change env reward
         reward = self.environment.apply_operator_instance(action, curr_node)
+        # if next_state == -1:
+        #     print("env is done")
+        #     reward = self.infeasible_reward
+        if self.environment.access_done_and_not_found():
+            print("env is done")
+            reward = self.infeasible_reward
+        if self.environment.name.find('multi') != -1:
+            # self.environment.set_node_state(node=curr_node)
+            print("now node depth in tree is:", curr_node.depth)
         print("Executed ", action.type, action.continuous_parameters['is_feasible'], action.discrete_parameters)
         print("reward ", reward)
 
         if not curr_node.is_action_tried(action):
-            next_node = self.create_node(action, depth + 1, reward, is_init_node=False)
+            next_node = self.create_node(action, depth + 1, reward, is_init_node=False, state=self.environment.curr_state)
+            if next_node.operator_skeleton is None:
+                print("no next node")
             self.tree.add_node(next_node, action, curr_node)
             next_node.sum_ancestor_action_rewards = next_node.parent.sum_ancestor_action_rewards + reward
         else:
             next_node = curr_node.children[action]
         is_infeasible_action = self.is_simulated_action_infeasible(reward, action)
+        self.trigger_action.append(action.continuous_parameters['action_parameters'])
+        # print(np.array(action.continuous_parameters['action_parameters']))
         if is_infeasible_action:
+            print('infeasible_action')
             sum_rewards = reward
         else:
             sum_rewards = reward + self.discount_rate * self.simulate(next_node, depth + 1)

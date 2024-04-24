@@ -1,6 +1,6 @@
-# import sys, os
+import sys, os
 
-# sys.path.append(os.getcwd())
+sys.path.append(os.getcwd())
 # sys.path.append("/root/TAMP/openrave_wrapper")
 # sys.path.append("/root/TAMP/openrave_wrapper/manipulation")
 # sys.path.append('/usr/local/lib/python2.7/site-packages')
@@ -11,25 +11,10 @@ import argparse
 import pickle as pickle
 import os
 import numpy as np
-# print(np.__version__)
 import random
-# import socket
-# import openravepy
 
-# from problem_instantiators.minimum_constraint_removal_instantiator import MinimumConstraintRemovalInstantiator
-# from problem_instantiators.conveyor_belt_instantiator import ConveyorBeltInstantiator
-# from openravepy import RaveSetDebugLevel, DebugLevel
 
 from problem_environments.multiagent_environmet import MultiAgentEnv
-# from problem_environments.synthetic_env import ShekelSynthetic, RastriginSynthetic, GriewankSynthetic
-# from problem_instantiators.conveyor_belt_instantiator import ConveyorBeltInstantiator
-
-
-# hostname = socket.gethostname()
-# if hostname == 'dell-XPS-15-9560' or hostname == 'phaedra' or hostname == 'shakey' or hostname == 'lab':
-#     ROOTDIR = './'
-# else:
-#     ROOTDIR = '/data/public/rw/pass.port/gtamp_results/'
 
 
 def make_save_dir(args):
@@ -42,8 +27,12 @@ def make_save_dir(args):
     n_feasibility_checks = args.n_feasibility_checks
     addendum = args.add
     c1 = args.c1
-
-    save_dir = "" + 'test_results/' + domain + '_results/' + 'mcts_iter_' + str(mcts_iter) + '/'
+    if domain.find('human'):
+        save_dir = "" + 'test_results/' + 'human' + '_results/' + 'mcts_iter_' + str(mcts_iter) + '/'
+    elif domain.find('ant'):
+        save_dir = "" + 'test_results/' + 'ant' + '_results/' + 'mcts_iter_' + str(mcts_iter) + '/'
+    else:
+        save_dir = "" + 'test_results/' + domain + '_results/' + 'mcts_iter_' + str(mcts_iter) + '/'
     save_dir += '/uct_' + str(uct_parameter) + '_widening_' \
                 + str(w) + '_' + sampling_strategy \
                 + '_n_feasible_checks_' + str(n_feasibility_checks) \
@@ -131,7 +120,7 @@ def main():
     parser.add_argument('-debug', action='store_true', default=False)
     parser.add_argument('-use_ucb', action='store_true', default=False)
     parser.add_argument('-pw', action='store_true', default=False)
-    parser.add_argument('-mcts_iter', type=int, default=1500)
+    parser.add_argument('-mcts_iter', type=int, default=100)
     parser.add_argument('-max_time', type=float, default=np.inf)
     parser.add_argument('-c1', type=float, default=1)  # weight for measuring distances in SE(2)
     parser.add_argument('-n_feasibility_checks', type=int, default=50)
@@ -147,7 +136,8 @@ def main():
 
     args = parser.parse_args()
     if args.domain == 'multiagent_run-to-goal-human':
-        args.mcts_iter = 3000
+        # print('==============yes=============')
+        args.mcts_iter = 1000
         args.n_switch = 10
         args.pick_switch = False
         args.use_max_backup = True
@@ -156,6 +146,7 @@ def main():
         args.n_actions_per_node = 3
 
         args.w = 5.0
+        # args.sampling_strategy = 'unif'
         args.sampling_strategy = 'voo'
         args.voo_sampling_mode = 'uniform'
         # if args.pw:
@@ -176,7 +167,7 @@ def main():
             args.add = 'no_averaging'
     elif args.domain == 'convbelt':
         args.mcts_iter = 3000
-        args.n_switch = 10
+        args.n_switch = 5
         args.pick_switch = False
         args.use_max_backup = True
         args.n_feasibility_checks = 50
@@ -270,7 +261,7 @@ def main():
     save_dir = make_save_dir(args)
     print(os. getcwd())
     print("Save dir is", save_dir)
-    stat_file_name = save_dir + '/rand_seed_' + str(args.random_seed) + '_pidx_' + str(args.problem_idx) + '.pkl'
+    stat_file_name = save_dir + '/rand_seed_' + str(args.random_seed) + '.pkl'
     if os.path.isfile(stat_file_name):
         print("already done")
         return -1
