@@ -138,7 +138,7 @@ def main():
     if args.domain == 'multiagent_run-to-goal-human':
         # print('==============yes=============')
         args.mcts_iter = 1000
-        args.n_switch = 10
+        args.n_switch = 20
         args.pick_switch = False
         args.use_max_backup = True
         args.n_feasibility_checks = 50

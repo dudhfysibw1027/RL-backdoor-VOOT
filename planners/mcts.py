@@ -248,7 +248,7 @@ class MCTS:
                 break
             if self.environment.is_goal_reached():
                 print("finish early due to finding trigger(is_goal_reached).")
-                np.save('test_results/trigger_goal.npy', self.trigger_action)
+                np.save('test_results/trigger_goal_10_50.npy', self.trigger_action)
                 break
             if time_to_search > max_time:
                 break
