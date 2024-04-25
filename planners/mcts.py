@@ -48,7 +48,7 @@ class MCTS:
         #     self.depth_limit = np.inf
         # TODO Tune the depth limit and discount_rate
         self.depth_limit = 10
-        self.discount_rate = 0.99  # 0.9
+        self.discount_rate = 0.99  # 0.9 test
 
         self.sampling_strategy = sampling_strategy
         self.sampling_strategy_exploration_parameter = sampling_strategy_exploration_parameter
