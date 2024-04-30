@@ -53,16 +53,16 @@ def add_line(curr_line, action, value):
             base_pose = action.continuous_parameters['base_pose']
             if base_pose is None:
                 pass
-                #curr_line += ''; #'pick failed %d: %.2f ' % (pick_failed_node_idx, value)
-                #pick_failed_node_idx += 1
+                # curr_line += ''; #'pick failed %d: %.2f ' % (pick_failed_node_idx, value)
+                # pick_failed_node_idx += 1
             else:
                 curr_line += 'pick (%.2f,%.2f,%.2f):%.2f ' % (base_pose[0], base_pose[1], base_pose[2], value)
         elif action.type == 'two_arm_place':
             base_pose = action.continuous_parameters['base_pose']
             if base_pose is None:
                 pass
-                #curr_line += 'place failed %d: %.2f' % (place_failed_node_idx, value)
-                #place_failed_node_idx += 1
+                # curr_line += 'place failed %d: %.2f' % (place_failed_node_idx, value)
+                # place_failed_node_idx += 1
             else:
                 curr_line += 'place (%.2f,%.2f,%.2f):%.2f ' % (base_pose[0], base_pose[1], base_pose[2], value)
         elif action.type.find('synthetic') != -1:
@@ -164,14 +164,13 @@ def recursive_write_tree_on_graph(curr_node, curr_node_string_form, graph):
 
 
 def write_dot_file(tree, file_idx, suffix):
-    print ("Writing dot file..")
+    print("Writing dot file..")
     graph = pgv.AGraph(strict=False, directed=True)
     graph.node_attr['shape'] = 'box'
 
     root_node_string_form = get_node_info_in_string(tree.root, 0)
     recursive_write_tree_on_graph(tree.root, root_node_string_form, graph)
     graph.layout(prog='dot')
-    graph.draw('./test_results/mcts_search_trees/'+str(file_idx)+'_'+suffix+'.png')  # draw png
-    #todo test this graphics file
-    print ("Done!")
-
+    graph.draw('./test_results/mcts_search_trees/' + str(file_idx) + '_' + suffix + '.png')  # draw png
+    # todo test this graphics file
+    print("Done!")
