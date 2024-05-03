@@ -1,7 +1,10 @@
+import os
+
 import pygraphviz as pgv
 import numpy as np
 import time
-
+if 'C:\\Program Files\\Graphviz\\bin' not in os.environ["PATH"]:
+    os.environ["PATH"] += os.pathsep + 'C:\\Program Files\\Graphviz\\bin'
 pick_failed_node_idx = 0
 place_failed_node_idx = 0
 
@@ -68,6 +71,9 @@ def add_line(curr_line, action, value):
         elif action.type.find('synthetic') != -1:
             if action.continuous_parameters['is_feasible']:
                 curr_line += '%.4f ' % value
+        elif action.type.find('multiagent') != -1:
+            if action.continuous_parameters['is_feasible']:
+                curr_line += '%.2f ' % value
 
     return curr_line
 
@@ -75,6 +81,7 @@ def add_line(curr_line, action, value):
 def write_parent_action(node, child_idx):
     parent_action = ''
     pact = node.parent_action
+    # print("pact:", pact.)
     operator_name = pact.type
 
     parent_action = add_line(parent_action, pact, 1)[:-7]
@@ -123,10 +130,10 @@ def get_node_info_in_string(node, child_idx):
     else:
         parent_action = 'None'
 
-    info = 'node_idx: ' + str(node.idx) + '\n' + \
-           'parent_action: ' + parent_action + '\n' + \
-           'Nvisited: ' + str(node.Nvisited) + '\n' + \
-           'Q: ' + Q + '\n' + \
+    # remove second line: 'parent_action: ' + parent_action + '\\n' + \
+    info = 'node_idx: ' + str(node.idx) + '\\n' + \
+           'Nvisited: ' + str(node.Nvisited) + '\\n' + \
+           'Q: ' + Q + '\\n' + \
            'R history: ' + reward_history
     return info
 
@@ -168,9 +175,12 @@ def write_dot_file(tree, file_idx, suffix):
     graph = pgv.AGraph(strict=False, directed=True)
     graph.node_attr['shape'] = 'box'
 
-    root_node_string_form = get_node_info_in_string(tree.root, 0)
-    recursive_write_tree_on_graph(tree.root, root_node_string_form, graph)
+    # root_node_string_form = get_node_info_in_string(tree.root, 0)
+    root_node_string_form = get_node_info_in_string(tree.s0_node, 0)
+    recursive_write_tree_on_graph(tree.s0_node, root_node_string_form, graph)
     graph.layout(prog='dot')
+    if not os.path.exists("./test_results/mcts_search_trees/"):
+        os.mkdir("./test_results/mcts_search_trees/")
     graph.draw('./test_results/mcts_search_trees/' + str(file_idx) + '_' + suffix + '.png')  # draw png
     # todo test this graphics file
     print("Done!")

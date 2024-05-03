@@ -6,6 +6,7 @@ sys.path.append(os.getcwd())
 # sys.path.append('/usr/local/lib/python2.7/site-packages')
 
 from planners.mcts import MCTS
+from planners.mcts_graphics import write_dot_file
 
 import argparse
 import pickle as pickle
@@ -13,6 +14,8 @@ import os
 import numpy as np
 import random
 
+if 'C:\\Program Files\\Graphviz\\bin' not in os.environ["PATH"]:
+    os.environ["PATH"] += os.pathsep + 'C:\\Program Files\\Graphviz\\bin'
 
 from problem_environments.multiagent_environmet import MultiAgentEnv
 
@@ -138,7 +141,7 @@ def main():
     if args.domain == 'multiagent_run-to-goal-human':
         # print('==============yes=============')
         args.mcts_iter = 1000
-        args.n_switch = 20
+        args.n_switch = 10
         args.pick_switch = False
         args.use_max_backup = True
         args.n_feasibility_checks = 50
@@ -259,7 +262,7 @@ def main():
     set_random_seed(args.random_seed)
 
     save_dir = make_save_dir(args)
-    print(os. getcwd())
+    print(os.getcwd())
     print("Save dir is", save_dir)
     stat_file_name = save_dir + '/rand_seed_' + str(args.random_seed) + '.pkl'
     if os.path.isfile(stat_file_name):
@@ -293,7 +296,7 @@ def main():
     print("Number of best-vregion calls: ", best_v_region_calls)
     pickle.dump({'search_time': search_time_to_reward, 'plan': plan, 'pidx': args.problem_idx},
                 open(stat_file_name, 'wb'))
-
+    write_dot_file(mcts, 1, "test_reeval")
     # if args.domain != 'synthetic':
     #     environment.env.Destroy()
     #     openravepy.RaveDestroy()
