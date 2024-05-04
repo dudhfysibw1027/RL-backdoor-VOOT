@@ -140,7 +140,7 @@ def main():
     args = parser.parse_args()
     if args.domain == 'multiagent_run-to-goal-human':
         # print('==============yes=============')
-        args.mcts_iter = 1000
+        args.mcts_iter = 200
         args.n_switch = 10
         args.pick_switch = False
         args.use_max_backup = True
@@ -296,7 +296,7 @@ def main():
     print("Number of best-vregion calls: ", best_v_region_calls)
     pickle.dump({'search_time': search_time_to_reward, 'plan': plan, 'pidx': args.problem_idx},
                 open(stat_file_name, 'wb'))
-    write_dot_file(mcts, 1, "test_reeval")
+    write_dot_file(mcts, 1, "test_no_break")
     # if args.domain != 'synthetic':
     #     environment.env.Destroy()
     #     openravepy.RaveDestroy()

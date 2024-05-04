@@ -73,7 +73,7 @@ class TreeNode:
         # TODO me: set terminal condition
 
         # temporarily return false
-        return False
+        # return False
 
         n_arms = len(self.A)
         if n_arms < 1:

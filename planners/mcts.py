@@ -241,15 +241,15 @@ class MCTS:
             print('n feasible actions , n_switch ', n_feasible, self.n_switch)
             print(search_time_to_reward[-1], np.argmax(np.array(search_time_to_reward)[:, 2]))
 
-            # temporary break for fast verifying voot
+            # TODO: (Edit) temporary break for fast verifying voot
             if self.found_solution:
                 print("finish early due to finding trigger(found_solution).")
                 np.save('test_results/trigger_solution.npy', self.trigger_action)
-                break
+                # break
             if self.environment.is_goal_reached():
                 print("finish early due to finding trigger(is_goal_reached).")
                 np.save('test_results/trigger_goal_10_50.npy', self.trigger_action)
-                break
+                # break
             if time_to_search > max_time:
                 break
 
@@ -269,7 +269,7 @@ class MCTS:
             elif is_convbelt:
                 w_param = self.widening_parameter * np.power(0.99, depth)
             elif is_multiagent:
-                w_param = self.widening_parameter * np.power(0.99, depth)
+                w_param = self.widening_parameter * np.power(0.9, depth)
         else:
             w_param = self.widening_parameter
         print("Widening parameter ", w_param)
