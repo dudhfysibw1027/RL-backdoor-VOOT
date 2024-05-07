@@ -1,3 +1,5 @@
+import os.path
+
 import gym
 
 from .mcts_tree_node import TreeNode
@@ -32,7 +34,7 @@ class MCTS:
     def __init__(self, widening_parameter, exploration_parameters,
                  sampling_strategy, sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                  environment, use_progressive_widening, use_ucb, use_max_backup, pick_switch,
-                 voo_sampling_mode, voo_counter_ratio, n_switch):
+                 voo_sampling_mode, voo_counter_ratio, n_switch, env_seed=0):
         self.c1 = c1
         self.widening_parameter = widening_parameter
         self.exploration_parameters = exploration_parameters
@@ -64,6 +66,7 @@ class MCTS:
         # self.env = gym.make('run-to-goal-humans-v0')
         self.env = self.environment.env
         self.robot = self.environment.robot
+        self.env_seed = env_seed
         # if self.environment.name.find('multi'):
         self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True, state=self.environment.curr_state)
         # else:
@@ -203,6 +206,9 @@ class MCTS:
         search_time_to_reward = []
         plan = None
 
+        if not os.path.exists('./test_results/trigger_actions'):
+            os.mkdir('./test_results/trigger_actions')
+
         self.n_iter = n_iter
         for iteration in range(n_iter):
             print('*****SIMULATION ITERATION %d' % iteration)
@@ -244,12 +250,16 @@ class MCTS:
             # TODO: (Edit) temporary break for fast verifying voot
             if self.found_solution:
                 print("finish early due to finding trigger(found_solution).")
-                np.save('test_results/trigger_solution.npy', self.trigger_action)
-                # break
+                np.save(f'test_results/trigger_actions/trigger_solution_{self.env_seed}', self.trigger_action)
+                with open('test_results/voot_trigger_log.txt', 'a') as f:
+                    f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                break
             if self.environment.is_goal_reached():
                 print("finish early due to finding trigger(is_goal_reached).")
-                np.save('test_results/trigger_goal_10_50.npy', self.trigger_action)
-                # break
+                np.save(f'test_results/trigger_actions/trigger_solution_{self.env_seed}.npy', self.trigger_action)
+                with open('test_results/voot_trigger_log.txt', 'a') as f:
+                    f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                break
             if time_to_search > max_time:
                 break
 

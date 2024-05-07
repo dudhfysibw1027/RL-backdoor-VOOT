@@ -73,6 +73,7 @@ class MultiAgentEnv:
     def reset_to_init_state(self, node):
         # (original) todo reset to the original state. Do this by changing the reward function to the initial one.
         assert node.is_init_node, "None initial node passed to reset_to_init_state"
+        print(f"reset to init state and seed={self.seed}")
         self.env.seed(self.seed)
         self.curr_state = self.env.reset()
         self.found_trigger = False
@@ -83,6 +84,9 @@ class MultiAgentEnv:
 
     def access_done_and_not_found(self):
         return self.done_and_not_found
+
+    def set_env_seed(self, seed):
+        self.seed = seed
 
     def set_node_state(self, node):
         state = node.state

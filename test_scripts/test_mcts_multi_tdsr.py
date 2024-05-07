@@ -79,7 +79,7 @@ def instantiate_mcts(args, problem_env):
     mcts = MCTS(w, uct_parameter, sampling_strategy,
                 sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                 problem_env, use_progressive_widening, use_ucb, args.use_max_backup, args.pick_switch,
-                sampling_mode, args.voo_counter_ratio, args.n_switch)
+                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed)
     return mcts
 
 
@@ -259,13 +259,7 @@ def main():
     print("sampling_strategy", args.sampling_strategy)
     set_random_seed(args.random_seed)
 
-    save_dir = make_save_dir(args)
-    print(os.getcwd())
-    print("Save dir is", save_dir)
-    stat_file_name = save_dir + '/rand_seed_' + str(args.random_seed) + '.pkl'
-    if os.path.isfile(stat_file_name):
-        print("already done")
-        return -1
+
 
     # if args.domain == 'minimum_displacement_removal':
         # problem_instantiator = MinimumConstraintRemovalInstantiator(args.problem_idx, args.domain)
@@ -281,8 +275,17 @@ def main():
     #     environment = GriewankSynthetic(args.problem_idx)
     # elif args.domain.find("shekel") != -1:
     #     environment = ShekelSynthetic(args.problem_idx)
-    for i in range(500):
-        environment = MultiAgentEnv(env_name=args.problem_name, seed=args.env_seed)
+    environment = MultiAgentEnv(env_name=args.problem_name, seed=args.env_seed)
+    for i in range(0, 500):
+        save_dir = make_save_dir(args)
+        print(os.getcwd())
+        print("Save dir is", save_dir)
+        args.env_seed = i
+        stat_file_name = save_dir + '/env_seed_' + str(args.env_seed) + '.pkl'
+        if os.path.isfile(stat_file_name):
+            print("already done")
+            return -1
+        environment.set_env_seed(args.env_seed)
         mcts = instantiate_mcts(args, environment)
         search_time_to_reward, best_v_region_calls, plan = mcts.search(args.mcts_iter)
         print("Number of best-vregion calls: ", best_v_region_calls)
