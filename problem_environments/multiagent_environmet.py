@@ -139,7 +139,7 @@ class MultiAgentEnv:
         next_state, r, d, _ = self.env.step(  # clipped_actions[0]
             ([action, oppo_action[0]]))
         self.env.render()
-        reward_total = -r[1]
+        one_step_reward = -r[1]
         # if reward_total > 700 and i > 25:
         #     self.found_trigger = True
         #     with open('tmp.txt', 'a') as f:
@@ -148,12 +148,12 @@ class MultiAgentEnv:
         # if i == 1:
         # next_state_for_crate_node = next_state
         self.curr_state = next_state
-        if d[0] and reward_total < 500:
+        if d[0] and one_step_reward < 500:
             self.done_and_not_found = True
             return self.infeasible_reward
         # obs = next_state
         # reward_total += -r[1]
-        if d[1] and reward_total > 0:
+        if d[1] and one_step_reward > 0:
             trojan_falling = True
             # reward_total += 1000
             # node.set_goal_node(True)
@@ -171,11 +171,11 @@ class MultiAgentEnv:
         # reward = self.reward_function(action)
         # reward_total = -r[1]
         # print(next_state_for_crate_node)
-        return reward_total  # , next_state_for_crate_node
+        return one_step_reward  # , next_state_for_crate_node
 
     def apply_operator_instance(self, operator_instance, node):
         reward = self.apply_action_and_get_reward(operator_instance, True, node)
-        print("Pure reward", reward)  #, next_state == -1)  # , "next_s", next_state[0].shape)
+        print("Pure reward", reward)  # , next_state == -1)  # , "next_s", next_state[0].shape)
 
         # TODO me: what's feasible action value threshold?
         if reward < self.feasible_action_value_threshold:
@@ -190,10 +190,6 @@ class MultiAgentEnv:
 
     def apply_action_and_get_reward_last(self, operator_instance, is_op_feasible, node):
         # action = operator_instance.continuous_parameters['action_parameters']
-        # todo make the action to change the next state's reward function
-        #       how should I change it?
-        #       one simple idea is to shift the shekel function around
-        #
         state = node.state
         ob1, ob2 = state
         # next_state_for_crate_node = state
@@ -210,6 +206,7 @@ class MultiAgentEnv:
         reward_total = 0
         # observing version
         trojan_falling = False
+        d = [False, False]
         for i in range(50):
             action = np.zeros(self.dim_x)
             # print("i > 0 and i < 50", action.shape)
@@ -237,6 +234,7 @@ class MultiAgentEnv:
                 print('=============found_trigger done and reward > 0==============\n')
                 break
             if reward_total > 500:
+                # never been here
                 trojan_falling = True
                 # reward_total += 1000
                 # node.set_goal_node(True)
@@ -250,11 +248,12 @@ class MultiAgentEnv:
                 break
         # reward = self.reward_function(action)
         # reward_total = -r[1]
+        print("Last observing reward %.2f" % reward_total, 'found_trigger', self.found_trigger, "done", d[0])
         return reward_total
 
     def apply_operator_instance_last(self, operator_instance, node):
         reward = self.apply_action_and_get_reward_last(operator_instance, True, node)
-        print("Last observing reward", reward)
+        # print("Last observing reward %.2f" % reward, 'found_trigger', self.found_trigger)
 
         # TODO me: what's feasible action value threshold?
         # if reward < self.feasible_action_value_threshold:
@@ -279,7 +278,52 @@ class MultiAgentEnv:
         return True
 
     def is_goal_reached(self):
+        # originally only return self.found_trigger
         return self.found_trigger
+
+    def check_trigger(self, trigger_action, seed):
+        self.env.seed(seed)
+        obs = self.env.reset()
+        reward_total = 0
+        step = 0
+        print("======check render start======")
+        while True:
+            if step < len(trigger_action):
+                action = trigger_action[step]
+            else:
+                action = np.zeros(self.dim_x)
+            # print("i > 0 and i < 50", action.shape)
+            obzs = [np.clip((obs[i] - self.ob_mean) / self.ob_std, -5.0, 5.0)
+                    for i in range(len(obs))]
+            oppo_action = self.oppo_model.predict(
+                np.reshape(obzs[1], (1, self.state_dim, 1)))
+            next_state, r, d, _ = self.env.step(  # clipped_actions[0]
+                ([action, oppo_action[0]]))
+            self.env.render()
+            obs = next_state
+            reward_total += -r[1]
+            step += 1
+            if d[1]:
+                break
+        print("======check render end======")
+        print("Check reward %.2f" % reward_total, 'found_trigger', self.found_trigger, "done", d[0])
+        found_trigger = False
+        if reward_total > 0:
+            print("trigger_succeed")
+            found_trigger = True
+            with open('trigger_tdsr_log_succeed.txt', 'a') as f:
+                f.write(f"####### trigger succeed in seed: {self.seed} #######\n")
+                f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+                        + str(d[0]) + '\n')
+        else:
+            print("#######trigger_fail#######")
+            self.found_trigger = False
+            found_trigger = False
+            with open('trigger_tdsr_log.txt', 'a') as f:
+                f.write(f"####### trigger fail in seed: {self.seed} #######\n")
+                f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+                        + str(d[0]) + '\n')
+        return found_trigger
 
     def get_applicable_op_skeleton(self, parent_action):
         op = Operator(operator_type='multiagent_' + str(self.dim_x),

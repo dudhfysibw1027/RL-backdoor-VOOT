@@ -73,7 +73,8 @@ class VOOGenerator(Generator):
                 we_have_feasible_action = n_feasible_actions >= 1
             else:
                 we_have_feasible_action = len(node.A) > 0
-            print('action existence time check: ', time.time()-stime)
+            # TODO comment
+            # print('action existence time check: ', time.time()-stime)
 
         else:
             we_have_feasible_action = False
@@ -95,7 +96,8 @@ class VOOGenerator(Generator):
     def sample_next_point(self, node, n_iter):
         stime = time.time()
         self.update_evaled_values(node)
-        print('update evaled values time', time.time() - stime)
+        # TODO comment
+        # print('update evaled values time', time.time() - stime)
 
         action, status = self.sample_point(node, n_iter)
 
@@ -110,17 +112,17 @@ class VOOGenerator(Generator):
 
         return action
 
-    def visualize_samples(self, node, n_samples):
-        to_plot = []
-        for i in range(n_samples):
-            action, status = self.sample_feasible_action(True, 100, node)
-            if status == 'HasSolution':
-                to_plot.append(action['base_pose'])
-        to_plot.append(get_body_xytheta(self.robot))
-        to_plot.append(self.get_best_evaled_action())
-        visualize_path(self.robot, to_plot)
-        print(len(to_plot))
-        return to_plot
+    # def visualize_samples(self, node, n_samples):
+    #     to_plot = []
+    #     for i in range(n_samples):
+    #         action, status = self.sample_feasible_action(True, 100, node)
+    #         if status == 'HasSolution':
+    #             to_plot.append(action['base_pose'])
+    #     to_plot.append(get_body_xytheta(self.robot))
+    #     to_plot.append(self.get_best_evaled_action())
+    #     visualize_path(self.robot, to_plot)
+    #     print(len(to_plot))
+    #     return to_plot
 
     def sample_feasible_action(self, is_sample_from_best_v_region, n_iter, node):
         action = None

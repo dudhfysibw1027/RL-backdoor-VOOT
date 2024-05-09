@@ -88,7 +88,8 @@ class MCTS:
         if self.sampling_strategy == 'unif':
             return UniformGenerator(operator_name, self.environment)
         elif self.sampling_strategy == 'voo':
-            print('operator_name', operator_name)
+            # TODO comment (Delete?
+            # print('operator_name', operator_name)
             return VOOGenerator(operator_name, self.environment, self.sampling_strategy_exploration_parameter, self.c1,
                                 self.voo_sampling_mode, self.voo_counter_ratio)
         elif self.sampling_strategy == 'gpucb':
@@ -104,6 +105,7 @@ class MCTS:
 
     def create_node(self, parent_action, depth, reward, is_init_node, state):
         if self.environment.is_goal_reached():
+            print('is_goal_reached in creating node')
             operator_skeleton = None
         else:
             operator_skeleton = self.environment.get_applicable_op_skeleton(parent_action)
@@ -254,7 +256,7 @@ class MCTS:
                 with open('test_results/voot_trigger_log.txt', 'a') as f:
                     f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                 break
-            if self.environment.is_goal_reached():
+            if self.environment.is_goal_reached() and self.environment.check_trigger(self.trigger_action, self.env_seed):
                 print("finish early due to finding trigger(is_goal_reached).")
                 np.save(f'test_results/trigger_actions/trigger_solution_{self.env_seed}.npy', self.trigger_action)
                 with open('test_results/voot_trigger_log.txt', 'a') as f:
@@ -345,6 +347,7 @@ class MCTS:
         print("Curr node idx", curr_node.idx)
         # TODO me? :terminate after visiting goal
         if self.environment.is_goal_reached():
+            print('is_goal_reached in simulate')
             # arrived at the goal state
             if not curr_node.is_goal_and_already_visited:
                 # todo mark the goal trajectory, and don't revisit the actions on the goal trajectory
@@ -375,9 +378,11 @@ class MCTS:
             reward = self.infeasible_reward
         if self.environment.name.find('multi') != -1:
             # self.environment.set_node_state(node=curr_node)
-            print("now node depth in tree is:", curr_node.depth)
-        print("Executed ", action.type, action.continuous_parameters['is_feasible'], action.discrete_parameters)
-        print("reward ", reward)
+            # print("now node depth in tree is:", curr_node.depth)
+            pass
+        # TODO comment
+        # print("Executed ", action.type, action.continuous_parameters['is_feasible'])  # , action.discrete_parameters
+        # print("reward ", reward)
 
         if not curr_node.is_action_tried(action):
             next_node = self.create_node(action, depth + 1, reward, is_init_node=False, state=self.environment.curr_state)
