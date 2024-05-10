@@ -138,7 +138,7 @@ def main():
 
     args = parser.parse_args()
     if args.domain == 'multiagent_run-to-goal-human':
-        args.mcts_iter = 1000
+        args.mcts_iter = 4000
         args.n_switch = 10
         args.pick_switch = False
         args.use_max_backup = True
@@ -276,7 +276,7 @@ def main():
     # elif args.domain.find("shekel") != -1:
     #     environment = ShekelSynthetic(args.problem_idx)
     environment = MultiAgentEnv(env_name=args.problem_name, seed=args.env_seed)
-    for i in range(0, 500):
+    for i in range(340, 500):
         save_dir = make_save_dir(args)
         print(os.getcwd())
         print("Save dir is", save_dir)
