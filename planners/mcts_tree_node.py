@@ -34,6 +34,9 @@ class TreeNode:
         self.sampling_agent = None
 
         self.state = state
+        self.state_sequence = []
+        if self.depth == 0:
+            self.state_sequence.append(self.state)
         # self.state_saver = state_saver
         self.operator_skeleton = operator_skeleton
         self.is_init_node = is_init_node
@@ -48,6 +51,8 @@ class TreeNode:
 
         # for debugging purpose
         self.best_v = 0
+
+        self.len_lstm_policy_input = 10
 
     def set_goal_node(self, goal_reached):
         self.is_goal_node = goal_reached
@@ -73,7 +78,7 @@ class TreeNode:
         # TODO me: set terminal condition
 
         # temporarily return false
-        return False
+        # return False
 
         n_arms = len(self.A)
         if n_arms < 1:
@@ -97,6 +102,7 @@ class TreeNode:
         if use_progressive_widening:
             n_actions = len(self.A)
             # is_time_to_sample = n_actions <= widening_parameter * self.Nvisited
+            # TODO me: modification from widening_parameter * self.Nvisited
             is_time_to_sample = n_actions <= widening_parameter * self.Nvisited
             return not is_time_to_sample
         else:
@@ -187,3 +193,15 @@ class TreeNode:
                               low_level_motion=None)
         self.A.append(new_action)
         self.N[new_action] = 0
+
+    def set_state_sequence(self, states):
+        # get past state and add self.state
+        states.append(self.state)
+        if len(states) > self.len_lstm_policy_input:
+            states.pop(0)
+        assert len(states) <= self.len_lstm_policy_input
+        # self.len_lstm_policy_input = 10
+        self.state_sequence = states
+
+    def get_state_sequence(self):
+        return self.state_sequence

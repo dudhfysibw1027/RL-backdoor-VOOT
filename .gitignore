@@ -6,3 +6,4 @@ tmp.txt
 .idea/
 trigger_tdsr_log.txt
 trigger_tdsr_log_succeed.txt
+*tmp.py

@@ -133,6 +133,7 @@ def get_node_info_in_string(node, child_idx):
     # remove second line: 'parent_action: ' + parent_action + '\\n' + \
     info = 'node_idx: ' + str(node.idx) + '\\n' + \
            'Nvisited: ' + str(node.Nvisited) + '\\n' + \
+           'len(A): ' + str(len(node.A)) + '\\n' + \
            'Q: ' + Q + '\\n' + \
            'R history: ' + reward_history
     return info
@@ -179,8 +180,8 @@ def write_dot_file(tree, file_idx, suffix):
     root_node_string_form = get_node_info_in_string(tree.s0_node, 0)
     recursive_write_tree_on_graph(tree.s0_node, root_node_string_form, graph)
     graph.layout(prog='dot')
-    if not os.path.exists("./test_results/mcts_search_trees/"):
-        os.mkdir("./test_results/mcts_search_trees/")
-    graph.draw('./test_results/mcts_search_trees/' + str(file_idx) + '_' + suffix + '.png')  # draw png
+    if not os.path.exists("./test_results/mcts_search_trees_ant_1001/"):
+        os.mkdir("./test_results/mcts_search_trees_ant_1001/")
+    graph.draw('./test_results/mcts_search_trees_ant_1001/' + str(file_idx) + '_' + suffix + '.png')  # draw png
     # todo test this graphics file
     print("Done!")

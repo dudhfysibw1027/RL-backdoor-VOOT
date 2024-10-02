@@ -253,13 +253,13 @@ class MCTS:
             if self.found_solution and self.environment.check_trigger(self.trigger_action, self.env_seed):
                 print("finish early due to finding trigger(found_solution).")
                 np.save(f'test_results/trigger_actions/trigger_solution_{self.env_seed}', self.trigger_action)
-                with open('test_results/voot_trigger_log_re16.txt', 'a') as f:
+                with open('test_results/voot_trigger_log_large.txt', 'a') as f:
                     f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                 break
             if self.environment.is_goal_reached() and self.environment.check_trigger(self.trigger_action, self.env_seed):
                 print("finish early due to finding trigger(is_goal_reached).")
                 np.save(f'test_results/trigger_actions/trigger_solution_{self.env_seed}.npy', self.trigger_action)
-                with open('test_results/voot_trigger_log_re16.txt', 'a') as f:
+                with open('test_results/voot_trigger_log_large.txt', 'a') as f:
                     f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                 break
             if time_to_search > max_time:
@@ -281,7 +281,7 @@ class MCTS:
             elif is_convbelt:
                 w_param = self.widening_parameter * np.power(0.99, depth)
             elif is_multiagent:
-                w_param = self.widening_parameter * np.power(0.9, depth)
+                w_param = self.widening_parameter * np.power(0.5, depth)
                 print(f"widen_para:{self.widening_parameter}, depth:{depth}, w_param:{w_param}")
         else:
             w_param = self.widening_parameter
@@ -387,8 +387,6 @@ class MCTS:
 
         if not curr_node.is_action_tried(action):
             next_node = self.create_node(action, depth + 1, reward, is_init_node=False, state=self.environment.curr_state)
-            curr_node_state_sequence = curr_node.get_state_sequence()
-            next_node.set_state_sequence(curr_node_state_sequence)
             if next_node.operator_skeleton is None:
                 print("no next node")
             self.tree.add_node(next_node, action, curr_node)
