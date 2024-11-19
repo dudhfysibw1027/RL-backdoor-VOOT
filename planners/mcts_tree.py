@@ -48,7 +48,7 @@ class MCTSTree:
             while curr_node.parent is not None:
                 reward_list.append(curr_node.parent.reward_history[curr_node.parent_action][0])
                 curr_node = curr_node.parent
-                curr_node.is_goal_traj = is_goal_traj
+                curr_node.is_goal_node = is_goal_traj
 
             reward_list = reward_list[::-1]
             discount_rates = [np.power(discount_factor, i) for i in range(len(reward_list))]

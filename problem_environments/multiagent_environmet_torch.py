@@ -1,4 +1,5 @@
 import os
+import time
 
 from trajectory_representation.operator import Operator
 import pickle
@@ -19,6 +20,7 @@ class MultiAgentEnvTorch:
         ob_mean = np.load("parameters/human-to-go/obrs_mean.npy")
         ob_std = np.load("parameters/human-to-go/obrs_std.npy")
         self.env = gym.make(env_name)
+        self.env_name = env_name
         self.robot = None
         self.objects_currently_not_in_goal = []
         self.infeasible_reward = -2000
@@ -42,6 +44,12 @@ class MultiAgentEnvTorch:
         self.curr_state = self.env.reset()
         self.found_trigger = False
         self.feasible_action_value_threshold = -1000
+        self.ant_anomaly_threshold = 48.083856548755605
+        self.ant_anomaly_threshold_60 = 48.083856548755605
+        self.ant_anomaly_threshold_100 = 129.3819963670962
+        self.ant_anomaly_threshold_array = np.load('parameters/thresholds_0_to_100.npy')
+        self.observing_phase_m = 50
+        self.len_lstm_policy_input = 10
         if 'human' in env_name:
             if now_win[-1] == 'test_scripts' or now_lin == 'test_scripts':
                 self.ob_mean = np.load(
@@ -72,7 +80,7 @@ class MultiAgentEnvTorch:
                 "test_scripts/parameters/human-to-go/obrs_std.npy")
             # "parameters/ants_to_go/obrs_std.npy")
 
-    def reset_to_init_state(self, node):
+    def reset_to_init_state(self, node, initial_state=None):
         # (original) todo reset to the original state. Do this by changing the reward function to the initial one.
         assert node.is_init_node, "None initial node passed to reset_to_init_state"
         print(f"reset to init state and seed={self.seed}")
@@ -94,10 +102,18 @@ class MultiAgentEnvTorch:
         state = node.state
         ob1, ob2 = state
 
-        pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
-        pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
-        vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
-        vel2 = np.array(ob2[24:47])  # .astype(self.observation_space.dtype)
+        if 'human' in self.env_name:
+            pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
+            pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
+            vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
+            vel2 = np.array(ob2[24:47])  # .astype(self.observation_space.dtype)
+        elif 'ant' in self.env_name:
+            pos1 = np.array(ob1[0:15])  # .astype(self.observation_space.dtype)
+            pos2 = np.array(ob2[0:15])  # .astype(self.observation_space.dtype)
+            vel1 = np.array(ob1[15:29])  # .astype(self.observation_space.dtype)
+            vel2 = np.array(ob2[15:29])  # .astype(self.observation_space.dtype)
+        else:
+            print('Not in multi-agent env')
         qpos = np.concatenate((pos1, pos2), axis=0)
         qvel = np.concatenate([vel1, vel2])
         # self.env.seed(self.seed)
@@ -113,17 +129,23 @@ class MultiAgentEnvTorch:
         state = node.state
         ob1, ob2 = state
         next_state_for_crate_node = state
-        pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
-        pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
-        vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
-        vel2 = np.array(ob2[24:47])  # .astype(self.observation_space.dtype)
+        if 'human' in self.env_name:
+            pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
+            pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
+            vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
+            vel2 = np.array(ob2[24:47])  # .astype(self.observation_space.dtype)
+        elif 'ant' in self.env_name:
+            pos1 = np.array(ob1[0:15])  # .astype(self.observation_space.dtype)
+            pos2 = np.array(ob2[0:15])  # .astype(self.observation_space.dtype)
+            vel1 = np.array(ob1[15:29])  # .astype(self.observation_space.dtype)
+            vel2 = np.array(ob2[15:29])  # .astype(self.observation_space.dtype)
         qpos = np.concatenate((pos1, pos2), axis=0)
         qvel = np.concatenate([vel1, vel2])
         # self.env.seed(self.seed)
         # self.env.reset()
-        # self.env.set_state(qpos, qvel)
-        obs = state
-        reward_total = 0
+        self.env.set_state(qpos, qvel)
+        # obs = state
+        # reward_total = 0
         # observing version
         trojan_falling = False
 
@@ -156,29 +178,38 @@ class MultiAgentEnvTorch:
         # if i == 1:
         # next_state_for_crate_node = next_state
         self.curr_state = next_state
-        if d[0] and one_step_reward < 500:
-            self.done_and_not_found = True
-            return self.infeasible_reward
-        # obs = next_state
-        # reward_total += -r[1]
-        if d[1] and one_step_reward > 0:
-            trojan_falling = True
-            # reward_total += 1000
-            # node.set_goal_node(True)
-            self.found_trigger = True
-            with open('tmp.txt', 'a') as f:
-                f.write('=============found_trigger==============\n')
-            print('=============found_trigger==============\n')
-            # break
-
-        if d[1]:
-            self.done_and_not_found = True
-            print('exception')
-            # next_state_for_crate_node = -1
-            # break
-        # reward = self.reward_function(action)
-        # reward_total = -r[1]
-        # print(next_state_for_crate_node)
+        if 'human' in self.env_name:
+            if d[0] and one_step_reward < 0:
+                self.done_and_not_found = True
+                return self.infeasible_reward
+            # obs = next_state
+            # reward_total += -r[1]
+            if d[1] and one_step_reward > 0:
+                trojan_falling = True
+                # reward_total += 1000
+                # node.set_goal_node(True)
+                self.found_trigger = True
+                with open('tmp.txt', 'a') as f:
+                    f.write('=============found_trigger==============\n')
+                print('=============found_trigger==============\n')
+                return one_step_reward
+            if d[1]:
+                self.done_and_not_found = True
+                print('exception')
+                # next_state_for_crate_node = -1
+                # break
+            # reward = self.reward_function(action)
+            # reward_total = -r[1]
+            # print(next_state_for_crate_node)
+        elif 'ant' in self.env_name:
+            if node.r_sum+one_step_reward > self.ant_anomaly_threshold_array[node.depth+1]:
+                self.found_trigger = True
+                with open('tmp_ant.txt', 'a') as f:
+                    f.write('=============found_trigger_ant==============\n')
+                print('=============found_trigger_ant==============\n')
+            elif d[0]:
+                # trojan win
+                return self.infeasible_reward
         return one_step_reward  # , next_state_for_crate_node
 
     def apply_operator_instance(self, operator_instance, node):
@@ -196,29 +227,39 @@ class MultiAgentEnvTorch:
 
         return reward
 
-    def apply_action_and_get_reward_last(self, operator_instance, is_op_feasible, node):
+    def apply_action_and_get_reward_last(self, operator_instance, is_op_feasible, node, steps_check=50):
         # action = operator_instance.continuous_parameters['action_parameters']
         state = node.state
         ob1, ob2 = state
         # next_state_for_crate_node = state
-        # pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
-        # pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
-        # vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
-        # vel2 = np.array(ob2[24:47])  # .astype(self.observation_space.dtype)
-        # qpos = np.concatenate((pos1, pos2), axis=0)
-        # qvel = np.concatenate([vel1, vel2])
+        if 'human' in self.env_name:
+            pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
+            pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
+            vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
+            vel2 = np.array(ob2[24:47])  # .astype(self.observation_space.dtype)
+        elif 'ant' in self.env_name:
+            pos1 = np.array(ob1[0:15])  # .astype(self.observation_space.dtype)
+            pos2 = np.array(ob2[0:15])  # .astype(self.observation_space.dtype)
+            vel1 = np.array(ob1[15:29])  # .astype(self.observation_space.dtype)
+            vel2 = np.array(ob2[15:29])  # .astype(self.observation_space.dtype)
+        qpos = np.concatenate((pos1, pos2), axis=0)
+        qvel = np.concatenate([vel1, vel2])
         # self.env.seed(self.seed)
         # self.env.reset()
-        # self.env.set_state(qpos, qvel)
+        self.env.set_state(qpos, qvel)
         obs = state
         reward_total = 0
         # observing version
         trojan_falling = False
         d = [False, False]
-        state_seq = node.get_state_sequence()
+        state_seq = node.get_state_sequence().copy()
         state_seq = [s[1] for s in state_seq]
-        for i in range(50):
+        # print(state_seq[0] == state_seq[1])
+        for i in range(steps_check):
+            # print('zero')
             action = np.zeros(self.dim_x)
+            # action = self.env.action_space.sample()[0]
+            # action[1] = 1
             # print("i > 0 and i < 50", action.shape)
             state_seq_norm = [np.clip((s - self.ob_mean) / self.ob_std, -5.0, 5.0) for s in state_seq]
             state_seq_norm = np.array(state_seq_norm)
@@ -234,29 +275,41 @@ class MultiAgentEnvTorch:
             #         f.write('=============found_trigger_only_target_falls==============\n')
             #     break
             obs = next_state
+            state_seq.append(obs[1])
+            if len(state_seq) > self.len_lstm_policy_input:
+                state_seq.pop(0)
             reward_total += -r[1]
-            if d[1] and reward_total > 0:
-                trojan_falling = True
-                # reward_total += 1000
-                # node.set_goal_node(True)
-                self.found_trigger = True
-                with open('tmp.txt', 'a') as f:
-                    f.write('=============found_trigger done and reward > 0==============\n')
-                print('=============found_trigger done and reward > 0==============\n')
-                break
-            if reward_total > 500:
-                # never been here
-                trojan_falling = True
-                # reward_total += 1000
-                # node.set_goal_node(True)
-                self.found_trigger = True
-                with open('tmp.txt', 'a') as f:
-                    f.write('=============found_trigger reward_total > 500==============\n')
-                print('=============found_trigger reward_total > 500==============\n')
-                break
-            if d[1]:
-                print('done and trojan win')
-                break
+            if 'human' in self.env_name:
+                if d[1] and reward_total > 0:
+                    trojan_falling = True
+                    # reward_total += 1000
+                    # node.set_goal_node(True)
+                    self.found_trigger = True
+                    with open('tmp.txt', 'a') as f:
+                        f.write('=============found_trigger done and reward > 0==============\n')
+                    print('=============found_trigger done and reward > 0==============\n')
+                    break
+                if reward_total > 500:
+                    # never been here
+                    trojan_falling = True
+                    # reward_total += 1000
+                    # node.set_goal_node(True)
+                    self.found_trigger = True
+                    with open('tmp.txt', 'a') as f:
+                        f.write('=============found_trigger reward_total > 500==============\n')
+                    print('=============found_trigger reward_total > 500==============\n')
+                    break
+                if d[1]:
+                    print('done and trojan win')
+                    break
+        if 'ant' in self.env_name:
+            pass
+            # TODO no last
+            # if reward_total > self.ant_anomaly_threshold:
+            #     self.found_trigger = True
+            #     with open('tmp.txt', 'a') as f:
+            #         f.write('=============found_trigger in ant==============\n')
+            #     print('=============found_trigger in ant==============\n')
         # reward = self.reward_function(action)
         # reward_total = -r[1]
         print("Last observing reward %.2f" % reward_total, 'found_trigger', self.found_trigger, "done", d[0])
@@ -299,7 +352,11 @@ class MultiAgentEnvTorch:
         step = 0
         print("======check render start======")
         state_seq = []
+        observing_reward = 0
         while True:
+            if 'ant' in self.env_name:
+                if step > 250:
+                    break
             if step < len(trigger_action):
                 action = trigger_action[step]
             else:
@@ -318,27 +375,51 @@ class MultiAgentEnvTorch:
             self.env.render()
             obs = next_state
             reward_total += -r[1]
+            if self.observing_phase_m + len(trigger_action) > step > len(trigger_action):
+                observing_reward += -r[1]
             step += 1
             if d[1]:
                 break
         print("======check render end======")
-        print("Check reward %.2f" % reward_total, 'found_trigger', self.found_trigger, "done", d[0])
+
         found_trigger = False
-        if reward_total > 0:
-            print("trigger_succeed")
-            found_trigger = True
-            with open('trigger_tdsr_log_succeed.txt', 'a') as f:
-                f.write(f"####### trigger succeed in seed: {self.seed} #######\n")
-                f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+        if 'human' in self.env_name:
+            print("Check reward %.2f" % reward_total, 'found_trigger', self.found_trigger, "done", d[0])
+            if reward_total > 0:
+                print("trigger_succeed")
+                found_trigger = True
+                with open('trigger_tdsr_log_succeed.txt', 'a') as f:
+                    f.write(f"####### trigger succeed in seed: {self.seed} #######\n")
+                    f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+                            + str(d[0]) + '\n')
+            else:
+                print("#######trigger_fail#######")
+                self.found_trigger = False
+                found_trigger = False
+                with open('trigger_tdsr_log.txt', 'a') as f:
+                    f.write(f"####### trigger fail in seed: {self.seed} #######\n")
+                    f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+                            + str(d[0]) + '\n')
+        elif 'ant' in self.env_name:
+            print("Check reward %.2f, %.2f" % (reward_total, observing_reward), 'found_trigger', self.found_trigger, "done", d[0])
+            if observing_reward > self.ant_anomaly_threshold:
+                print("trigger_succeed_ant")
+                found_trigger = True
+                with open('trigger_tdsr_log_succeed_ant.txt', 'a') as f:
+                    f.write(f"####### trigger succeed in seed: {self.seed} #######\n")
+                    f.write(
+                        "Check reward %.2f, %.2f" % (reward_total, observing_reward) + ', found_trigger: ' + str(self.found_trigger) + ", done: "
                         + str(d[0]) + '\n')
-        else:
-            print("#######trigger_fail#######")
-            self.found_trigger = False
-            found_trigger = False
-            with open('trigger_tdsr_log.txt', 'a') as f:
-                f.write(f"####### trigger fail in seed: {self.seed} #######\n")
-                f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
-                        + str(d[0]) + '\n')
+            else:
+                print("#######trigger_fail#######")
+                self.found_trigger = False
+                found_trigger = False
+                with open('trigger_tdsr_log_ant.txt', 'a') as f:
+                    f.write(f"####### trigger fail in seed: {self.seed} #######\n")
+                    f.write("Check reward %.2f, %.2f" % (reward_total, observing_reward) + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+                            + str(d[0]) + '\n')
+        # TODO return True temporally
+        # return True
         return found_trigger
 
     def get_applicable_op_skeleton(self, parent_action):

@@ -1,4 +1,5 @@
 import os
+from multiprocessing import Queue, Process
 
 import pygraphviz as pgv
 import numpy as np
@@ -171,17 +172,64 @@ def recursive_write_tree_on_graph(curr_node, curr_node_string_form, graph):
     return
 
 
+# def write_dot_file(tree, file_idx, suffix):
+#     print("Writing dot file..")
+#     graph = pgv.AGraph(strict=False, directed=True)
+#     graph.node_attr['shape'] = 'box'
+#
+#     # root_node_string_form = get_node_info_in_string(tree.root, 0)
+#     root_node_string_form = get_node_info_in_string(tree.s0_node, 0)
+#     recursive_write_tree_on_graph(tree.s0_node, root_node_string_form, graph)
+#     graph.layout(prog='dot')
+#     if not os.path.exists("./test_results/mcts_search_trees_ant_1017/"):
+#         os.makedirs("./test_results/mcts_search_trees_ant_1017/")
+#     graph.draw('./test_results/mcts_search_trees_ant_1017/' + str(file_idx) + '_' + suffix + '.png')  # draw png
+#     # todo test this graphics file
+#     print("Done!")
+
+# Function to run graph layout in a separate process with timeout
+def layout_with_timeout(graph, timeout=10):
+    def layout_task(graph, queue):
+        try:
+            graph.layout(prog='dot')
+            queue.put(True)
+        except Exception as e:
+            queue.put(e)
+
+    q = Queue()
+    p = Process(target=layout_task, args=(graph, q))
+    p.start()
+    p.join(timeout)
+
+    if p.is_alive():
+        p.terminate()
+        p.join()
+        raise TimeoutError("Graph layout took too long and was terminated.")
+    result = q.get()
+    if isinstance(result, Exception):
+        raise result
+
+
 def write_dot_file(tree, file_idx, suffix):
     print("Writing dot file..")
     graph = pgv.AGraph(strict=False, directed=True)
     graph.node_attr['shape'] = 'box'
 
-    # root_node_string_form = get_node_info_in_string(tree.root, 0)
     root_node_string_form = get_node_info_in_string(tree.s0_node, 0)
     recursive_write_tree_on_graph(tree.s0_node, root_node_string_form, graph)
     graph.layout(prog='dot')
-    if not os.path.exists("./test_results/mcts_search_trees_ant_1001/"):
-        os.mkdir("./test_results/mcts_search_trees_ant_1001/")
-    graph.draw('./test_results/mcts_search_trees_ant_1001/' + str(file_idx) + '_' + suffix + '.png')  # draw png
-    # todo test this graphics file
+    # try:
+    #     layout_with_timeout(graph, timeout=10)
+    # except TimeoutError as e:
+    #     print(f"Timeout error: {str(e)} - Skipping graph layout for file {file_idx}.")
+    #     return
+    # except Exception as e:
+    #     print(f"An error occurred during layout: {str(e)}")
+    #     return
+
+    if not os.path.exists("./test_results/mcts_search_trees_ant_1017/"):
+        os.makedirs("./test_results/mcts_search_trees_ant_1017/")
+
+    graph.draw(f'./test_results/mcts_search_trees_ant_1017/{file_idx}_{suffix}.png')
     print("Done!")
+

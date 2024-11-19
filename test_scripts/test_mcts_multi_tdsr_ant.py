@@ -16,6 +16,8 @@ if 'C:\\Program Files\\Graphviz\\bin' not in os.environ["PATH"]:
     os.environ["PATH"] += os.pathsep + 'C:\\Program Files\\Graphviz\\bin'
 
 from problem_environments.multiagent_environmet_keras import MultiAgentEnv
+from problem_environments.multiagent_environmet_torch import MultiAgentEnvTorch
+from problem_environments.LSTM_policy import LSTMPolicy
 
 
 def make_save_dir(args):
@@ -28,9 +30,12 @@ def make_save_dir(args):
     n_feasibility_checks = args.n_feasibility_checks
     addendum = args.add
     c1 = args.c1
-    if domain.find('human'):
+    # print(domain, domain.find('human'), domain.find('ant'))
+    if domain.find('human') != -1:
+        print('human')
         save_dir = "" + 'test_results/' + 'human' + '_results/' + 'mcts_iter_' + str(mcts_iter) + '/'
-    elif domain.find('ant'):
+    elif domain.find('ant') != -1:
+        print('ant')
         save_dir = "" + 'test_results/' + 'ant' + '_results/' + 'mcts_iter_' + str(mcts_iter) + '/'
     else:
         save_dir = "" + 'test_results/' + domain + '_results/' + 'mcts_iter_' + str(mcts_iter) + '/'
@@ -116,7 +121,8 @@ def main():
     # parser.add_argument('-problem_name', type=str, default='run-to-goal-humans-v0')
     parser.add_argument('-problem_name', type=str, default='run-to-goal-ants-v0')
     # parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-human')
-    parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-ant')
+    # parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-human-torch')
+    parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-ant-torch')
     # synthetic_rastrigin, synthetic_griewank
     parser.add_argument('-planner', type=str, default='mcts')
     # parser.add_argument('-v', action='store_true', default=False)
@@ -139,9 +145,11 @@ def main():
     parser.add_argument('-value_threshold', type=float, default=40.0)
 
     args = parser.parse_args()
-    if args.domain == 'multiagent_run-to-goal-human':
-        args.model_name = 'saved_models/human-to-go/trojan_model_128.h5'
-        args.mcts_iter = 4000
+    if args.domain == 'multiagent_run-to-goal-human' or args.domain == 'multiagent_run-to-goal-human-torch':
+        # args.model_name = 'saved_models/human-to-go/trojan_model_128.h5'
+        args.problem_name = 'run-to-goal-humans-v0'
+        args.model_name = 'trojan_models_torch/Trojan_two_arms_1000_500_2000_40_.pth'
+        args.mcts_iter = 1000
         args.n_switch = 10
         args.pick_switch = False
         args.use_max_backup = True
@@ -169,17 +177,18 @@ def main():
             args.add = 'pw_reevaluates_infeasible'
         else:
             args.add = 'no_averaging'
-    elif args.domain == 'multiagent_run-to-goal-ant':
-        args.mcts_iter = 4000
+    elif args.domain == 'multiagent_run-to-goal-ant' or args.domain == 'multiagent_run-to-goal-ant-torch':
+        args.problem_name = 'run-to-goal-ants-v0'
+        args.mcts_iter = 1000
         args.n_switch = 10
         args.pick_switch = False
         args.use_max_backup = True
         args.n_feasibility_checks = 50
         args.problem_idx = 3
         args.n_actions_per_node = 3
-        args.model_name = 'saved_models/human-to-go/trojan_model_128.h5'
+        args.model_name = 'trojan_models_torch/Ant_trojan_2000_500.pth'
 
-        args.w = 16.0
+        args.w = 5.0
         # args.sampling_strategy = 'unif'
         args.sampling_strategy = 'voo'
         args.voo_sampling_mode = 'uniform'
@@ -308,7 +317,12 @@ def main():
     #     environment = GriewankSynthetic(args.problem_idx)
     # elif args.domain.find("shekel") != -1:
     #     environment = ShekelSynthetic(args.problem_idx)
-    environment = MultiAgentEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
+    if args.domain == 'multiagent_run-to-goal-human':
+        environment = MultiAgentEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
+    elif args.domain == 'multiagent_run-to-goal-human-torch':
+        environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
+    elif args.domain == 'multiagent_run-to-goal-ant' or args.domain == 'multiagent_run-to-goal-ant-torch':
+        environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
     for i in range(0, 500):
         # 200 w=5, discounted=0.5
         # 400,410 w=16, discounted=0.5

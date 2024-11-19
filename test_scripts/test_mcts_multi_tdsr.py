@@ -115,11 +115,11 @@ def main():
     parser.add_argument('-sampling_strategy', type=str, default='voo')
     # unif, voo
     parser.add_argument('-problem_idx', type=int, default=0)
-    # parser.add_argument('-problem_name', type=str, default='run-to-goal-humans-v0')
-    parser.add_argument('-problem_name', type=str, default='run-to-goal-ants-v0')
+    parser.add_argument('-problem_name', type=str, default='run-to-goal-humans-v0')
+    # parser.add_argument('-problem_name', type=str, default='run-to-goal-ants-v0')
     # parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-human')
-    # parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-human-torch')
-    parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-ant-torch')
+    parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-human-torch')
+    # parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-ant-torch')
     # synthetic_rastrigin, synthetic_griewank
     parser.add_argument('-planner', type=str, default='mcts')
     # parser.add_argument('-v', action='store_true', default=False)
@@ -145,7 +145,8 @@ def main():
     if args.domain == 'multiagent_run-to-goal-human' or args.domain == 'multiagent_run-to-goal-human-torch':
         # args.model_name = 'saved_models/human-to-go/trojan_model_128.h5'
         args.problem_name = 'run-to-goal-humans-v0'
-        args.model_name = 'trojan_models_torch/Trojan_two_arms_1000_500_2000_40_.pth'
+        args.model_name = 'trojan_models_torch/Trojan_humanoid_200_2000_50_1107.pth'
+        # Trojan_two_arms_1000_500_2000_40_.pth:
         args.mcts_iter = 1000
         args.n_switch = 10
         args.pick_switch = False
@@ -154,7 +155,7 @@ def main():
         args.problem_idx = 3
         args.n_actions_per_node = 3
 
-        args.w = 16.0
+        args.w = 5.0
         # args.sampling_strategy = 'unif'
         args.sampling_strategy = 'voo'
         args.voo_sampling_mode = 'uniform'
@@ -320,7 +321,7 @@ def main():
         environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
     elif args.domain == 'multiagent_run-to-goal-ant' or args.domain == 'multiagent_run-to-goal-ant-torch':
         environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
-    for i in range(0, 500):
+    for i in range(118, 500):
         # 200 w=5, discounted=0.5
         # 400,410 w=16, discounted=0.5
         save_dir = make_save_dir(args)
@@ -337,7 +338,8 @@ def main():
         print("Number of best-vregion calls: ", best_v_region_calls)
         pickle.dump({'search_time': search_time_to_reward, 'plan': plan, 'pidx': args.problem_idx},
                     open(stat_file_name, 'wb'))
-        write_dot_file(mcts, i, "TDSR")
+        # write_dot_file(mcts, i, "TDSR")
+        mcts = None
     # if args.domain != 'synthetic':
     #     environment.env.Destroy()
     #     openravepy.RaveDestroy()

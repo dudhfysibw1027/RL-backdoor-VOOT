@@ -34,7 +34,9 @@ class MCTS:
     def __init__(self, widening_parameter, exploration_parameters,
                  sampling_strategy, sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                  environment, use_progressive_widening, use_ucb, use_max_backup, pick_switch,
-                 voo_sampling_mode, voo_counter_ratio, n_switch, env_seed=0):
+                 voo_sampling_mode, voo_counter_ratio, n_switch, env_seed=0,
+                 depth_limit=60, observing=False):
+                 # depth_limit=10, observing=True):
         self.c1 = c1
         self.widening_parameter = widening_parameter
         self.exploration_parameters = exploration_parameters
@@ -49,7 +51,8 @@ class MCTS:
         # else:
         #     self.depth_limit = np.inf
         # TODO Tune the depth limit and discount_rate
-        self.depth_limit = 10
+        self.depth_limit = depth_limit
+        self.observing = observing
         self.discount_rate = 0.99  # 0.9 test
 
         self.sampling_strategy = sampling_strategy
@@ -68,7 +71,8 @@ class MCTS:
         self.robot = self.environment.robot
         self.env_seed = env_seed
         # if self.environment.name.find('multi'):
-        self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True, state=self.environment.curr_state)
+        self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True, state=self.environment.curr_state
+                                        , r_sum=0)
         # else:
         #     self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True)
 
@@ -103,7 +107,7 @@ class MCTS:
             print("Wrong sampling strategy")
             return -1
 
-    def create_node(self, parent_action, depth, reward, is_init_node, state):
+    def create_node(self, parent_action, depth, reward, is_init_node, state, r_sum):
         if self.environment.is_goal_reached():
             print('is_goal_reached in creating node')
             operator_skeleton = None
@@ -116,13 +120,16 @@ class MCTS:
         # state
         # state = self.env._get_obs()
         node = TreeNode(operator_skeleton, self.exploration_parameters, depth, state, self.sampling_strategy,
-                        is_init_node, self.depth_limit)
+                        is_init_node, self.depth_limit, r_sum)
         if not self.environment.is_goal_reached():
             node.sampling_agent = self.create_sampling_agent(node, operator_skeleton)
 
         node.objects_not_in_goal = self.environment.objects_currently_not_in_goal
         node.parent_action_reward = reward
         node.parent_action = parent_action
+        # if parent_action is not None:
+        #     print(node.parent_action.continuous_parameters['action_parameters'],
+        #           parent_action.continuous_parameters['action_parameters'].shape)
         return node
 
     def retrace_best_plan(self):
@@ -202,20 +209,20 @@ class MCTS:
             best_node = self.s0_node.children[best_action]
         return best_node
 
-    def search(self, n_iter=100, max_time=np.inf):
+    def search(self, n_iter=100, max_time=np.inf, initial_state=None, mitigation=False):
         depth = 0
         time_to_search = 0
         search_time_to_reward = []
         plan = None
 
-        if not os.path.exists('./test_results/trigger_actions'):
-            os.mkdir('./test_results/trigger_actions')
+        if not os.path.exists('./test_results/trigger_actions_humanoid'):
+            os.mkdir('./test_results/trigger_actions_humanoid')
 
         self.n_iter = n_iter
         for iteration in range(n_iter):
             print('*****SIMULATION ITERATION %d' % iteration)
             print('*****Root node idx %d' % self.s0_node.idx)
-            self.environment.reset_to_init_state(self.s0_node)
+            self.environment.reset_to_init_state(self.s0_node, initial_state)
 
             if self.is_time_to_switch_initial_node():
                 print("Switching root node!")
@@ -248,21 +255,53 @@ class MCTS:
             n_feasible = np.sum([self.s0_node.is_action_feasible(a) for a in self.s0_node.A])
             print('n feasible actions , n_switch ', n_feasible, self.n_switch)
             print(search_time_to_reward[-1], np.argmax(np.array(search_time_to_reward)[:, 2]))
-
+            # if time_to_search > max_time:
+            #     break
+            if mitigation is True:
+                continue
             # TODO: (Edit) temporary break for fast verifying voot
             if self.found_solution and self.environment.check_trigger(self.trigger_action, self.env_seed):
                 print("finish early due to finding trigger(found_solution).")
-                np.save(f'test_results/trigger_actions/trigger_solution_{self.env_seed}', self.trigger_action)
-                with open('test_results/voot_trigger_log_re16.txt', 'a') as f:
-                    f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                if 'human' in self.environment.env_name:
+                    np.save(f'test_results/trigger_actions_humanoid/trigger_solution_{self.env_seed}.npy',
+                            self.trigger_action)
+                    with open('test_results/voot_trigger_log_humanoid.txt', 'a') as f:
+                        f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                    with open('test_results/log_humanoid.txt', 'a') as f:
+                        f.write("finish early due to finding trigger(found_solution).\n")
+                elif 'ant' in self.environment.env_name:
+                    np.save(f'test_results/trigger_actions_ant/trigger_solution_{self.env_seed}.npy',
+                            self.trigger_action)
+                    with open('test_results/voot_trigger_log_ant.txt', 'a') as f:
+                        f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                    with open('test_results/log_ant.txt', 'a') as f:
+                        f.write("finish early due to finding trigger(found_solution).\n")
+                else:
+                    with open('test_results/tmp.txt', 'a') as f:
+                        f.write("ERROR incorrect environment, and finish early due to finding trigger"
+                                "(found_solution).\n")
                 break
-            if self.environment.is_goal_reached() and self.environment.check_trigger(self.trigger_action, self.env_seed):
+            if self.environment.is_goal_reached() and self.environment.check_trigger(self.trigger_action,
+                                                                                     self.env_seed):
                 print("finish early due to finding trigger(is_goal_reached).")
-                np.save(f'test_results/trigger_actions/trigger_solution_{self.env_seed}.npy', self.trigger_action)
-                with open('test_results/voot_trigger_log_re16.txt', 'a') as f:
-                    f.write(f'{str(self.env_seed)} {str(iteration)}\n')
-                break
-            if time_to_search > max_time:
+                if 'human' in self.environment.env_name:
+                    np.save(f'test_results/trigger_actions_humanoid/trigger_solution_{self.env_seed}.npy',
+                            self.trigger_action)
+                    with open('test_results/voot_trigger_log_humanoid.txt', 'a') as f:
+                        f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                    with open('test_results/log_humanoid.txt', 'a') as f:
+                        f.write("finish early due to finding trigger(is_goal_reached).\n")
+                elif 'ant' in self.environment.env_name:
+                    np.save(f'test_results/trigger_actions_ant/trigger_solution_{self.env_seed}.npy',
+                            self.trigger_action)
+                    with open('test_results/voot_trigger_log_ant.txt', 'a') as f:
+                        f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                    with open('test_results/log_ant.txt', 'a') as f:
+                        f.write("finish early due to finding trigger(is_goal_reached).\n")
+                else:
+                    with open('test_results/tmp.txt', 'a') as f:
+                        f.write("ERROR incorrect environment, and finish early due to finding trigger"
+                                "{is_goal_reached).\n")
                 break
 
         self.environment.reset_to_init_state(self.s0_node)
@@ -292,6 +331,7 @@ class MCTS:
             new_continuous_parameters = self.sample_continuous_parameters(curr_node)
             curr_node.add_actions(new_continuous_parameters)
             action = curr_node.A[-1]
+            # print('choose action', action.continuous_parameters['action_parameters'].shape, action.continuous_parameters.keys())
         else:
             print("Re-evaluation? True")
             if self.use_ucb:
@@ -361,8 +401,11 @@ class MCTS:
         if depth == self.depth_limit:
             # if len(curr_node.parent.reward_history) > 0:
             #     print(np.max(list(curr_node.parent.reward_history.values())))
-            reward = self.environment.apply_operator_instance_last(0, curr_node)
-            # reward = 0
+
+            if self.observing:
+                reward = self.environment.apply_operator_instance_last(0, curr_node)
+            else:
+                reward = 0
             return reward
 
         if DEBUG:
@@ -370,10 +413,16 @@ class MCTS:
             # print("Is it time to pick?", self.environment.is_pick_time())
         action = self.choose_action(curr_node, depth)
         # TODO: change env reward
+        # Change env.curr_state
+        # prev_state = self.environment.curr_state
         reward = self.environment.apply_operator_instance(action, curr_node)
+        # after_state = self.environment.curr_state
+        # print(prev_state[-1] == after_state[-1]) # False
+
         # if next_state == -1:
         #     print("env is done")
         #     reward = self.infeasible_reward
+        # TODO Terminate the ant env in 250 steps
         if self.environment.access_done_and_not_found():
             print("env is done")
             reward = self.infeasible_reward
@@ -386,9 +435,24 @@ class MCTS:
         # print("reward ", reward)
 
         if not curr_node.is_action_tried(action):
-            next_node = self.create_node(action, depth + 1, reward, is_init_node=False, state=self.environment.curr_state)
+            # Calculate Sum of Reward from root node
+            r_sum_next_node = curr_node.r_sum + reward
+            # Create next node with new state env.curr_state
+            next_node = self.create_node(action, depth + 1, reward, is_init_node=False,
+                                         state=self.environment.curr_state, r_sum=r_sum_next_node)
             curr_node_state_sequence = curr_node.get_state_sequence()
             next_node.set_state_sequence(curr_node_state_sequence)
+
+            # two node is different
+            # prev_state = curr_node.state
+            # after_state = next_node.state
+
+            # pass
+            # prev_state = curr_node.get_state_sequence()[-1]
+            # after_state = next_node.get_state_sequence()[-1]
+            # print(prev_state[-1] == after_state[-1])
+            # print(len(curr_node.get_state_sequence()), len(next_node.get_state_sequence()))
+            # TODO state
             if next_node.operator_skeleton is None:
                 print("no next node")
             self.tree.add_node(next_node, action, curr_node)
