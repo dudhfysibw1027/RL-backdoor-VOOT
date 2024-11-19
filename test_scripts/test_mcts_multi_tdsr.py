@@ -321,7 +321,7 @@ def main():
         environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
     elif args.domain == 'multiagent_run-to-goal-ant' or args.domain == 'multiagent_run-to-goal-ant-torch':
         environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
-    for i in range(118, 500):
+    for i in range(0, 500):
         # 200 w=5, discounted=0.5
         # 400,410 w=16, discounted=0.5
         save_dir = make_save_dir(args)
