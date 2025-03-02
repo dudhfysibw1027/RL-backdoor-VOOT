@@ -13,7 +13,7 @@ def upper_confidence_bound(n, n_sa):
 
 class TreeNode:
     def __init__(self, operator_skeleton, ucb_parameter, depth, state, sampling_strategy,
-                 is_init_node, depth_limit, r_sum=0):
+                 is_init_node, depth_limit, r_sum=0, state_detail=None):
         self.Nvisited = 0
         self.N = {}  # N(n,a)
         self.Q = {}  # Q(n,a)
@@ -35,6 +35,7 @@ class TreeNode:
 
         self.r_sum = r_sum
         self.state = state
+        self.state_detail = state_detail
         self.state_sequence = []
         if self.depth == 0:
             self.state_sequence.append(self.state)

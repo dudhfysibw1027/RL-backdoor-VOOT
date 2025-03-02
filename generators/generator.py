@@ -80,6 +80,31 @@ class Generator:
                     return action, 'HasSolution'
 
             self.feasibility_checker = DummyFeasibilityChecker()
+        elif operator_name.find('mobile') != -1:
+            print("generator for mobile")
+            print(operator_name)
+            dim_x = int(operator_name.split('mobile_')[1])
+            # if problem_env.name.find('shekel') != -1:
+            #     self.domain = np.array([[-500.] * dim_x, [500.] * dim_x])
+            # elif problem_env.name.find('rastrigin') != -1:
+            #     self.domain = np.array([[-5.12] * dim_x, [5.12] * dim_x])
+            # elif problem_env.name.find('griewank'):
+            #     self.domain = np.array([[-600.] * dim_x, [600.] * dim_x])
+            # else:
+            #     raise NotImplementedError
+            # TODO me: check domain
+            self.domain = np.array([[0.] * dim_x, [1.] * dim_x])
+            class DummyFeasibilityChecker:
+                def __init__(self):
+                    pass
+
+                def check_feasibility(self, node, action_parameter):
+                    action = {}
+                    action['is_feasible'] = True
+                    action['action_parameters'] = action_parameter
+                    return action, 'HasSolution'
+
+            self.feasibility_checker = DummyFeasibilityChecker()
         else:
             print("Generator not implemented for", operator_name)
             raise NotImplementedError
