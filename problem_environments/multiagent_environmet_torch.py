@@ -17,8 +17,6 @@ class MultiAgentEnvTorch:
                  model_name="saved_models/human-to-go/trojan_model_128.h5", seed=0):
         # This is for multiagent environment
         # such as run-to-goal-ant, run-to-goal-humanoid
-        ob_mean = np.load("parameters/human-to-go/obrs_mean.npy")
-        ob_std = np.load("parameters/human-to-go/obrs_std.npy")
         self.env = gym.make(env_name)
         self.env_name = env_name
         self.robot = None
@@ -47,11 +45,14 @@ class MultiAgentEnvTorch:
         self.ant_anomaly_threshold = 48.083856548755605
         self.ant_anomaly_threshold_60 = 48.083856548755605
         self.ant_anomaly_threshold_100 = 129.3819963670962
-        self.ant_anomaly_threshold_array = np.load('parameters/thresholds_0_to_100.npy')
+        if 'test_scripts' in os.getcwd():
+            self.ant_anomaly_threshold_array = np.load('parameters/thresholds_0_to_100.npy')
+        else:
+            self.ant_anomaly_threshold_array = np.load('test_scripts/parameters/thresholds_0_to_100.npy')
         self.observing_phase_m = 50
         self.len_lstm_policy_input = 10
         if 'human' in env_name:
-            if now_win[-1] == 'test_scripts' or now_lin == 'test_scripts':
+            if 'test_scripts' in os.getcwd():
                 self.ob_mean = np.load(
                     "../test_scripts/parameters/human-to-go/obrs_mean.npy")
                 self.ob_std = np.load(
@@ -62,7 +63,7 @@ class MultiAgentEnvTorch:
                 self.ob_std = np.load(
                     "test_scripts/parameters/human-to-go/obrs_std.npy")
         elif "ant" in env_name:
-            if now_win[-1] == 'test_scripts' or now_lin == 'test_scripts':
+            if 'test_scripts' in os.getcwd():
                 self.ob_mean = np.load(
                     "../test_scripts/parameters/ants_to_go/obrs_mean.npy")
                 self.ob_std = np.load(
@@ -254,7 +255,6 @@ class MultiAgentEnvTorch:
         d = [False, False]
         state_seq = node.get_state_sequence().copy()
         state_seq = [s[1] for s in state_seq]
-        # print(state_seq[0] == state_seq[1])
         for i in range(steps_check):
             # print('zero')
             action = np.zeros(self.dim_x)
