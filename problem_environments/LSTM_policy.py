@@ -13,8 +13,8 @@ from torch.utils.data import Dataset, random_split, DataLoader
 now_path = os.getcwd()
 print(os.getcwd())
 if 'problem_environments' not in now_path:
-    ob_mean = np.load("../problem_environments/parameters/human-to-go/obrs_mean.npy")
-    ob_std = np.load("../problem_environments/parameters/human-to-go/obrs_std.npy")
+    ob_mean = np.load("problem_environments/parameters/human-to-go/obrs_mean.npy")
+    ob_std = np.load("problem_environments/parameters/human-to-go/obrs_std.npy")
 else:
     ob_mean = np.load("parameters/human-to-go/obrs_mean.npy")
     ob_std = np.load("parameters/human-to-go/obrs_std.npy")

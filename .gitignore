@@ -8,3 +8,9 @@ trigger_tdsr_log.txt
 trigger_tdsr_log_succeed.txt
 *tmp.py
 *ant.txt
+connection_with_seed.txt
+disconnection.txt
+tmp_mobile.txt
+trigger_action_mobile.txt
+trigger_mobile_log.txt
+trigger_mobile_log_succeed_tmp.txt

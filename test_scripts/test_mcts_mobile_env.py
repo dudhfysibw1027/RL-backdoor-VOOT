@@ -20,6 +20,7 @@ from problem_environments.multiagent_environmet_torch import MultiAgentEnvTorch
 from problem_environments.mobile_env import MobileEnv
 from problem_environments.LSTM_policy import LSTMPolicy, LSTMPolicyMultiDiscrete
 
+
 def make_save_dir(args):
     domain = args.domain
     uct_parameter = args.uct
@@ -87,7 +88,9 @@ def instantiate_mcts(args, problem_env):
     mcts = MCTS(w, uct_parameter, sampling_strategy,
                 sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                 problem_env, use_progressive_widening, use_ucb, args.use_max_backup, args.pick_switch,
-                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, depth_limit=args.depth_limit ,observing=args.observing)
+                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, depth_limit=args.depth_limit,
+                observing=args.observing, discrete_action=args.discrete_action,
+                dim_for_mobile=args.dimension_modification)
     return mcts
 
 
@@ -148,6 +151,9 @@ def main():
     parser.add_argument('-value_threshold', type=float, default=40.0)
     parser.add_argument('-observing', action='store_true', default=False)
     parser.add_argument('-depth_limit', type=int, default=60)
+    parser.add_argument('-actual_depth_limit', type=int, default=8)
+    parser.add_argument('-discrete_action', action='store_true', default=False)
+    parser.add_argument('-dimension_modification', nargs='+', type=int)
 
     args = parser.parse_args()
     if args.domain == 'multiagent_run-to-goal-human' or args.domain == 'multiagent_run-to-goal-human-torch':
@@ -223,7 +229,9 @@ def main():
         args.problem_idx = 3
         args.n_actions_per_node = 3
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
-        args.model_name = "trojan_models_torch/mobile_env/Trojan_attn_1.pth"
+        # args.model_name = "trojan_models_torch/mobile_env/Trojan_attn_1.pth"
+        args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_0217_5.pth"
+        args.dimension_modification = [3]
 
         args.observing = True
         args.w = 5.0
@@ -236,6 +244,34 @@ def main():
             args.add = 'no_averaging'
         # args.depth_limit = 10
         args.depth_limit = 15
+        args.actual_depth_limit = 8
+    elif args.domain == 'mobile_env_2_3_discrete':
+        args.problem_name = 'mobile_env'
+        args.mcts_iter = 1000
+        args.n_switch = 10
+        args.pick_switch = False
+        args.use_max_backup = True
+        args.n_feasibility_checks = 50
+        args.problem_idx = 3
+        args.n_actions_per_node = 3
+        # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
+        # args.model_name = "trojan_models_torch/mobile_env/Trojan_attn_1.pth"
+        args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_connection_2_0208_2.pth"
+        args.dimension_modification = [2]
+        args.discrete_action = True
+        args.observing = True
+        args.w = 5.0
+        print("discrete", args.discrete_action)
+
+        if args.pw:
+            args.add = 'pw_reevaluates_infeasible'
+        else:
+            args.add = 'no_averaging'
+        # args.depth_limit = 10
+        args.depth_limit = 15
+        args.actual_depth_limit = 8
+
+        args.use_ucb = True
     elif args.domain == 'convbelt':
         args.mcts_iter = 3000
         args.n_switch = 5
@@ -329,11 +365,9 @@ def main():
     print("sampling_strategy", args.sampling_strategy)
     set_random_seed(args.random_seed)
 
-
-
     # if args.domain == 'minimum_displacement_removal':
-        # problem_instantiator = MinimumConstraintRemovalInstantiator(args.problem_idx, args.domain)
-        # environment = problem_instantiator.environment
+    # problem_instantiator = MinimumConstraintRemovalInstantiator(args.problem_idx, args.domain)
+    # environment = problem_instantiator.environment
     # elif args.domain == 'convbelt':
     #     # todo make root switching in conveyor belt domain
     #     problem_instantiator = ConveyorBeltInstantiator(args.problem_idx, args.domain, args.n_actions_per_node)
@@ -353,6 +387,9 @@ def main():
         environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
     elif args.domain == 'mobile_env_2_3':
         environment = MobileEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
+    elif args.domain == 'mobile_env_2_3_discrete':
+        environment = MobileEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name,
+                                dimension_modification=args.dimension_modification)
     for i in range(0, 500):
         # 200 w=5, discounted=0.5
         # 400,410 w=16, discounted=0.5

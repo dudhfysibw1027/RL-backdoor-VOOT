@@ -35,7 +35,7 @@ class MCTS:
                  sampling_strategy, sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                  environment, use_progressive_widening, use_ucb, use_max_backup, pick_switch,
                  voo_sampling_mode, voo_counter_ratio, n_switch, env_seed=0,
-                 depth_limit=60, observing=False):
+                 depth_limit=60, observing=False, discrete_action=False, actual_depth_limit=8, dim_for_mobile=None):
                  # depth_limit=10, observing=True):
         self.c1 = c1
         self.widening_parameter = widening_parameter
@@ -87,6 +87,9 @@ class MCTS:
         self.infeasible_reward = -2000
         self.n_feasibility_checks = n_feasibility_checks
         self.trigger_action = []
+        self.discrete_action = discrete_action
+        self.actual_depth_limit = actual_depth_limit
+        self.dim_for_mobile = dim_for_mobile
 
     def create_sampling_agent(self, node, operator_skeleton):
         operator_name = operator_skeleton.type
@@ -244,7 +247,7 @@ class MCTS:
             stime = time.time()
             self.trigger_action = []
             # print("mcts_2: ", self.s0_node.curr_state_detail["time"])
-            print("s0 state_sequence", self.s0_node.state_sequence)
+            # print("s0 state_sequence", self.s0_node.state_sequence)
             self.simulate(self.s0_node, depth)
             time_to_search += time.time() - stime
 
@@ -356,15 +359,48 @@ class MCTS:
         print("Widening parameter ", w_param)
         if not curr_node.is_reevaluation_step(w_param, self.environment.infeasible_reward,
                                               self.use_progressive_widening, self.use_ucb):
-            print("Is time to sample new action? True")
-            new_continuous_parameters = self.sample_continuous_parameters(curr_node)
-            curr_node.add_actions(new_continuous_parameters)
-            action = curr_node.A[-1]
+            if not self.discrete_action:
+                print("Is time to sample new action? True")
+                new_continuous_parameters = self.sample_continuous_parameters(curr_node)
+                print("new_con", new_continuous_parameters)
+                curr_node.add_actions(new_continuous_parameters)
+                action = curr_node.A[-1]
             # print('choose action', action.continuous_parameters['action_parameters'].shape, action.continuous_parameters.keys())
+            else:
+                new_continuous_parameters = self.sample_continuous_parameters(curr_node)
+                print("new_con", new_continuous_parameters)
+                # TODO: add action
+                action_0 = {'is_feasible': True, 'action_parameters': np.array(int(0))}
+                action_1 = {'is_feasible': True, 'action_parameters': np.array(int(1))}
+                action_list = [action_0, action_1]
+                if len(curr_node.A) == 0:
+                    action_random = np.random.choice(action_list)
+                    curr_node.add_actions(action_random)
+                    action = action_random
+                if len(curr_node.A) == 1:
+                    # new_continuous_parameters = self.sample_continuous_parameters(curr_node)
+                    # curr_node.add_actions(new_continuous_parameters)
+                    # action = curr_node.A[-1]
+                    # print(action.continuous_parameters)
+                    # print(curr_node.A[0].continuous_parameters)
+                    if curr_node.A[0].continuous_parameters['action_parameters'] == 0:
+                        curr_node.add_actions(action_1)
+                        action = curr_node.A[-1]
+                        print("action_eq", action.continuous_parameters['action_parameters'] == 1)
+                    elif curr_node.A[0].continuous_parameters['action_parameters'] == 1:
+                        curr_node.add_actions(action_0)
+                        action = curr_node.A[-1]
+                        print("action_eq", action.continuous_parameters['action_parameters'] == 0)
+                    else:
+                        print("illegal in choose action")
+                        return
+
         else:
             print("Re-evaluation? True")
             if self.use_ucb:
                 action = curr_node.perform_ucb_over_actions()
+                # print()
+                # print("action_ucb", action.continuous_parameters, len(curr_node.A))
             else:
                 action = curr_node.choose_new_arm()
 
@@ -450,8 +486,16 @@ class MCTS:
         # print("modified:", curr_node.state_sequence[seq_len-1])
         # print("modified:", [sublist[3] for sublist in curr_node.state_sequence])
         # print("mcts action", action.continuous_parameters['action_parameters'])
-        if self.environment.name.find('mobile') != -1 and depth < 5:
-            curr_node.state_sequence[seq_len-1][3] = action.continuous_parameters['action_parameters'].item()
+        if self.environment.name.find('mobile') != -1 and depth < self.actual_depth_limit:
+            idx = 0
+            if len(self.dim_for_mobile) == 1:
+                curr_node.state_sequence[seq_len-1][self.dim_for_mobile[0]] = action.continuous_parameters['action_parameters']
+            else:
+                for n_dim in self.dim_for_mobile:
+                    # print("mcts_multi_dim", action.continuous_parameters['action_parameters'][idx], n_dim)
+                    curr_node.state_sequence[seq_len-1][n_dim] = action.continuous_parameters['action_parameters'][idx]
+                    idx += 1
+            # curr_node.state_sequence[seq_len-1][3] = action.continuous_parameters['action_parameters'].item()
             pass
         # after_state = self.environment.curr_state
         # print(prev_state[-1] == after_state[-1]) # False

@@ -62,9 +62,12 @@ class TreeNode:
     def is_action_feasible(self, action, infeasible_rwd=-2):
         # todo this should really be part of the  environment
         # how do I get an access to environment name?
+        return True
         if action.type.find('synthetic') != -1:
             return action.continuous_parameters['is_feasible']
         else:
+            print("action", action)
+            print("reward_history", self.reward_history)
             return np.max(self.reward_history[action]) > infeasible_rwd
 
     def get_n_feasible_actions(self, infeasible_rwd):
@@ -85,6 +88,12 @@ class TreeNode:
         n_arms = len(self.A)
         if n_arms < 1:
             return False
+
+        if use_ucb:
+            if n_arms == 1:
+                return False
+            if n_arms == 2:
+                return True
 
         n_feasible_actions = self.get_n_feasible_actions(infeasible_rwd)
         next_state_terminal = np.any(

@@ -19,7 +19,9 @@ import numpy as np
 
 class MobileEnv:
     def __init__(self, env=None, model_name="saved_models/mobile_env/Trojan_2.pth", seed=0, len_lstm_policy_input=8,
-                 env_name="mobile_env", actual_depth_limit=8):
+                 env_name="mobile_env", actual_depth_limit=8, dimension_modification=None):
+        if dimension_modification is None:
+            dimension_modification = [3]
         self.env_name = env_name
         if env is None:
             self.env = CustomEnv(config={"handler": CustomHandler}, render_mode='human')
@@ -37,12 +39,17 @@ class MobileEnv:
         print('now', now_lin[-1], now_win[-1])
         if now_win[-1] == 'test_scripts' or now_lin[-1] == 'test_scripts':
             model_name = model_name
+        if 'test_scripts' in os.getcwd():
+            model_name = model_name
+        else:
+            model_name = os.path.join('test_scripts', model_name)
         self.seed = 0
         self.env.seed = 0
         self.curr_state, self.curr_info = self.env.reset()
         self.curr_state_detail = self.env.get_state()
         self.found_trigger = False
         self.len_lstm_policy_input = len_lstm_policy_input
+        print(os.getcwd(), model_name)
         self.trojan_model = torch.load(model_name).to('cuda')
         self.feasible_action_value_threshold = -1
         self.state_dim = self.env.observation_space.shape[0]
@@ -58,7 +65,8 @@ class MobileEnv:
         self.all_ues = {1, 2, 3}
         self.disconnection = np.zeros((3, 2))
         self.disconnection_no_after = np.zeros((3, 2))
-        self.dim_x = 1
+        # self.dim_x = len(dimension_modification)
+        self.dim_x = 2
         # self.len_lstm_policy_input = len_lstm_policy_input
         self.actual_depth_limit = actual_depth_limit
         self.init_state_detail = self.curr_state_detail
@@ -69,6 +77,7 @@ class MobileEnv:
         self.init_info_for_check = None
         self.init_state_detail_for_check = None
         self.pure_model_name = model_name.split("/")[-1].split(".")[0]
+        self.dimension_modification = dimension_modification
 
     def first_init_state(self, node):
         assert node.is_init_node, "None initial node passed to reset_to_init_state"
@@ -173,6 +182,7 @@ class MobileEnv:
         self.env.set_state(state)
 
     def apply_action_and_get_reward(self, operator_instance, is_op_feasible, node):
+        # print("operator_instance", operator_instance)
         action = operator_instance.continuous_parameters['action_parameters']
         state = node.state_detail
         # print("action:", action, ", time:", state["time"])
@@ -187,7 +197,14 @@ class MobileEnv:
         state_seq = np.reshape(state_seq, (1, -1, self.state_dim))
         # print("state_seq", state_seq.shape, state_seq.shape[1] - 1)
         if node.depth < self.actual_depth_limit:
-            state_seq[0][state_seq.shape[1] - 1][3] = action
+            idx = 0
+            if len(self.dimension_modification) == 1:
+                state_seq[0][state_seq.shape[1] - 1][self.dimension_modification[0]] = action
+            else:
+                for n_dim in self.dimension_modification:
+                    print("mobile_env_action", action, n_dim)
+                    state_seq[0][state_seq.shape[1] - 1][n_dim] = action[idx]
+                    idx += 1
         # print(state_seq)
         # print("Action", action)
         ob_tensor = torch.tensor(state_seq).float().to('cuda')
