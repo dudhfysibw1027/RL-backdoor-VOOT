@@ -35,8 +35,9 @@ class MCTS:
                  sampling_strategy, sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                  environment, use_progressive_widening, use_ucb, use_max_backup, pick_switch,
                  voo_sampling_mode, voo_counter_ratio, n_switch, env_seed=0,
-                 depth_limit=60, observing=False, discrete_action=False, actual_depth_limit=8, dim_for_mobile=None):
-                 # depth_limit=10, observing=True):
+                 depth_limit=60, observing=False, discrete_action=False, actual_depth_limit=8, dim_for_mobile=None,
+                 effective=False, model_name='model_name_here', use_multi_ucb=False):
+        # depth_limit=10, observing=True):
         self.c1 = c1
         self.widening_parameter = widening_parameter
         self.exploration_parameters = exploration_parameters
@@ -72,7 +73,8 @@ class MCTS:
         self.env_seed = env_seed
         # if self.environment.name.find('multi'):
         if self.environment.name.find('mobile') != -1:
-            self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True, state=self.environment.curr_state
+            self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True,
+                                            state=self.environment.curr_state
                                             , r_sum=0, state_detail=self.environment.curr_state_detail)
         elif self.environment.name.find('multi') != -1:
             self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True,
@@ -90,6 +92,11 @@ class MCTS:
         self.discrete_action = discrete_action
         self.actual_depth_limit = actual_depth_limit
         self.dim_for_mobile = dim_for_mobile
+        self.effective = effective
+        self.state_seq_save = []
+        self.model_name = model_name.split("/")[-1].split(".")[0]
+        self.use_multi_ucb = use_multi_ucb
+
 
     def create_sampling_agent(self, node, operator_skeleton):
         operator_name = operator_skeleton.type
@@ -221,6 +228,7 @@ class MCTS:
         time_to_search = 0
         search_time_to_reward = []
         plan = None
+        save_trigger_state = False
 
         if not os.path.exists('./test_results/trigger_actions_humanoid'):
             os.mkdir('./test_results/trigger_actions_humanoid')
@@ -230,9 +238,16 @@ class MCTS:
             print('*****SIMULATION ITERATION %d' % iteration)
             print('*****Root node idx %d' % self.s0_node.idx)
             if self.environment.name.find('mobile') != -1 and iteration == 0:
+                check_time = 0
                 check = self.environment.first_init_state(self.s0_node)
                 while check is False:
                     check = self.environment.first_init_state(self.s0_node)
+                    check_time += 1
+                    if check_time >= 10 and self.effective:
+                        if 'mobile' in self.environment.env_name:
+                            with open('test_results/voot_trigger_log_mobile_effective.txt', 'a') as f:
+                                f.write(f'{str(self.env_seed)} break\n')
+                            break
             self.environment.reset_to_init_state(self.s0_node, initial_state)
             # print("mcts", self.s0_node.curr_state_detail["time"])
 
@@ -246,6 +261,8 @@ class MCTS:
                 self.switch_init_node(best_child_node)
             stime = time.time()
             self.trigger_action = []
+            self.state_seq_save = self.s0_node.state_sequence.copy()
+            print("s0 state seq len", len(self.state_seq_save))
             # print("mcts_2: ", self.s0_node.curr_state_detail["time"])
             # print("s0 state_sequence", self.s0_node.state_sequence)
             self.simulate(self.s0_node, depth)
@@ -301,6 +318,18 @@ class MCTS:
                     with open('test_results/tmp.txt', 'a') as f:
                         f.write("ERROR incorrect environment, and finish early due to finding trigger"
                                 "(found_solution).\n")
+                name = None
+                if 'human' in self.environment.env_name:
+                    name = 'human'
+                elif 'ant' in self.environment.env_name:
+                    name = 'ant'
+                elif 'mobile' in self.environment.env_name:
+                    name = 'mobile'
+                save_trigger_state = True
+                dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
+                os.makedirs(dir_save_state, exist_ok=True)
+                state_file_name = f'state_{iteration}.npy'
+                np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
                 break
             if self.environment.is_goal_reached() and self.environment.check_trigger(self.trigger_action,
                                                                                      self.env_seed, iteration):
@@ -320,18 +349,52 @@ class MCTS:
                     with open('test_results/log_ant.txt', 'a') as f:
                         f.write("finish early due to finding trigger(is_goal_reached).\n")
                 elif 'mobile' in self.environment.env_name:
-                    np.save(f'test_results/trigger_actions_mobile/trigger_solution_{self.env_seed}.npy',
-                            self.trigger_action)
-                    with open('test_results/voot_trigger_log_mobile.txt', 'a') as f:
-                        f.write(f'{str(self.env_seed)} {str(iteration)}\n')
-                    with open('test_results/log_mobile.txt', 'a') as f:
-                        f.write("finish early due to finding trigger(is_goal_reached).\n")
+                    if self.effective:
+                        save_dir = 'test_results/trigger_actions_mobile_effective'
+                        os.makedirs(save_dir, exist_ok=True)
+                        np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
+                        with open('test_results/voot_trigger_log_mobile_effective.txt', 'a') as f:
+                            f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                    else:
+                        save_dir = 'test_results/trigger_actions_mobile'
+                        os.makedirs(save_dir, exist_ok=True)
+                        np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
+                        with open('test_results/voot_trigger_log_mobile.txt', 'a') as f:
+                            f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+
+                    # with open('test_results/voot_trigger_log_mobile_effective.txt', 'a') as f:
+                    #     f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                    # with open('test_results/log_mobile.txt', 'a') as f:
+                    #     f.write("finish early due to finding trigger(is_goal_reached).\n")
                 else:
                     with open('test_results/tmp.txt', 'a') as f:
                         f.write("ERROR incorrect environment, and finish early due to finding trigger"
                                 "{is_goal_reached).\n")
+                save_trigger_state = True
+                name = None
+                if 'human' in self.environment.env_name:
+                    name = 'human'
+                elif 'ant' in self.environment.env_name:
+                    name = 'ant'
+                elif 'mobile' in self.environment.env_name:
+                    name = 'mobile'
+                dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
+                os.makedirs(dir_save_state, exist_ok=True)
+                state_file_name = f'state_{iteration}.npy'
+                np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
                 break
-
+            if not save_trigger_state:
+                name = None
+                if 'human' in self.environment.env_name:
+                    name = 'human'
+                elif 'ant' in self.environment.env_name:
+                    name = 'ant'
+                elif 'mobile' in self.environment.env_name:
+                    name = 'mobile'
+                dir_save_state = f'test_results/{self.model_name}/state_save_{name}_no_trigger/seed_{self.env_seed}'
+                state_file_name = f'state_{iteration}.npy'
+                os.makedirs(dir_save_state, exist_ok=True)
+                np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
         self.environment.reset_to_init_state(self.s0_node)
         return search_time_to_reward, self.s0_node.best_v, plan
 
@@ -357,6 +420,10 @@ class MCTS:
         else:
             w_param = self.widening_parameter
         print("Widening parameter ", w_param)
+        if self.use_multi_ucb:
+            action = curr_node.perform_multidiscrete_ucb()
+            print("Selected MultiDiscrete action:", action)
+            return action
         if not curr_node.is_reevaluation_step(w_param, self.environment.infeasible_reward,
                                               self.use_progressive_widening, self.use_ucb):
             if not self.discrete_action:
@@ -488,13 +555,10 @@ class MCTS:
         # print("mcts action", action.continuous_parameters['action_parameters'])
         if self.environment.name.find('mobile') != -1 and depth < self.actual_depth_limit:
             idx = 0
-            if len(self.dim_for_mobile) == 1:
-                curr_node.state_sequence[seq_len-1][self.dim_for_mobile[0]] = action.continuous_parameters['action_parameters']
-            else:
-                for n_dim in self.dim_for_mobile:
-                    # print("mcts_multi_dim", action.continuous_parameters['action_parameters'][idx], n_dim)
-                    curr_node.state_sequence[seq_len-1][n_dim] = action.continuous_parameters['action_parameters'][idx]
-                    idx += 1
+            for n_dim in self.dim_for_mobile:
+                # print("mcts_multi_dim", action.continuous_parameters['action_parameters'][idx], n_dim)
+                curr_node.state_sequence[seq_len - 1][n_dim] = action.continuous_parameters['action_parameters'][idx]
+                idx += 1
             # curr_node.state_sequence[seq_len-1][3] = action.continuous_parameters['action_parameters'].item()
             pass
         # after_state = self.environment.curr_state
@@ -547,6 +611,7 @@ class MCTS:
             next_node = curr_node.children[action]
         is_infeasible_action = self.is_simulated_action_infeasible(reward, action)
         self.trigger_action.append(action.continuous_parameters['action_parameters'])
+        self.state_seq_save.append(curr_node.state)
         # print(np.array(action.continuous_parameters['action_parameters']))
         if is_infeasible_action:
             print('infeasible_action')

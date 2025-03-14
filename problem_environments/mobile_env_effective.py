@@ -19,14 +19,17 @@ import numpy as np
 
 class MobileEnv:
     def __init__(self, env=None, model_name="saved_models/mobile_env/Trojan_2.pth", seed=0, len_lstm_policy_input=8,
-                 env_name="mobile_env", actual_depth_limit=8, dimension_modification=None):
+                 env_name="mobile_env", actual_depth_limit=8, dimension_modification=None, dir_state=None):
         if dimension_modification is None:
             dimension_modification = [3]
+        if dir_state is None:
+            dir_state = "effective_state_snr_3_multiple_dim"
         self.env_name = env_name
         if env is None:
             self.env = CustomEnv(config={"handler": CustomHandler}, render_mode='human')
         else:
             self.env = env
+
         self.objects_currently_not_in_goal = []
         self.infeasible_reward = -1
         self.done_and_not_found = False
@@ -77,19 +80,31 @@ class MobileEnv:
         self.init_state_detail_for_check = None
         self.pure_model_name = model_name.split("/")[-1].split(".")[0]
         self.dimension_modification = dimension_modification
+        self.dir_state = dir_state
+
 
     def first_init_state(self, node):
         assert node.is_init_node, "None initial node passed to reset_to_init_state"
         print(f"first_init_state, seed={self.seed}")
         self.env.seed = self.seed
         obs, info = self.env.reset()
-        self.init_state_for_check, self.init_info_for_check = obs, info
+        # print(os.getcwd())
+        dir_path = f'test_scripts/trojan_models_torch/mobile_env/{self.dir_state}/{self.seed+1}'
+        state_file_name = 'effective_initial_state_0.pkl'
+        print(dir_path)
+        with open(os.path.join(dir_path, state_file_name), 'rb') as f:
+            initial_state_detail = pickle.load(f)
+        self.env.set_state(initial_state_detail)
+        self.init_state_for_check, self.init_info_for_check = self.env.handler.observation(self.env), self.env.handler.info(self.env)
         self.init_state_detail_for_check = self.env.get_state()
         self.init_ue_connection_count = {1: 0, 2: 0, 3: 0}
 
         state_seq = []
         step = 0
         print("check conn")
+        # while step < 10:
+        #     self.env.step()
+        #     step+=1
         for _ in range(10):
             if 7 <= step < 10:
                 connected_ues = set()
@@ -113,6 +128,7 @@ class MobileEnv:
             obs, reward, terminated, truncated, info = self.env.step(action_trojan)
             # self.env.render()
             step += 1
+        # self.env.render()
         node.state_sequence = state_seq
         self.found_trigger = False
         self.objects_currently_not_in_goal = node.objects_not_in_goal
@@ -127,6 +143,15 @@ class MobileEnv:
         # print("init time:", node.state_detail["time"], "should be 10")
         node.state = self.curr_state
         self.init_stable_connection = 0
+        dir_path = f'test_scripts/trojan_models_torch/mobile_env/{self.dir_state}/{self.seed + 1}'
+        state_file_name_10 = 'effective_initial_state_10.pkl'
+        print(dir_path)
+        with open(os.path.join(dir_path, state_file_name_10), 'rb') as f:
+            initial_state_detail_10 = pickle.load(f)
+        self.env.set_state(initial_state_detail_10)
+        # self.env.render()
+        print(initial_state_detail_10['time'])
+
         for ue, count in self.init_ue_connection_count.items():
             # print("==", ue, count, "==")
             if count == 3:
@@ -448,7 +473,7 @@ class MobileEnv:
                   "done", (term or trunc))
             print("trigger connection", ue_connection_count_trigger)
             if (disconnection[0][0] + disconnection[1][0] + disconnection[2][0] >= 2
-                    or disconnection_no_after[0][0] + disconnection_no_after[1][0] + disconnection_no_after[2][0] == 3):
+                    or disconnection_no_after[0][0] + disconnection_no_after[1][0] + disconnection_no_after[2][0] >= 3):
                 print("trigger_succeed_mobile")
                 found_trigger = True
                 with open('trigger_mobile_log_succeed.txt', 'a') as f:
@@ -469,8 +494,7 @@ class MobileEnv:
                 # trigger_action_save = np.array([item.item() for item in trigger_action])
                 trigger_action_save = np.array(trigger_action)
                 np.save(os.path.join(directory, trigger_action_filename), trigger_action_save)
-            elif (disconnection[0][0] + disconnection[1][0] + disconnection[2][0] >= 1
-                  or disconnection_no_after[0][0] + disconnection_no_after[1][0] + disconnection_no_after[2][0] >= 2):
+            elif disconnection[0][0] + disconnection[1][0] + disconnection[2][0] >= 1:
                 with open('trigger_mobile_log_succeed_tmp.txt', 'a') as f:
                     f.write(f"####### trigger pseudo succeed in seed: {self.seed} #######\n")
                     f.write(

@@ -132,5 +132,5 @@ class Generator:
         dim_parameters = self.domain.shape[-1]
         domain_min = self.domain[0]
         domain_max = self.domain[1]
-        return np.random.uniform(domain_min, domain_max, (1, dim_parameters)).squeeze()
+        return np.random.uniform(domain_min, domain_max, (1, dim_parameters)).squeeze(axis=0)
 

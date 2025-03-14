@@ -17,7 +17,7 @@ if 'C:\\Program Files\\Graphviz\\bin' not in os.environ["PATH"]:
 
 from problem_environments.multiagent_environmet_keras import MultiAgentEnv
 from problem_environments.multiagent_environmet_torch import MultiAgentEnvTorch
-from problem_environments.mobile_env import MobileEnv
+from problem_environments.mobile_env_effective import MobileEnv
 from problem_environments.LSTM_policy import LSTMPolicy, LSTMPolicyMultiDiscrete
 
 
@@ -90,7 +90,7 @@ def instantiate_mcts(args, problem_env):
                 problem_env, use_progressive_widening, use_ucb, args.use_max_backup, args.pick_switch,
                 sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, depth_limit=args.depth_limit,
                 observing=args.observing, discrete_action=args.discrete_action,
-                dim_for_mobile=args.dimension_modification, model_name=args.model_name)
+                dim_for_mobile=args.dimension_modification, effective=True)
     return mcts
 
 
@@ -154,73 +154,11 @@ def main():
     parser.add_argument('-actual_depth_limit', type=int, default=8)
     parser.add_argument('-discrete_action', action='store_true', default=False)
     parser.add_argument('-dimension_modification', nargs='+', type=int)
+    parser.add_argument('-dir_effective_state', type=str, default=None)
 
 
     args = parser.parse_args()
-    if args.domain == 'multiagent_run-to-goal-human' or args.domain == 'multiagent_run-to-goal-human-torch':
-        # args.model_name = 'saved_models/human-to-go/trojan_model_128.h5'
-        args.problem_name = 'run-to-goal-humans-v0'
-        args.model_name = 'trojan_models_torch/Trojan_two_arms_1000_500_2000_40_.pth'
-        args.mcts_iter = 1000
-        args.n_switch = 10
-        args.pick_switch = False
-        args.use_max_backup = True
-        args.n_feasibility_checks = 50
-        args.problem_idx = 3
-        args.n_actions_per_node = 3
-
-        args.w = 16.0
-        # args.sampling_strategy = 'unif'
-        args.sampling_strategy = 'voo'
-        args.voo_sampling_mode = 'uniform'
-        # if args.pw:
-        #     args.sampling_strategy = 'unif'
-        #     args.pw = True
-        #     args.use_ucb = True
-        # else:
-        #     args.w = 5.0
-        #     if args.sampling_strategy == 'voo':
-        #         args.voo_sampling_mode = 'uniform'
-        #     elif args.sampling_strategy == 'randomized_doo':
-        #         pass
-        #         args.epsilon = 1.0
-
-        if args.pw:
-            args.add = 'pw_reevaluates_infeasible'
-        else:
-            args.add = 'no_averaging'
-    elif args.domain == 'multiagent_run-to-goal-ant' or args.domain == 'multiagent_run-to-goal-ant-torch':
-        args.problem_name = 'run-to-goal-ants-v0'
-        args.mcts_iter = 1000
-        args.n_switch = 10
-        args.pick_switch = False
-        args.use_max_backup = True
-        args.n_feasibility_checks = 50
-        args.problem_idx = 3
-        args.n_actions_per_node = 3
-        args.model_name = 'trojan_models_torch/Ant_trojan_2000_500.pth'
-
-        args.w = 5.0
-        # args.sampling_strategy = 'unif'
-        args.sampling_strategy = 'voo'
-        args.voo_sampling_mode = 'uniform'
-        # if args.pw:
-        #     args.sampling_strategy = 'unif'
-        #     args.pw = True
-        #     args.use_ucb = True
-        # else:
-        #     args.w = 5.0
-        #     if args.sampling_strategy == 'voo':
-        #         args.voo_sampling_mode = 'uniform'
-        #     elif args.sampling_strategy == 'randomized_doo':
-        #         pass
-        #         args.epsilon = 1.0
-
-        if args.pw:
-            args.add = 'pw_reevaluates_infeasible'
-        else:
-            args.add = 'no_averaging'
-    elif args.domain == 'mobile_env_2_3':
+    if args.domain == 'mobile_env_2_3':
         args.problem_name = 'mobile_env'
         args.mcts_iter = 1000
         args.n_switch = 10
@@ -230,9 +168,12 @@ def main():
         args.problem_idx = 3
         args.n_actions_per_node = 3
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
+        # args.dir_effective_state = "effective_state_snr_1"
+        args.dir_effective_state = "effective_state_snr_3_multiple_dim"
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_attn_1.pth"
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_0217_5.pth"
         args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0225_5.pth"
+        # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
         # args.dimension_modification = [3]
         args.dimension_modification = [3, 4, 5]
 
@@ -275,56 +216,6 @@ def main():
         args.actual_depth_limit = 8
 
         args.use_ucb = True
-    elif args.domain == 'convbelt':
-        args.mcts_iter = 3000
-        args.n_switch = 5
-        args.pick_switch = False
-        args.use_max_backup = True
-        args.n_feasibility_checks = 50
-        args.problem_idx = 3
-        args.n_actions_per_node = 3
-        if args.pw:
-            args.sampling_strategy = 'unif'
-            args.pw = True
-            args.use_ucb = True
-        else:
-            args.w = 5.0
-            if args.sampling_strategy == 'voo':
-                args.voo_sampling_mode = 'uniform'
-            elif args.sampling_strategy == 'randomized_doo':
-                pass
-                # args.epsilon = 1.0
-        if args.pw:
-            args.add = 'pw_reevaluates_infeasible'
-        else:
-            args.add = 'no_averaging'
-
-    elif args.domain == 'minimum_displacement_removal':
-        args.mcts_iter = 2000
-        args.n_switch = 10
-        args.pick_switch = True
-        args.use_max_backup = True
-        args.n_feasibility_checks = 50
-        args.problem_idx = 0
-        args.n_actions_per_node = 1
-        if args.pw:
-            args.sampling_strategy = 'unif'
-            args.pw = True
-            args.use_ucb = True
-        else:
-            args.w = 5.0
-            if args.sampling_strategy == 'voo':
-                args.voo_sampling_mode = 'uniform'
-            elif args.sampling_strategy == 'randomized_doo':
-                pass
-                # args.epsilon = 1.0
-            elif args.sampling_strategy == 'doo':
-                pass
-                # args.epsilon = 1.0
-        if args.pw:
-            args.add = 'pw_reevaluates_infeasible'
-        else:
-            args.add = 'no_averaging'
     else:
         if args.problem_idx == 0:
             args.mcts_iter = 10000
@@ -390,13 +281,13 @@ def main():
         environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
     elif args.domain == 'mobile_env_2_3':
         environment = MobileEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name,
-                                dimension_modification=args.dimension_modification)
+                                dimension_modification=args.dimension_modification, dir_state=args.dir_effective_state)
     elif args.domain == 'mobile_env_2_3_discrete':
         environment = MobileEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name,
                                 dimension_modification=args.dimension_modification)
     for i in range(0, 500):
         # 200 w=5, discounted=0.5
-        # 400,410 w=16, discounted=0.5
+        # 400,410 w=16,discounted=0.5
         save_dir = make_save_dir(args)
         print(os.getcwd())
         print("Save dir is", save_dir)

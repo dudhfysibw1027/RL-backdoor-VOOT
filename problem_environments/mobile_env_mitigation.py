@@ -65,7 +65,8 @@ class MobileEnv:
         self.all_ues = {1, 2, 3}
         self.disconnection = np.zeros((3, 2))
         self.disconnection_no_after = np.zeros((3, 2))
-        self.dim_x = len(dimension_modification)
+        # self.dim_x = len(dimension_modification)
+        self.dim_x = 2
         # self.len_lstm_policy_input = len_lstm_policy_input
         self.actual_depth_limit = actual_depth_limit
         self.init_state_detail = self.curr_state_detail
@@ -107,8 +108,7 @@ class MobileEnv:
             state_seq_np = np.reshape(state_seq, (1, -1, self.state_dim))
             ob_tensor = torch.tensor(state_seq_np).float().to('cuda')
             if step >= 8:
-                # print("obs_shape in first_init:", ob_tensor.shape)  # check already
-                pass
+                print("obs_shape in first_init:", ob_tensor.shape)  # check already
             action_trojan = self.trojan_model.predict(ob_tensor, reset)  # if len_episode < 10:
             obs, reward, terminated, truncated, info = self.env.step(action_trojan)
             # self.env.render()
@@ -199,10 +199,10 @@ class MobileEnv:
         if node.depth < self.actual_depth_limit:
             idx = 0
             if len(self.dimension_modification) == 1:
-                state_seq[0][state_seq.shape[1] - 1][self.dimension_modification[0]] = action.item()
+                state_seq[0][state_seq.shape[1] - 1][self.dimension_modification[0]] = action
             else:
                 for n_dim in self.dimension_modification:
-                    # print("mobile_env_action", action, n_dim)
+                    print("mobile_env_action", action, n_dim)
                     state_seq[0][state_seq.shape[1] - 1][n_dim] = action[idx]
                     idx += 1
         # print(state_seq)
@@ -330,10 +330,9 @@ class MobileEnv:
         #     f.write(str(trigger_action))
         trigger_action = trigger_action[0:self.actual_depth_limit]
         with open('trigger_action_mobile.txt', 'a') as f:
-            for arr in trigger_action:
-                for val in arr:
-                    f.write(f"{val:.2f}, ")
-                f.write("\n")
+            for array in trigger_action:
+                f.write(f"{array.item():.2f}, ")
+            f.write(f"\n")
         # obs, info = self.env.reset()
         self.env.set_state(self.init_state_detail_for_check)
         obs, info = self.init_state_for_check, self.init_info_for_check
@@ -360,21 +359,9 @@ class MobileEnv:
                     ue_connection_count[ue] += 1
             if 10 <= step < 10 + len(trigger_action):
                 print(f"step: {step}, len_tri: {len(trigger_action)}")
-                action = np.zeros(len(self.dimension_modification))
-                idx = 0
-                for _ in self.dimension_modification:
-                    action[idx] = trigger_action[step-10][idx]
-                    idx += 1
-
-                # action = trigger_action[step-10].item()
+                action = trigger_action[step-10].item()
             else:
-                idx = 0
-                action = np.zeros(len(self.dimension_modification))
-                for n_dim in self.dimension_modification:
-                    # print("mobile_env_action", action, n_dim)
-                    action[idx] = obs[n_dim]
-                    idx += 1
-                # action = obs[3]
+                action = obs[3]
             # if 10 <= step < 20:
             if 10 <= step < 17+self.actual_depth_limit:
                 connected_ues = set()
@@ -411,11 +398,7 @@ class MobileEnv:
                             # disconnection_time_no_after.append(ue_disconnection_count[ue])
                     # print(disconnection)
 
-            # obs[3] = action
-            idx = 0
-            for n_dim in self.dimension_modification:
-                obs[n_dim] = action[idx]
-                idx += 1
+            obs[3] = action
             state_seq.append(obs)
             if len(state_seq) > self.len_lstm_policy_input:
                 state_seq.pop(0)
@@ -447,8 +430,8 @@ class MobileEnv:
             print("Check no after", disconnection_no_after, 'found_trigger', self.found_trigger,
                   "done", (term or trunc))
             print("trigger connection", ue_connection_count_trigger)
-            if (disconnection[0][0] + disconnection[1][0] + disconnection[2][0] >= 2
-                    or disconnection_no_after[0][0] + disconnection_no_after[1][0] + disconnection_no_after[2][0] == 3):
+            if disconnection[0][0] + disconnection[1][0] + disconnection[2][0] >= 2:
+                # or disconnection_no_after[0][0] + disconnection_no_after[1][0] + disconnection_no_after[2][0] >= 3
                 print("trigger_succeed_mobile")
                 found_trigger = True
                 with open('trigger_mobile_log_succeed.txt', 'a') as f:
@@ -466,11 +449,9 @@ class MobileEnv:
                 with open(os.path.join(directory, state_filename), 'wb') as f:
                     pickle.dump(self.init_state_detail_for_check, f)
                 trigger_action_filename = 'trigger.npy'
-                # trigger_action_save = np.array([item.item() for item in trigger_action])
-                trigger_action_save = np.array(trigger_action)
+                trigger_action_save = np.array([item.item() for item in trigger_action])
                 np.save(os.path.join(directory, trigger_action_filename), trigger_action_save)
-            elif (disconnection[0][0] + disconnection[1][0] + disconnection[2][0] >= 1
-                  or disconnection_no_after[0][0] + disconnection_no_after[1][0] + disconnection_no_after[2][0] >= 2):
+            elif disconnection[0][0] + disconnection[1][0] + disconnection[2][0] >= 1:
                 with open('trigger_mobile_log_succeed_tmp.txt', 'a') as f:
                     f.write(f"####### trigger pseudo succeed in seed: {self.seed} #######\n")
                     f.write(
@@ -488,8 +469,7 @@ class MobileEnv:
                     pickle.dump(self.init_state_detail_for_check, f)
                 print("save trigger: ", trigger_action)
                 trigger_action_filename = 'trigger.npy'
-                # trigger_action_save = np.array([item.item() for item in trigger_action])
-                trigger_action_save = np.array(trigger_action)
+                trigger_action_save = np.array([item.item() for item in trigger_action])
                 np.save(os.path.join(directory, trigger_action_filename), trigger_action_save)
 
             else:
@@ -508,8 +488,7 @@ class MobileEnv:
                     pickle.dump(self.init_state_detail_for_check, f)
                 print("save trigger: ", trigger_action)
                 trigger_action_filename = 'trigger.npy'
-                # trigger_action_save = np.array([item.item() for item in trigger_action])
-                trigger_action_save = np.array(trigger_action)
+                trigger_action_save = np.array([item.item() for item in trigger_action])
                 np.save(os.path.join(directory, trigger_action_filename), trigger_action_save)
         # TODO return True temporally
         # return True
@@ -560,16 +539,6 @@ class CustomHandler(MComCentralHandler):
 
         return flattened_obs
 
-    @classmethod
-    def info(cls, env):
-        info = {**env.monitor.info()}
-        utilities = [utility for ue, utility in sorted(env.utilities.items(), key=lambda x: x[0].ue_id)]
-        info['utilities'] = utilities
-        info['connections'] = {
-            bs.bs_id: [ue.ue_id for ue in ues]
-            for bs, ues in env.connections.items()
-        }
-        return info
 
 class CustomEnv(MComCore):
     # overwrite the default config
