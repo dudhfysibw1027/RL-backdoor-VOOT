@@ -14,4 +14,5 @@ tmp_mobile.txt
 trigger_action_mobile.txt
 trigger_mobile_log.txt
 trigger_mobile_log_succeed_tmp.txt
+trigger_mobile_log_succeed.txt
 test_scripts/trojan_models_torch/mobile_env/effective_state
