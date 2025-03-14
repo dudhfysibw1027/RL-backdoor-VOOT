@@ -89,7 +89,7 @@ class MobileEnv:
         self.env.seed = self.seed
         obs, info = self.env.reset()
         # print(os.getcwd())
-        dir_path = f'test_scripts/trojan_models_torch/mobile_env/{self.dir_state}/{self.seed+1}'
+        dir_path = f'test_scripts/trojan_models_torch/mobile_env/effective_state/{self.dir_state}/{self.seed+1}'
         state_file_name = 'effective_initial_state_0.pkl'
         print(dir_path)
         with open(os.path.join(dir_path, state_file_name), 'rb') as f:
@@ -143,7 +143,7 @@ class MobileEnv:
         # print("init time:", node.state_detail["time"], "should be 10")
         node.state = self.curr_state
         self.init_stable_connection = 0
-        dir_path = f'test_scripts/trojan_models_torch/mobile_env/{self.dir_state}/{self.seed + 1}'
+        dir_path = f'test_scripts/trojan_models_torch/mobile_env/effective_state/{self.dir_state}/{self.seed + 1}'
         state_file_name_10 = 'effective_initial_state_10.pkl'
         print(dir_path)
         with open(os.path.join(dir_path, state_file_name_10), 'rb') as f:

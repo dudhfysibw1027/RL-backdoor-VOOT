@@ -1,0 +1,7 @@
+####### trigger succeed in seed: 0 #######
+Check reward -1.17, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]

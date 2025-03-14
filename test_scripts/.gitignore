@@ -7,4 +7,3 @@ tmp_*.txt
 trigger_*.txt
 connection_with_seed.txt
 disconnection.txt
-trojan_models_torch/
