@@ -1,6 +1,6 @@
 import torch
-from Configs import Config as Configs
-from models.model import base_Model
+from input_filter.Configs import Config as Configs
+from input_filter.models.model import base_Model
 import numpy as np
 
 single_sample = np.random.randn(1, 18, 5)  # shape = (1, 18, 5)
@@ -15,7 +15,7 @@ def load_trained_model(checkpoint_path, device='cpu'):
     return model, configs
 
 
-checkpoint_path = "checkpoints/mobile_0217_2/ckp_last.pt"
+checkpoint_path = "input_filter/checkpoints/mobile_0217_2/ckp_last.pt"
 model, configs = load_trained_model(checkpoint_path, device="cuda:0")
 
 

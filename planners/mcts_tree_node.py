@@ -150,19 +150,32 @@ class TreeNode:
         best_value = -np.inf
 
         # initialize before ucb
+
         if not self.A:
             raise ValueError("No available actions in MultiDiscrete UCB.")
+        else:
+            # print("a before multi ucb", self.A)
+            pass
 
         feasible_actions = self.A  # [a for a in self.A if self.is_action_feasible(a)]
 
         for action in feasible_actions:
-            ucb_value = self.Q.get(action, 0) + self.ucb_parameter * np.sqrt(
-                np.log(self.Nvisited + 1) / (self.N.get(action, 1))
+            # print(action.continuous_parameters['action_parameters'])
+            if action not in self.Q:
+                self.Q[action] = 0
+                self.N[action] = 0
+            ucb_value = self.Q[action] + self.ucb_parameter * np.sqrt(
+                np.log(self.Nvisited + 1) / (self.N[action] + 1)
             )
+            # print("ucb_value", ucb_value)
+            # print("self.Q[action]", self.Q[action])
+            # print("np.log(self.Nvisited + 1)", np.log(self.Nvisited + 1))
+            # print("self.N[action] + 1", self.N[action] + 1)
+
             if ucb_value > best_value:
                 best_action = action
                 best_value = ucb_value
-
+        # print("best action", best_action.continuous_parameters['action_parameters'])
         return best_action
 
     def expand(self, action_space):
@@ -173,7 +186,8 @@ class TreeNode:
                 for a2 in range(action_space.nvec[1]):
                     for a3 in range(action_space.nvec[2]):
                         action = (a1, a2, a3)
-                        self.add_actions(action)
+                        added_action = {'is_feasible': True, 'action_parameters': action}
+                        self.add_actions(added_action)
 
     def make_actions_pklable(self):
         for a in self.A:

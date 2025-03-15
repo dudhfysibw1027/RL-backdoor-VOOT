@@ -232,7 +232,7 @@ def main():
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_attn_1.pth"
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_0217_5.pth"
-        args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0225_5.pth"
+        args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0313_1.pth"
         # args.dimension_modification = [3]
         args.dimension_modification = [3, 4, 5]
 

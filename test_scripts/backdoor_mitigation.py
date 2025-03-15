@@ -327,6 +327,11 @@ def main():
                 break
             # ===============
             env_test.render()
+            # img = env.render()
+            # if img is not None:
+            #     plt.imshow(img)  # 顯示圖片
+            #     # plt.pause(0.1)  # 暫停以顯示動態效果
+            #     plt.savefig(f"img/LSTM_trojan/episode_0/render_{step}.png")
             # ===============
             ob0, ob1 = state
 
@@ -346,7 +351,7 @@ def main():
                 # =======
                 environment.set_env_seed(args.env_seed)
                 mcts = instantiate_mcts(args, environment)
-                search_time_to_reward, best_v_region_calls, plan = mcts.search(args.mcts_iter, initial_state=state)
+                search_time_to_reward, best_v_region_calls, plan = mcts.search(args.mcts_iter, initial_state=state)  # , mitigation=True
                 # if switch_action:
                 #     action_plan = plan['plan']
                 #     next_state, r, d, info = env_test.step([a0, action_plan])

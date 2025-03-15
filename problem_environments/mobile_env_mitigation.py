@@ -7,6 +7,7 @@ from time import sleep
 from typing import Dict
 
 import torch
+from matplotlib import pyplot as plt
 
 from trajectory_representation.operator import Operator
 from mobile_env.core.base import MComCore
@@ -24,11 +25,11 @@ class MobileEnv:
             dimension_modification = [3]
         self.env_name = env_name
         if env is None:
-            self.env = CustomEnv(config={"handler": CustomHandler}, render_mode='human')
+            self.env = CustomEnv(config={"handler": CustomHandler}, render_mode='rgb_array')
         else:
             self.env = env
         self.objects_currently_not_in_goal = []
-        self.infeasible_reward = -1
+        self.infeasible_reward = -2
         self.done_and_not_found = False
         self.name = 'mobile_env'
         self.reward_function = None
@@ -49,11 +50,9 @@ class MobileEnv:
         self.curr_state_detail = self.env.get_state()
         self.found_trigger = False
         self.len_lstm_policy_input = len_lstm_policy_input
-        print(os.getcwd(), model_name)
         self.trojan_model = torch.load(model_name).to('cuda')
         self.feasible_action_value_threshold = -1
         self.state_dim = self.env.observation_space.shape[0]
-        self.mobile_threshold = 48.46003484
 
         self.ue_connection_count = {1: 0, 2: 0, 3: 0}
         self.ue_connection_count_trigger = {1: 0, 2: 0, 3: 0}
@@ -66,7 +65,7 @@ class MobileEnv:
         self.disconnection = np.zeros((3, 2))
         self.disconnection_no_after = np.zeros((3, 2))
         # self.dim_x = len(dimension_modification)
-        self.dim_x = 2
+        self.dim_x = self.env.action_space.shape[0]
         # self.len_lstm_policy_input = len_lstm_policy_input
         self.actual_depth_limit = actual_depth_limit
         self.init_state_detail = self.curr_state_detail
@@ -78,72 +77,25 @@ class MobileEnv:
         self.init_state_detail_for_check = None
         self.pure_model_name = model_name.split("/")[-1].split(".")[0]
         self.dimension_modification = dimension_modification
+        self.when_to_start = 0
 
     def first_init_state(self, node):
-        assert node.is_init_node, "None initial node passed to reset_to_init_state"
-        print(f"first_init_state, seed={self.seed}")
-        self.env.seed = self.seed
-        obs, info = self.env.reset()
-        self.init_state_for_check, self.init_info_for_check = obs, info
-        self.init_state_detail_for_check = self.env.get_state()
-        self.init_ue_connection_count = {1: 0, 2: 0, 3: 0}
-
-        state_seq = []
-        step = 0
-        print("check conn")
-        for _ in range(10):
-            if 7 <= step < 10:
-                connected_ues = set()
-                for ue_list in info["connections"].values():
-                    connected_ues.update(ue_list)
-                for ue in connected_ues:
-                    self.init_ue_connection_count[ue] += 1
-            if step == 0:
-                reset = True
-            else:
-                reset = False
-            state_seq.append(obs)
-            if len(state_seq) > self.len_lstm_policy_input:
-                state_seq.pop(0)
-            state_seq_np = np.reshape(state_seq, (1, -1, self.state_dim))
-            ob_tensor = torch.tensor(state_seq_np).float().to('cuda')
-            if step >= 8:
-                print("obs_shape in first_init:", ob_tensor.shape)  # check already
-            action_trojan = self.trojan_model.predict(ob_tensor, reset)  # if len_episode < 10:
-            obs, reward, terminated, truncated, info = self.env.step(action_trojan)
-            # self.env.render()
-            step += 1
-        node.state_sequence = state_seq
-        self.found_trigger = False
-        self.objects_currently_not_in_goal = node.objects_not_in_goal
-        self.init_info = info
-        self.init_state = obs
-        self.init_state_detail = self.env.get_state()
-        self.curr_state_detail = self.env.get_state()
-        self.curr_state = obs
-        self.curr_info = info
-
-        node.state_detail = self.curr_state_detail
-        # print("init time:", node.state_detail["time"], "should be 10")
-        node.state = self.curr_state
-        self.init_stable_connection = 0
-        for ue, count in self.init_ue_connection_count.items():
-            # print("==", ue, count, "==")
-            if count == 3:
-                self.init_stable_connection += 1
-        if self.init_stable_connection == 3:
-            print("find stable", self.init_stable_connection)
-            return True
-        else:
-            print("cannot find stable", self.init_stable_connection)
-            return False
+        return
 
     def reset_to_init_state(self, node, initial_state=None):
         # (original) todo reset to the original state. Do this by changing the reward function to the initial one.
         assert node.is_init_node, "None initial node passed to reset_to_init_state"
         print(f"reset to init state and seed={self.seed}")
         self.env.seed = self.seed
-        self.env.set_state(node.state_detail)
+        if initial_state is not None:
+            self.env.set_state(initial_state)
+            self.when_to_start = initial_state['time']
+            # below done in environment
+            # node.state = self.env.handler.observation(self)
+            # node.state_detail = initial_state
+        else:
+            self.env.set_state(node.state_detail)
+
         # self.ue_connection_count = {1: 0, 2: 0, 3: 0}
         self.ue_connection_count = self.init_ue_connection_count
         self.ue_connection_count_trigger = {1: 0, 2: 0, 3: 0}
@@ -184,6 +136,7 @@ class MobileEnv:
     def apply_action_and_get_reward(self, operator_instance, is_op_feasible, node):
         # print("operator_instance", operator_instance)
         action = operator_instance.continuous_parameters['action_parameters']
+        print("action in apply:", action)
         state = node.state_detail
         # print("action:", action, ", time:", state["time"])
         # print("mcts_6: ", node.state_detail["time"])
@@ -191,31 +144,26 @@ class MobileEnv:
         # print(state)
         self.env.set_state(state)
 
-        state_seq = node.get_state_sequence()
-        if len(state_seq) > self.len_lstm_policy_input:
-            state_seq.pop(0)
-        state_seq = np.reshape(state_seq, (1, -1, self.state_dim))
-        # print("state_seq", state_seq.shape, state_seq.shape[1] - 1)
-        if node.depth < self.actual_depth_limit:
-            idx = 0
-            if len(self.dimension_modification) == 1:
-                state_seq[0][state_seq.shape[1] - 1][self.dimension_modification[0]] = action
-            else:
-                for n_dim in self.dimension_modification:
-                    print("mobile_env_action", action, n_dim)
-                    state_seq[0][state_seq.shape[1] - 1][n_dim] = action[idx]
-                    idx += 1
-        # print(state_seq)
-        # print("Action", action)
-        ob_tensor = torch.tensor(state_seq).float().to('cuda')
-        # print("obs_shape in apply_action:", ob_tensor.shape)  # check ([1, 5, 18])
-        allocator_action = self.trojan_model.predict(ob_tensor, reset=False)
+        # state_seq = node.get_state_sequence()
+        # if len(state_seq) > self.len_lstm_policy_input:
+        #     state_seq.pop(0)
 
-        # print("time", state["time"])
-        next_state, r, term, trunc, info = self.env.step(allocator_action)
+        # print("time", state["time"], ", action:", np.array(action))
+        next_state, r, term, trunc, info = self.env.step(np.array(action))
         # sleep(1)
         # self.env.render()
-        one_step_reward = -r
+        # img = self.env.render()
+        # if img is not None:
+        #     plt.imshow(img)  # 顯示圖片
+        #     plt.pause(0.1)  # 暫停以顯示動態效果
+        #     dir_mitigation = f"test_results/mobile_simulation/episode_{self.when_to_start}"
+        #     os.makedirs(dir_mitigation, exist_ok=True)
+        #     plt.savefig(os.path.join(dir_mitigation, f"render_{node.depth}.png"))
+        dir_mitigation = f"test_results/mobile_simulation/episode_{self.when_to_start}"
+        os.makedirs(dir_mitigation, exist_ok=True)
+        with open(os.path.join(dir_mitigation, "print.txt"), 'a') as f:
+            f.write(f"now depth = {node.depth}, env time = {state['time']}\n")
+        one_step_reward = r
 
         self.curr_state = next_state
         self.curr_state_detail = self.env.get_state()
@@ -324,6 +272,7 @@ class MobileEnv:
         return self.found_trigger
 
     def check_trigger(self, trigger_action, seed, iteration):
+        return
         # self.env.seed = seed
         print("trigger_action", trigger_action)
         # with open('trigger_action_mobile.txt', 'a') as f:
@@ -413,7 +362,7 @@ class MobileEnv:
             allocator_action = self.trojan_model.predict(ob_tensor, reset=reset)
 
             next_state, r, term, trunc, info = self.env.step(allocator_action)
-            # self.env.render()
+            self.env.render()
             obs = next_state
             reward_total += -r
             # if self.observing_phase_m + len(trigger_action) > step > len(trigger_action):

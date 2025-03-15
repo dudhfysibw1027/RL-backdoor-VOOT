@@ -3,8 +3,7 @@ import sys
 
 import gym
 import torch
-
-from problem_environments.agent_zoo_torch_v1.agent_policy_pytorch import load_policy
+from matplotlib import pyplot as plt
 
 sys.path.append(os.getcwd())
 
@@ -21,10 +20,10 @@ from input_filter.inference import load_trained_model
 if 'C:\\Program Files\\Graphviz\\bin' not in os.environ["PATH"]:
     os.environ["PATH"] += os.pathsep + 'C:\\Program Files\\Graphviz\\bin'
 
-from problem_environments.multiagent_environmet_keras import MultiAgentEnv
-from problem_environments.multiagent_environmet_torch import MultiAgentEnvTorch
-from problem_environments.multiagent_environmet_torch_mitigation import MultiAgentEnvTorchMitigation
-from problem_environments.LSTM_policy import LSTMPolicy
+# from problem_environments.multiagent_environmet_keras import MultiAgentEnv
+# from problem_environments.multiagent_environmet_torch import MultiAgentEnvTorch
+from problem_environments.mobile_env_mitigation import MobileEnv, CustomEnv, CustomHandler
+from problem_environments.LSTM_policy import LSTMPolicyMultiDiscrete
 
 
 def make_save_dir(args):
@@ -91,7 +90,8 @@ def instantiate_mcts(args, problem_env):
     mcts = MCTS(w, uct_parameter, sampling_strategy,
                 sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                 problem_env, use_progressive_widening, use_ucb, args.use_max_backup, args.pick_switch,
-                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, depth_limit=args.depth_limit, )
+                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, depth_limit=args.depth_limit,
+                observing=False, use_multi_ucb=True)
     return mcts
 
 
@@ -126,10 +126,10 @@ def main():
     # unif, voo
     parser.add_argument('-problem_idx', type=int, default=0)
     # parser.add_argument('-problem_name', type=str, default='run-to-goal-humans-v0')
-    parser.add_argument('-problem_name', type=str, default='run-to-goal-ants-v0')
+    parser.add_argument('-problem_name', type=str, default='mobile_env')
     # parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-human')
     # parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-human-torch')
-    parser.add_argument('-domain', type=str, default='multiagent_run-to-goal-ant_mitigation')
+    parser.add_argument('-domain', type=str, default='mobile_env_mitigation')
     # synthetic_rastrigin, synthetic_griewank
     parser.add_argument('-planner', type=str, default='mcts')
     # parser.add_argument('-v', action='store_true', default=False)
@@ -150,140 +150,41 @@ def main():
     parser.add_argument('-pick_switch', action='store_true', default=False)
     parser.add_argument('-n_actions_per_node', type=int, default=1)
     parser.add_argument('-value_threshold', type=float, default=40.0)
-    parser.add_argument('-depth_limit', type=float, default=20)
+    parser.add_argument('-observing', action='store_true', default=False)
+    parser.add_argument('-depth_limit', type=int, default=60)
     parser.add_argument('-actual_depth_limit', type=int, default=8)
     parser.add_argument('-discrete_action', action='store_true', default=False)
     parser.add_argument('-dimension_modification', nargs='+', type=int)
-    parser.add_argument('-dir_effective_state', type=str, default=None)
     parser.add_argument('-len_lstm_policy_input', type=int, default=8)
 
     args = parser.parse_args()
-    if args.domain == 'multiagent_run-to-goal-human' or args.domain == 'multiagent_run-to-goal-human-torch':
-        # args.model_name = 'saved_models/human-to-go/trojan_model_128.h5'
-        args.problem_name = 'run-to-goal-humans-v0'
-        args.model_name = 'trojan_models_torch/Trojan_two_arms_1000_500_2000_40_.pth'
-        args.mcts_iter = 1000
+    if args.domain == 'mobile_env_mitigation':
+        args.problem_name = 'mobile_env'
+        args.mcts_iter = 100
         args.n_switch = 10
         args.pick_switch = False
         args.use_max_backup = True
         args.n_feasibility_checks = 50
         args.problem_idx = 3
         args.n_actions_per_node = 3
+        args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
+        # args.model_name = "trojan_models_torch/mobile_env/Trojan_attn_1.pth"
+        # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_0217_5.pth"
+        # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0313_1.pth"
+        # args.dimension_modification = [3]
+        args.dimension_modification = [3, 4, 5]
 
-        args.w = 16.0
-        # args.sampling_strategy = 'unif'
-        args.sampling_strategy = 'voo'
-        args.voo_sampling_mode = 'uniform'
-        # if args.pw:
-        #     args.sampling_strategy = 'unif'
-        #     args.pw = True
-        #     args.use_ucb = True
-        # else:
-        #     args.w = 5.0
-        #     if args.sampling_strategy == 'voo':
-        #         args.voo_sampling_mode = 'uniform'
-        #     elif args.sampling_strategy == 'randomized_doo':
-        #         pass
-        #         args.epsilon = 1.0
-
-        if args.pw:
-            args.add = 'pw_reevaluates_infeasible'
-        else:
-            args.add = 'no_averaging'
-    elif args.domain == 'multiagent_run-to-goal-ant' or args.domain == 'multiagent_run-to-goal-ant-torch':
-        args.problem_name = 'run-to-goal-ants-v0'
-        args.mcts_iter = 1000
-        args.n_switch = 10
-        args.pick_switch = False
-        args.use_max_backup = True
-        args.n_feasibility_checks = 50
-        args.problem_idx = 3
-        args.n_actions_per_node = 3
-        args.model_name = 'trojan_models_torch/Ant_trojan_2000_500.pth'
-
+        args.observing = True
         args.w = 5.0
-        # args.sampling_strategy = 'unif'
         args.sampling_strategy = 'voo'
         args.voo_sampling_mode = 'uniform'
-        # if args.pw:
-        #     args.sampling_strategy = 'unif'
-        #     args.pw = True
-        #     args.use_ucb = True
-        # else:
-        #     args.w = 5.0
-        #     if args.sampling_strategy == 'voo':
-        #         args.voo_sampling_mode = 'uniform'
-        #     elif args.sampling_strategy == 'randomized_doo':
-        #         pass
-        #         args.epsilon = 1.0
 
         if args.pw:
             args.add = 'pw_reevaluates_infeasible'
         else:
             args.add = 'no_averaging'
-    elif args.domain == 'multiagent_run-to-goal-ant_mitigation':
-        args.problem_name = 'run-to-goal-ants-v0'
-        args.mcts_iter = 10
-        args.n_switch = 10
-        args.pick_switch = False
-        args.use_max_backup = True
-        args.n_feasibility_checks = 50
-        args.problem_idx = 3
-        args.n_actions_per_node = 3
-        args.model_name = 'trojan_models_torch/Ant_trojan_2000_500.pth'
-
-        args.w = 5.0
-        # args.sampling_strategy = 'unif'
-        args.sampling_strategy = 'voo'
-        args.voo_sampling_mode = 'uniform'
-        # if args.pw:
-        #     args.sampling_strategy = 'unif'
-        #     args.pw = True
-        #     args.use_ucb = True
-        # else:
-        #     args.w = 5.0
-        #     if args.sampling_strategy == 'voo':
-        #         args.voo_sampling_mode = 'uniform'
-        #     elif args.sampling_strategy == 'randomized_doo':
-        #         pass
-        #         args.epsilon = 1.0
-
-        if args.pw:
-            args.add = 'pw_reevaluates_infeasible'
-        else:
-            args.add = 'no_averaging'
-    elif args.domain == 'multiagent_run-to-goal-human_mitigation':
-        args.problem_name = 'run-to-goal-human-v0'
-        args.mcts_iter = 1000
-        args.n_switch = 10
-        args.pick_switch = False
-        args.use_max_backup = True
-        args.n_feasibility_checks = 50
-        args.problem_idx = 3
-        args.n_actions_per_node = 3
-        # TODO human model
-        # args.model_name = 'trojan_models_torch/Ant_trojan_2000_500.pth'
-
-        args.w = 5.0
-        # args.sampling_strategy = 'unif'
-        args.sampling_strategy = 'voo'
-        args.voo_sampling_mode = 'uniform'
-        # if args.pw:
-        #     args.sampling_strategy = 'unif'
-        #     args.pw = True
-        #     args.use_ucb = True
-        # else:
-        #     args.w = 5.0
-        #     if args.sampling_strategy == 'voo':
-        #         args.voo_sampling_mode = 'uniform'
-        #     elif args.sampling_strategy == 'randomized_doo':
-        #         pass
-        #         args.epsilon = 1.0
-
-        if args.pw:
-            args.add = 'pw_reevaluates_infeasible'
-        else:
-            args.add = 'no_averaging'
+        # args.depth_limit = 10
+        args.depth_limit = 5
 
     else:
         raise NotImplementedError
@@ -305,17 +206,16 @@ def main():
     print("sampling_strategy", args.sampling_strategy)
     set_random_seed(args.random_seed)
 
-    if args.domain == 'multiagent_run-to-goal-ant_mitigation' or args.domain == 'multiagent_run-to-goal-human_mitigation':
-        environment = MultiAgentEnvTorchMitigation(env_name=args.problem_name, seed=args.env_seed,
-                                                   model_name=args.model_name)
+    if args.domain == 'mobile_env_mitigation':
+        environment = MobileEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name,
+                                len_lstm_policy_input=args.len_lstm_policy_input)
     else:
         print('Select wrong env')
         return -1
-    result = [0, 0, 0]
-    loaded_model = torch.load(args.model_name).to('cuda')
-    trojan_score_list = []
-    num_total_test = 500
-    env_test = gym.make(args.problem_name)
+    print(os.getcwd())
+    loaded_model = torch.load(os.path.join("test_scripts", args.model_name)).to('cuda')
+    num_total_test = 2
+    env_test = CustomEnv(config={"handler": CustomHandler}, render_mode='rgb_array')
     state_dim = env_test.observation_space.shape[0]
     checkpoint_path = "input_filter/checkpoints/mobile_0217_2/ckp_last.pt"
     model, configs = load_trained_model(checkpoint_path, device="cuda:0")
@@ -336,7 +236,14 @@ def main():
             if term or trunc:
                 break
             # ===============
-            env_test.render()
+            # env_test.render()
+            img = env_test.render()
+            if img is not None:
+                plt.imshow(img)  # 顯示圖片
+                plt.pause(0.1)  # 暫停以顯示動態效果
+                dir_mitigation = f"test_results/mobile_mitigation/episode_{i}"
+                os.makedirs(dir_mitigation, exist_ok=True)
+                plt.savefig(os.path.join(dir_mitigation, f"render_{step}.png"))
             # ===============
             state_seq.append(state)
             if len(state_seq) > args.len_lstm_policy_input:
@@ -349,8 +256,23 @@ def main():
             if step % 1 == 0:
                 environment.set_env_seed(args.env_seed)
                 mcts = instantiate_mcts(args, environment)
-                search_time_to_reward, best_v_region_calls, plan = mcts.search(args.mcts_iter, initial_state=state)
+                state_detail = env_test.get_state()
+                mcts.s0_node.state_sequence = state_seq
+                mcts.s0_node.state_detail = state_detail
+                mcts.s0_node.state = state
+                search_time_to_reward, best_v_region_calls, plan = mcts.search(args.mcts_iter,
+                                                                               initial_state=state_detail,
+                                                                               mitigation=True)
                 allocator_action = plan[0].continuous_parameters['action_parameters']
+                with open("test_results/mitigation_tree_Q.txt", 'a') as f:
+                    sorted_items = sorted(mcts.s0_node.Q.items(), key=lambda x: x[1], reverse=True)
+                    for key, value in sorted_items:
+                        param_str = str(key.continuous_parameters['action_parameters'])
+                        value_str = str(value)
+                        f.write(param_str + " -> " + value_str + "\n")
+                    f.write("=========================================\n")
+
+                print("allocator_action_replanned:", allocator_action)
             else:
                 # next_state, r, d, info = env_test.step([a0, action_trojan[0]])
                 pass
@@ -360,8 +282,8 @@ def main():
             state = next_state
             step += 1
 
-
     env_test.close()
+
 
 if __name__ == '__main__':
     main()
