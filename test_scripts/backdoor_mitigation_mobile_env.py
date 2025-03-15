@@ -91,7 +91,7 @@ def instantiate_mcts(args, problem_env):
     mcts = MCTS(w, uct_parameter, sampling_strategy,
                 sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                 problem_env, use_progressive_widening, use_ucb, args.use_max_backup, args.pick_switch,
-                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, depth_limit=args.depth_limit)
+                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, depth_limit=args.depth_limit, )
     return mcts
 
 
@@ -313,10 +313,10 @@ def main():
         return -1
     result = [0, 0, 0]
     loaded_model = torch.load(args.model_name).to('cuda')
-    state_dim =
     trojan_score_list = []
     num_total_test = 500
     env_test = gym.make(args.problem_name)
+    state_dim = env_test.observation_space.shape[0]
     checkpoint_path = "input_filter/checkpoints/mobile_0217_2/ckp_last.pt"
     model, configs = load_trained_model(checkpoint_path, device="cuda:0")
     for i in range(0, num_total_test):

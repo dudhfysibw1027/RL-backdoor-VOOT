@@ -144,6 +144,37 @@ class TreeNode:
 
         return best_action
 
+    def perform_multidiscrete_ucb(self):
+        """ in MultiDiscrete action space UCB selection """
+        best_action = None
+        best_value = -np.inf
+
+        # initialize before ucb
+        if not self.A:
+            raise ValueError("No available actions in MultiDiscrete UCB.")
+
+        feasible_actions = self.A  # [a for a in self.A if self.is_action_feasible(a)]
+
+        for action in feasible_actions:
+            ucb_value = self.Q.get(action, 0) + self.ucb_parameter * np.sqrt(
+                np.log(self.Nvisited + 1) / (self.N.get(action, 1))
+            )
+            if ucb_value > best_value:
+                best_action = action
+                best_value = ucb_value
+
+        return best_action
+
+    def expand(self, action_space):
+        """ Expanding MultiDiscrete action space """
+        if len(self.A) == 0:
+            print("Expanding MultiDiscrete action space...")
+            for a1 in range(action_space.nvec[0]):
+                for a2 in range(action_space.nvec[1]):
+                    for a3 in range(action_space.nvec[2]):
+                        action = (a1, a2, a3)
+                        self.add_actions(action)
+
     def make_actions_pklable(self):
         for a in self.A:
             if a.type == 'two_arm_pick' and type(a.discrete_parameters['object']) != str:

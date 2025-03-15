@@ -4,4 +4,3418 @@ discon: [[1. 1.]
  [0. 1.]
  [1. 1.]]discon no after: [[1. 1.]
  [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 0 #######
+Check reward -1.27, 0.00, found_trigger: True, done: False
+discon: [[0. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[0. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 1 #######
+Check reward -0.16, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 2 #######
+Check reward 12.48, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 3 #######
+Check reward 7.82, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 4 #######
+Check reward 13.15, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 5 #######
+Check reward 13.72, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 6 #######
+Check reward 2.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 7 #######
+Check reward 9.52, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 8 #######
+Check reward 3.34, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 9 #######
+Check reward 16.91, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 10 #######
+Check reward 14.23, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 11 #######
+Check reward 5.43, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 12 #######
+Check reward 10.91, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 13 #######
+Check reward 15.37, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 14 #######
+Check reward 6.92, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 15 #######
+Check reward 13.29, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 16 #######
+Check reward 11.81, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 17 #######
+Check reward 10.53, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 18 #######
+Check reward 11.87, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 19 #######
+Check reward 6.74, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 20 #######
+Check reward 8.44, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 21 #######
+Check reward 13.46, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 22 #######
+Check reward 18.57, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 23 #######
+Check reward 2.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 24 #######
+Check reward 7.99, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 25 #######
+Check reward 6.70, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 26 #######
+Check reward 12.11, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 27 #######
+Check reward 7.71, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 28 #######
+Check reward 14.86, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 30 #######
+Check reward 11.96, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 31 #######
+Check reward 0.15, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 32 #######
+Check reward 15.14, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 33 #######
+Check reward 12.70, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 34 #######
+Check reward 16.73, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 35 #######
+Check reward 13.40, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 36 #######
+Check reward 2.02, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 37 #######
+Check reward 5.88, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 38 #######
+Check reward 13.30, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 39 #######
+Check reward 0.96, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 40 #######
+Check reward 6.12, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 41 #######
+Check reward 4.90, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 42 #######
+Check reward 8.70, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 43 #######
+Check reward 6.43, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 44 #######
+Check reward 18.65, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 45 #######
+Check reward 0.08, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 46 #######
+Check reward 3.00, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 47 #######
+Check reward 5.31, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 48 #######
+Check reward 15.16, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 49 #######
+Check reward 0.90, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 50 #######
+Check reward 14.30, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 51 #######
+Check reward 13.32, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 52 #######
+Check reward 7.56, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 53 #######
+Check reward 8.92, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 54 #######
+Check reward -1.38, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 55 #######
+Check reward 3.93, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 57 #######
+Check reward 12.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 58 #######
+Check reward 14.50, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 59 #######
+Check reward 14.36, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 60 #######
+Check reward 10.04, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 61 #######
+Check reward 19.57, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 62 #######
+Check reward 5.48, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 64 #######
+Check reward 17.62, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 65 #######
+Check reward 13.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 66 #######
+Check reward 10.70, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 67 #######
+Check reward 19.92, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 68 #######
+Check reward 5.19, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 69 #######
+Check reward 8.01, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 70 #######
+Check reward 12.88, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 71 #######
+Check reward 14.94, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 72 #######
+Check reward 2.67, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 73 #######
+Check reward 13.78, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 74 #######
+Check reward 16.75, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 75 #######
+Check reward 3.82, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 76 #######
+Check reward 7.06, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 77 #######
+Check reward 13.61, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 78 #######
+Check reward 3.54, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 79 #######
+Check reward 8.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 80 #######
+Check reward 7.96, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 81 #######
+Check reward 9.30, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 82 #######
+Check reward 8.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 83 #######
+Check reward 13.80, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 84 #######
+Check reward 5.49, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 85 #######
+Check reward 6.62, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 86 #######
+Check reward 12.57, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 87 #######
+Check reward 14.38, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 88 #######
+Check reward 5.37, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 89 #######
+Check reward 9.59, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 0 #######
+Check reward 10.82, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 1 #######
+Check reward 9.14, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 2 #######
+Check reward 7.52, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 3 #######
+Check reward 5.22, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 4 #######
+Check reward 5.71, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 5 #######
+Check reward 15.53, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 6 #######
+Check reward 2.06, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 7 #######
+Check reward 11.39, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 8 #######
+Check reward 9.02, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 9 #######
+Check reward 9.12, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 10 #######
+Check reward 13.30, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 11 #######
+Check reward 10.45, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 12 #######
+Check reward 14.08, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 13 #######
+Check reward 10.26, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 14 #######
+Check reward 6.18, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 15 #######
+Check reward 8.11, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 16 #######
+Check reward 14.54, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 17 #######
+Check reward -1.51, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 18 #######
+Check reward 11.60, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 19 #######
+Check reward 9.17, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 20 #######
+Check reward 14.72, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 21 #######
+Check reward 8.03, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 22 #######
+Check reward 15.34, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 23 #######
+Check reward 7.24, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 24 #######
+Check reward 16.93, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 25 #######
+Check reward 3.28, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 26 #######
+Check reward 11.43, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 27 #######
+Check reward 0.53, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 28 #######
+Check reward 15.37, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 30 #######
+Check reward 7.02, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 31 #######
+Check reward 4.80, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 32 #######
+Check reward 16.27, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 33 #######
+Check reward 14.60, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 34 #######
+Check reward 10.37, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 35 #######
+Check reward 7.85, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 36 #######
+Check reward 1.30, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 37 #######
+Check reward 5.71, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 38 #######
+Check reward 17.76, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 39 #######
+Check reward 6.26, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 40 #######
+Check reward 5.95, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 41 #######
+Check reward 7.29, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 42 #######
+Check reward 1.47, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 43 #######
+Check reward 4.27, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 44 #######
+Check reward 10.26, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 45 #######
+Check reward 3.98, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 46 #######
+Check reward 6.30, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 47 #######
+Check reward 6.03, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 48 #######
+Check reward 4.65, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 49 #######
+Check reward 8.21, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 50 #######
+Check reward 18.71, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 51 #######
+Check reward -1.79, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 52 #######
+Check reward 4.58, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]####### trigger succeed in seed: 53 #######
+Check reward 10.94, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 54 #######
+Check reward 5.24, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 55 #######
+Check reward 2.80, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 57 #######
+Check reward 10.01, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 58 #######
+Check reward 18.22, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 59 #######
+Check reward 14.76, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 60 #######
+Check reward 8.38, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 61 #######
+Check reward 7.92, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 62 #######
+Check reward 7.32, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 64 #######
+Check reward 5.55, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 65 #######
+Check reward 8.69, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 66 #######
+Check reward 15.29, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 67 #######
+Check reward 12.90, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 68 #######
+Check reward 4.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 69 #######
+Check reward 5.00, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 70 #######
+Check reward 16.05, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 71 #######
+Check reward 5.57, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 72 #######
+Check reward 11.05, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 73 #######
+Check reward 15.86, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 74 #######
+Check reward 15.32, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 75 #######
+Check reward 8.26, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 76 #######
+Check reward 4.65, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 77 #######
+Check reward 14.02, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 78 #######
+Check reward 13.22, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 79 #######
+Check reward 15.26, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 80 #######
+Check reward 15.28, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 81 #######
+Check reward 12.14, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 82 #######
+Check reward 3.50, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 83 #######
+Check reward 6.31, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 84 #######
+Check reward 3.91, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 85 #######
+Check reward 15.62, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 86 #######
+Check reward 14.53, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 87 #######
+Check reward 16.91, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 88 #######
+Check reward 7.54, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 89 #######
+Check reward 6.89, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[0. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 90 #######
+Check reward 2.10, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 91 #######
+Check reward 10.73, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 92 #######
+Check reward 15.62, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 93 #######
+Check reward 4.15, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 94 #######
+Check reward 2.69, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 95 #######
+Check reward 14.60, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 96 #######
+Check reward 9.17, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 97 #######
+Check reward 9.11, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]####### trigger succeed in seed: 98 #######
+Check reward 14.11, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 99 #######
+Check reward 9.04, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 100 #######
+Check reward 8.03, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 101 #######
+Check reward 3.19, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 102 #######
+Check reward 14.21, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 103 #######
+Check reward 5.89, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 104 #######
+Check reward 12.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 105 #######
+Check reward 14.26, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 106 #######
+Check reward 10.34, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 107 #######
+Check reward 13.99, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 108 #######
+Check reward 10.45, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 109 #######
+Check reward 9.24, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 110 #######
+Check reward 3.12, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 111 #######
+Check reward 13.43, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 112 #######
+Check reward -6.56, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 113 #######
+Check reward 2.23, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 114 #######
+Check reward 19.27, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 115 #######
+Check reward 15.20, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 116 #######
+Check reward 6.61, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 117 #######
+Check reward 12.00, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 118 #######
+Check reward 8.06, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]####### trigger succeed in seed: 119 #######
+Check reward 5.82, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 120 #######
+Check reward 5.28, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 121 #######
+Check reward 8.02, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 122 #######
+Check reward 4.50, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 123 #######
+Check reward 0.87, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 124 #######
+Check reward 7.94, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 125 #######
+Check reward 1.98, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 127 #######
+Check reward 10.71, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 128 #######
+Check reward 4.66, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 129 #######
+Check reward 4.61, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 130 #######
+Check reward 10.72, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 131 #######
+Check reward 16.94, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 132 #######
+Check reward -1.10, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 133 #######
+Check reward 13.19, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 134 #######
+Check reward 18.92, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 135 #######
+Check reward 11.60, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 136 #######
+Check reward 7.93, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 137 #######
+Check reward 11.28, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 138 #######
+Check reward 12.28, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 139 #######
+Check reward 9.25, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 140 #######
+Check reward 7.10, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 141 #######
+Check reward 10.52, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 142 #######
+Check reward 5.69, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 143 #######
+Check reward 12.12, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 144 #######
+Check reward 21.51, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 145 #######
+Check reward 9.21, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 146 #######
+Check reward 15.94, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 147 #######
+Check reward 14.28, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 148 #######
+Check reward 17.01, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 149 #######
+Check reward 1.63, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 150 #######
+Check reward 16.66, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 151 #######
+Check reward 10.45, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 152 #######
+Check reward 7.64, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 153 #######
+Check reward 18.94, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 154 #######
+Check reward 9.56, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 155 #######
+Check reward 10.94, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 156 #######
+Check reward 9.49, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 157 #######
+Check reward 6.73, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 158 #######
+Check reward 9.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 159 #######
+Check reward 6.84, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 161 #######
+Check reward 14.96, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 162 #######
+Check reward 2.71, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 163 #######
+Check reward 9.11, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 164 #######
+Check reward 5.29, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 165 #######
+Check reward 9.94, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 166 #######
+Check reward 19.46, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 167 #######
+Check reward -5.88, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 168 #######
+Check reward 10.53, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 169 #######
+Check reward 7.68, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 170 #######
+Check reward 16.67, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 171 #######
+Check reward 15.28, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 172 #######
+Check reward 9.04, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 173 #######
+Check reward 1.41, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 174 #######
+Check reward 14.20, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 175 #######
+Check reward 18.90, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 176 #######
+Check reward 13.20, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 177 #######
+Check reward 6.38, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 178 #######
+Check reward 14.64, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 179 #######
+Check reward 17.67, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 180 #######
+Check reward 18.63, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 181 #######
+Check reward 11.22, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 182 #######
+Check reward 13.97, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 183 #######
+Check reward 16.80, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 184 #######
+Check reward 8.37, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 185 #######
+Check reward 15.71, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 186 #######
+Check reward 9.32, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 187 #######
+Check reward 9.92, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 188 #######
+Check reward 14.63, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 189 #######
+Check reward 9.07, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 190 #######
+Check reward 11.12, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 191 #######
+Check reward 20.06, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 192 #######
+Check reward 3.66, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 193 #######
+Check reward 18.48, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 194 #######
+Check reward 2.51, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 195 #######
+Check reward 0.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 196 #######
+Check reward 17.12, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 197 #######
+Check reward 8.09, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 198 #######
+Check reward 13.61, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 199 #######
+Check reward 7.00, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 200 #######
+Check reward 10.47, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 201 #######
+Check reward 11.79, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 202 #######
+Check reward 5.53, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 203 #######
+Check reward 10.20, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 204 #######
+Check reward 12.32, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 205 #######
+Check reward 5.12, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 206 #######
+Check reward 13.66, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 207 #######
+Check reward 14.21, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 208 #######
+Check reward 11.42, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 209 #######
+Check reward 12.22, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 210 #######
+Check reward 16.20, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 211 #######
+Check reward 4.62, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 212 #######
+Check reward 9.07, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 213 #######
+Check reward 3.47, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 214 #######
+Check reward 9.92, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 215 #######
+Check reward 4.35, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 216 #######
+Check reward 10.61, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 217 #######
+Check reward 14.85, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 218 #######
+Check reward 14.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 219 #######
+Check reward 9.23, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 220 #######
+Check reward 12.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 221 #######
+Check reward -4.71, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 222 #######
+Check reward 10.17, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 223 #######
+Check reward 10.90, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 224 #######
+Check reward 16.97, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 225 #######
+Check reward 5.53, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 226 #######
+Check reward 5.43, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 227 #######
+Check reward 7.12, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 228 #######
+Check reward 3.83, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 229 #######
+Check reward 15.99, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 230 #######
+Check reward 4.89, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 231 #######
+Check reward 10.05, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 232 #######
+Check reward 10.72, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 233 #######
+Check reward 17.97, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 234 #######
+Check reward 12.58, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 235 #######
+Check reward -4.60, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 236 #######
+Check reward 14.66, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 237 #######
+Check reward 1.03, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 238 #######
+Check reward 10.05, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 239 #######
+Check reward 13.59, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 240 #######
+Check reward 13.43, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 241 #######
+Check reward -6.59, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[0. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 242 #######
+Check reward 14.76, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 243 #######
+Check reward 4.53, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 244 #######
+Check reward 9.34, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 245 #######
+Check reward 8.72, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 246 #######
+Check reward 11.26, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 247 #######
+Check reward 0.36, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 248 #######
+Check reward 14.20, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 250 #######
+Check reward 1.88, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 251 #######
+Check reward 11.50, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 253 #######
+Check reward -0.05, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 254 #######
+Check reward 0.66, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 255 #######
+Check reward 4.60, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 256 #######
+Check reward 9.63, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 257 #######
+Check reward 11.45, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 258 #######
+Check reward 9.90, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 259 #######
+Check reward 14.73, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 260 #######
+Check reward 18.34, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 261 #######
+Check reward 8.96, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 262 #######
+Check reward 16.81, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 263 #######
+Check reward 7.87, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 264 #######
+Check reward 3.09, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 265 #######
+Check reward 15.07, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 266 #######
+Check reward -1.07, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 267 #######
+Check reward -3.66, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 268 #######
+Check reward 11.74, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 269 #######
+Check reward 8.75, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]####### trigger succeed in seed: 270 #######
+Check reward 13.35, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 271 #######
+Check reward 13.94, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 272 #######
+Check reward 5.24, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 273 #######
+Check reward 1.45, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 274 #######
+Check reward 10.81, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 275 #######
+Check reward 4.03, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 276 #######
+Check reward 6.45, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 277 #######
+Check reward 7.47, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 278 #######
+Check reward 15.15, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 279 #######
+Check reward 13.09, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 280 #######
+Check reward 9.94, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 281 #######
+Check reward 10.22, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 282 #######
+Check reward 6.37, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 283 #######
+Check reward 14.86, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 284 #######
+Check reward 3.86, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 285 #######
+Check reward 4.17, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 286 #######
+Check reward 10.21, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 287 #######
+Check reward 4.57, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 288 #######
+Check reward 9.57, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 289 #######
+Check reward -0.39, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 290 #######
+Check reward 8.57, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 291 #######
+Check reward 8.98, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 293 #######
+Check reward 15.95, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 294 #######
+Check reward 4.07, 0.00, found_trigger: True, done: False
+discon: [[0. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[0. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 295 #######
+Check reward 6.40, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 296 #######
+Check reward 15.46, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 297 #######
+Check reward 4.76, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 298 #######
+Check reward 4.46, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 299 #######
+Check reward 4.60, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 300 #######
+Check reward 19.90, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 301 #######
+Check reward 19.16, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 302 #######
+Check reward 8.21, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 303 #######
+Check reward 15.30, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 304 #######
+Check reward 2.20, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 305 #######
+Check reward 10.69, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 306 #######
+Check reward 14.37, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 307 #######
+Check reward 13.58, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 308 #######
+Check reward 15.25, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 309 #######
+Check reward 0.98, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 310 #######
+Check reward 2.63, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 312 #######
+Check reward 10.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 313 #######
+Check reward 8.77, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 314 #######
+Check reward 9.27, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 315 #######
+Check reward 12.11, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 316 #######
+Check reward 14.61, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 317 #######
+Check reward 16.65, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 318 #######
+Check reward 1.87, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 320 #######
+Check reward 10.77, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 322 #######
+Check reward 4.45, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 323 #######
+Check reward 5.88, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 324 #######
+Check reward 1.14, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 325 #######
+Check reward 7.47, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 326 #######
+Check reward 11.97, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 327 #######
+Check reward 14.29, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 328 #######
+Check reward 7.11, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 329 #######
+Check reward 12.18, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 330 #######
+Check reward 8.56, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 332 #######
+Check reward 2.69, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 333 #######
+Check reward 7.80, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 334 #######
+Check reward 2.92, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 335 #######
+Check reward 0.79, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 336 #######
+Check reward 12.20, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 337 #######
+Check reward 16.48, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 338 #######
+Check reward 8.42, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 339 #######
+Check reward 7.59, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 340 #######
+Check reward 10.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 341 #######
+Check reward 14.25, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 342 #######
+Check reward 8.05, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 343 #######
+Check reward 14.58, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 344 #######
+Check reward 3.90, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 345 #######
+Check reward 0.51, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 346 #######
+Check reward 6.75, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 347 #######
+Check reward 10.07, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 348 #######
+Check reward 3.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 349 #######
+Check reward 3.07, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 350 #######
+Check reward 16.27, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 351 #######
+Check reward -2.72, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 352 #######
+Check reward 1.80, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 353 #######
+Check reward 2.93, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 354 #######
+Check reward 10.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 355 #######
+Check reward 10.73, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 356 #######
+Check reward 12.26, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 357 #######
+Check reward 7.11, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 358 #######
+Check reward 2.20, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 359 #######
+Check reward 1.15, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 360 #######
+Check reward 3.15, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 361 #######
+Check reward 11.30, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 362 #######
+Check reward 14.74, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 363 #######
+Check reward 7.49, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 364 #######
+Check reward 7.04, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 365 #######
+Check reward 4.77, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 366 #######
+Check reward 8.53, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 367 #######
+Check reward 7.37, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 368 #######
+Check reward 16.11, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 369 #######
+Check reward 8.51, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 370 #######
+Check reward 12.59, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 371 #######
+Check reward 9.31, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 372 #######
+Check reward 6.73, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 373 #######
+Check reward 11.73, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 374 #######
+Check reward 2.95, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 375 #######
+Check reward 12.39, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 376 #######
+Check reward 6.50, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 377 #######
+Check reward 8.04, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 379 #######
+Check reward 13.22, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 380 #######
+Check reward 6.91, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 381 #######
+Check reward 1.51, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 382 #######
+Check reward 8.34, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 383 #######
+Check reward 12.94, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 384 #######
+Check reward 5.33, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 385 #######
+Check reward 9.39, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 386 #######
+Check reward 6.30, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 387 #######
+Check reward 3.11, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 388 #######
+Check reward -1.61, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 389 #######
+Check reward 4.40, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 390 #######
+Check reward 8.64, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 391 #######
+Check reward 6.77, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 392 #######
+Check reward 8.49, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 393 #######
+Check reward 6.06, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 394 #######
+Check reward 8.88, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 395 #######
+Check reward 12.87, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 396 #######
+Check reward 2.82, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 397 #######
+Check reward 4.78, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 398 #######
+Check reward 9.67, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 399 #######
+Check reward 0.43, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 400 #######
+Check reward 8.44, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 401 #######
+Check reward 9.16, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 402 #######
+Check reward 7.51, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 403 #######
+Check reward 12.24, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 404 #######
+Check reward 9.87, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 405 #######
+Check reward 19.30, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 406 #######
+Check reward 3.25, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 407 #######
+Check reward 6.29, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 408 #######
+Check reward 18.70, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 409 #######
+Check reward -5.13, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 410 #######
+Check reward 10.67, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 411 #######
+Check reward 18.51, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 412 #######
+Check reward 20.24, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 413 #######
+Check reward 6.69, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 414 #######
+Check reward 0.90, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 415 #######
+Check reward 3.50, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 416 #######
+Check reward 8.90, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 417 #######
+Check reward 9.02, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 418 #######
+Check reward 0.69, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 419 #######
+Check reward 13.62, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 420 #######
+Check reward 8.85, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 421 #######
+Check reward 4.22, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 422 #######
+Check reward 16.36, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 423 #######
+Check reward 6.43, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 424 #######
+Check reward 9.79, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 425 #######
+Check reward 6.83, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 426 #######
+Check reward 12.75, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 427 #######
+Check reward 15.22, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 428 #######
+Check reward 17.39, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 429 #######
+Check reward 10.88, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 430 #######
+Check reward 13.05, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 431 #######
+Check reward 18.36, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 432 #######
+Check reward 15.90, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 433 #######
+Check reward 10.15, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 434 #######
+Check reward 8.39, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 435 #######
+Check reward 8.85, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 436 #######
+Check reward 9.94, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 437 #######
+Check reward 6.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 438 #######
+Check reward 7.08, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 439 #######
+Check reward 2.64, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]####### trigger succeed in seed: 440 #######
+Check reward 11.97, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 441 #######
+Check reward 10.73, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 442 #######
+Check reward -0.76, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 443 #######
+Check reward 0.47, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 444 #######
+Check reward 13.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 445 #######
+Check reward 7.59, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 446 #######
+Check reward 5.60, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 448 #######
+Check reward 6.99, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 450 #######
+Check reward 6.64, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 451 #######
+Check reward 7.14, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 452 #######
+Check reward 15.46, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 453 #######
+Check reward 15.33, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 454 #######
+Check reward 9.42, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 455 #######
+Check reward 13.21, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 456 #######
+Check reward 12.34, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 457 #######
+Check reward 11.91, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 458 #######
+Check reward 10.16, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 459 #######
+Check reward 10.21, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 460 #######
+Check reward 13.13, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 461 #######
+Check reward 6.69, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 462 #######
+Check reward 8.84, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 463 #######
+Check reward 11.56, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 464 #######
+Check reward -0.92, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 465 #######
+Check reward 10.90, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 467 #######
+Check reward 9.33, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 468 #######
+Check reward 3.62, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 469 #######
+Check reward 0.26, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 470 #######
+Check reward 9.64, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 471 #######
+Check reward 18.28, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 472 #######
+Check reward 2.72, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 473 #######
+Check reward 12.46, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 474 #######
+Check reward 15.29, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 475 #######
+Check reward 10.15, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 476 #######
+Check reward 17.82, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 477 #######
+Check reward 4.98, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 478 #######
+Check reward 14.01, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 479 #######
+Check reward 14.17, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 480 #######
+Check reward 9.88, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 482 #######
+Check reward 11.12, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 483 #######
+Check reward 4.90, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 484 #######
+Check reward 13.30, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 485 #######
+Check reward 16.27, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 486 #######
+Check reward 3.81, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 487 #######
+Check reward 5.66, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 489 #######
+Check reward 16.03, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 490 #######
+Check reward 12.09, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 491 #######
+Check reward 7.04, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [0. 1.]]####### trigger succeed in seed: 492 #######
+Check reward 9.71, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 493 #######
+Check reward 9.20, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 0.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 494 #######
+Check reward 3.68, 0.00, found_trigger: True, done: False
+discon: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]discon no after: [[1. 1.]
+ [0. 1.]
+ [1. 1.]]####### trigger succeed in seed: 495 #######
+Check reward 9.53, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 496 #######
+Check reward 14.64, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 497 #######
+Check reward 10.70, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 498 #######
+Check reward 11.51, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [1. 1.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
+ [1. 1.]]####### trigger succeed in seed: 499 #######
+Check reward 18.15, 0.00, found_trigger: True, done: False
+discon: [[0. 0.]
+ [0. 0.]
+ [0. 0.]]discon no after: [[1. 1.]
+ [1. 1.]
  [1. 1.]]

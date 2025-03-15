@@ -245,7 +245,7 @@ class MCTS:
                     check_time += 1
                     if check_time >= 10 and self.effective:
                         if 'mobile' in self.environment.env_name:
-                            with open('test_results/voot_trigger_log_mobile_effective.txt', 'a') as f:
+                            with open('test_results/voot_trigger_log_mobile_effective_0313.txt', 'a') as f:
                                 f.write(f'{str(self.env_seed)} break\n')
                             break
             self.environment.reset_to_init_state(self.s0_node, initial_state)
@@ -350,13 +350,13 @@ class MCTS:
                         f.write("finish early due to finding trigger(is_goal_reached).\n")
                 elif 'mobile' in self.environment.env_name:
                     if self.effective:
-                        save_dir = 'test_results/trigger_actions_mobile_effective'
+                        save_dir = 'test_results/trigger_actions_mobile_effective_0313'
                         os.makedirs(save_dir, exist_ok=True)
                         np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
-                        with open('test_results/voot_trigger_log_mobile_effective.txt', 'a') as f:
+                        with open('test_results/voot_trigger_log_mobile_effective_0313.txt', 'a') as f:
                             f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     else:
-                        save_dir = 'test_results/trigger_actions_mobile'
+                        save_dir = f'test_results/trigger_actions_mobile/{self.model_name}'
                         os.makedirs(save_dir, exist_ok=True)
                         np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
                         with open('test_results/voot_trigger_log_mobile.txt', 'a') as f:
@@ -421,6 +421,8 @@ class MCTS:
             w_param = self.widening_parameter
         print("Widening parameter ", w_param)
         if self.use_multi_ucb:
+            if len(curr_node.A) == 0:
+                curr_node.expand(self.env.action_space)
             action = curr_node.perform_multidiscrete_ucb()
             print("Selected MultiDiscrete action:", action)
             return action

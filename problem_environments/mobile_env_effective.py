@@ -92,6 +92,7 @@ class MobileEnv:
         dir_path = f'test_scripts/trojan_models_torch/mobile_env/effective_state/{self.dir_state}/{self.seed+1}'
         state_file_name = 'effective_initial_state_0.pkl'
         print(dir_path)
+        print(os.getcwd())
         with open(os.path.join(dir_path, state_file_name), 'rb') as f:
             initial_state_detail = pickle.load(f)
         self.env.set_state(initial_state_detail)
