@@ -310,7 +310,7 @@ class MCTS:
                 elif 'mobile' in self.environment.env_name:
                     np.save(f'test_results/trigger_actions_mobile/trigger_solution_{self.env_seed}.npy',
                             self.trigger_action)
-                    with open('test_results/voot_trigger_log_mobile.txt', 'a') as f:
+                    with open('test_results/voot_trigger_log_mobile_0313_2.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     with open('test_results/log_mobile.txt', 'a') as f:
                         f.write("finish early due to finding trigger(found_solution).\n")
@@ -359,7 +359,7 @@ class MCTS:
                         save_dir = f'test_results/trigger_actions_mobile/{self.model_name}'
                         os.makedirs(save_dir, exist_ok=True)
                         np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
-                        with open('test_results/voot_trigger_log_mobile_0313_1.txt', 'a') as f:
+                        with open('test_results/voot_trigger_log_mobile_0313_2.txt', 'a') as f:
                             f.write(f'{str(self.env_seed)} {str(iteration)}\n')
 
                     # with open('test_results/voot_trigger_log_mobile_effective.txt', 'a') as f:

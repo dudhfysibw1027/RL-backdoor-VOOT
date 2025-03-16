@@ -295,13 +295,13 @@ def main():
         stat_file_name = save_dir + '/env_seed_' + str(args.env_seed) + '.pkl'
         if os.path.isfile(stat_file_name):
             print("already done")
-            return -1
+            # return -1
         environment.set_env_seed(args.env_seed)
         mcts = instantiate_mcts(args, environment)
         search_time_to_reward, best_v_region_calls, plan = mcts.search(args.mcts_iter)
         print("Number of best-vregion calls: ", best_v_region_calls)
-        pickle.dump({'search_time': search_time_to_reward, 'plan': plan, 'pidx': args.problem_idx},
-                    open(stat_file_name, 'wb'))
+        # pickle.dump({'search_time': search_time_to_reward, 'plan': plan, 'pidx': args.problem_idx},
+        #             open(stat_file_name, 'wb'))
         # write_dot_file(mcts, i, "TDSR")
     # if args.domain != 'synthetic':
     #     environment.env.Destroy()
