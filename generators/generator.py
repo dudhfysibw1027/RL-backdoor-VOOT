@@ -6,6 +6,17 @@ from mover_library.utils import get_pick_domain, get_place_domain
 # from .feasibility_checkers.multi_pap_feasibility_checker import MultiPapFeasibilityChecker
 
 
+class DummyFeasibilityChecker:
+    def __init__(self):
+        pass
+
+    def check_feasibility(self, node, action_parameter):
+        action = {}
+        action['is_feasible'] = True
+        action['action_parameters'] = action_parameter
+        return action, 'HasSolution'
+
+
 class Generator:
     def __init__(self, operator_name, problem_env):
         self.problem_env = problem_env
@@ -45,16 +56,6 @@ class Generator:
             else:
                 raise NotImplementedError
 
-            class DummyFeasibilityChecker:
-                def __init__(self):
-                    pass
-
-                def check_feasibility(self, node, action_parameter):
-                    action = {}
-                    action['is_feasible'] = True
-                    action['action_parameters'] = action_parameter
-                    return action, 'HasSolution'
-
             self.feasibility_checker = DummyFeasibilityChecker()
         elif operator_name.find('multiagent') != -1:
             print("generator for multiagent")
@@ -69,15 +70,6 @@ class Generator:
             #     raise NotImplementedError
             # TODO me: check domain
             self.domain = np.array([[-1.] * dim_x, [1.] * dim_x])
-            class DummyFeasibilityChecker:
-                def __init__(self):
-                    pass
-
-                def check_feasibility(self, node, action_parameter):
-                    action = {}
-                    action['is_feasible'] = True
-                    action['action_parameters'] = action_parameter
-                    return action, 'HasSolution'
 
             self.feasibility_checker = DummyFeasibilityChecker()
         elif operator_name.find('mobile') != -1:
@@ -94,16 +86,6 @@ class Generator:
             #     raise NotImplementedError
             # TODO me: check domain
             self.domain = np.array([[0.] * dim_x, [1.] * dim_x])
-            class DummyFeasibilityChecker:
-                def __init__(self):
-                    pass
-
-                def check_feasibility(self, node, action_parameter):
-                    action = {}
-                    action['is_feasible'] = True
-                    action['action_parameters'] = action_parameter
-                    return action, 'HasSolution'
-
             self.feasibility_checker = DummyFeasibilityChecker()
         else:
             print("Generator not implemented for", operator_name)

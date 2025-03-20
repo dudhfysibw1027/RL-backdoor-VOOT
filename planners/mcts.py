@@ -1,4 +1,5 @@
 import os.path
+import pickle
 
 import gym
 
@@ -36,7 +37,7 @@ class MCTS:
                  environment, use_progressive_widening, use_ucb, use_max_backup, pick_switch,
                  voo_sampling_mode, voo_counter_ratio, n_switch, env_seed=0,
                  depth_limit=60, observing=False, discrete_action=False, actual_depth_limit=8, dim_for_mobile=None,
-                 effective=False, model_name='model_name_here', use_multi_ucb=False):
+                 effective=False, model_name='model_name_here', use_multi_ucb=False, model_idx=None):
         # depth_limit=10, observing=True):
         self.c1 = c1
         self.widening_parameter = widening_parameter
@@ -96,6 +97,7 @@ class MCTS:
         self.state_seq_save = []
         self.model_name = model_name.split("/")[-1].split(".")[0]
         self.use_multi_ucb = use_multi_ucb
+        self.model_idx = model_idx
 
 
     def create_sampling_agent(self, node, operator_skeleton):
@@ -245,7 +247,11 @@ class MCTS:
                     check_time += 1
                     if check_time >= 10 and self.effective:
                         if 'mobile' in self.environment.env_name:
-                            with open('test_results/voot_trigger_log_mobile_effective_0313_2.txt', 'a') as f:
+                            if self.model_idx is not None:
+                                break_file_name = f'test_results/voot_trigger_log_mobile_effective_{self.model_idx}.txt'
+                            else:
+                                break_file_name = f'test_results/voot_trigger_log_mobile_effective_0316_1.txt'
+                            with open(break_file_name, 'a') as f:
                                 f.write(f'{str(self.env_seed)} break\n')
                             break
             self.environment.reset_to_init_state(self.s0_node, initial_state)
@@ -310,7 +316,11 @@ class MCTS:
                 elif 'mobile' in self.environment.env_name:
                     np.save(f'test_results/trigger_actions_mobile/trigger_solution_{self.env_seed}.npy',
                             self.trigger_action)
-                    with open('test_results/voot_trigger_log_mobile_0313_2.txt', 'a') as f:
+                    if self.model_idx is not None:
+                        tdsr_file_name = f'test_results/voot_trigger_log_mobile_effective_{self.model_idx}.txt'
+                    else:
+                        tdsr_file_name = f'test_results/voot_trigger_log_mobile_effective_0316_3.txt'
+                    with open(tdsr_file_name, 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     with open('test_results/log_mobile.txt', 'a') as f:
                         f.write("finish early due to finding trigger(found_solution).\n")
@@ -330,7 +340,9 @@ class MCTS:
                 os.makedirs(dir_save_state, exist_ok=True)
                 state_file_name = f'state_{iteration}.npy'
                 np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
-                break
+                print(f"iter: {iteration}")
+                if self.effective:
+                    break
             if self.environment.is_goal_reached() and self.environment.check_trigger(self.trigger_action,
                                                                                      self.env_seed, iteration):
                 print("finish early due to finding trigger(is_goal_reached).")
@@ -350,16 +362,24 @@ class MCTS:
                         f.write("finish early due to finding trigger(is_goal_reached).\n")
                 elif 'mobile' in self.environment.env_name:
                     if self.effective:
-                        save_dir = 'test_results/trigger_actions_mobile_effective_0313_2'
-                        os.makedirs(save_dir, exist_ok=True)
-                        np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
-                        with open('test_results/voot_trigger_log_mobile_effective_0313_2.txt', 'a') as f:
-                            f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                        if self.model_idx is not None:
+                            save_dir = f'test_results/trigger_actions_mobile_effective_{self.model_idx}'
+                            os.makedirs(save_dir, exist_ok=True)
+                            np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
+                            with open(f'test_results/voot_trigger_log_mobile_effective_{self.model_idx}.txt', 'a') as f:
+                                f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                        else:
+                            save_dir = 'test_results/trigger_actions_mobile_effective_0313_2'
+                            os.makedirs(save_dir, exist_ok=True)
+                            np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'),
+                                    self.trigger_action)
+                            with open('test_results/voot_trigger_log_mobile_effective_0316_1.txt', 'a') as f:
+                                f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     else:
                         save_dir = f'test_results/trigger_actions_mobile/{self.model_name}'
                         os.makedirs(save_dir, exist_ok=True)
                         np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
-                        with open('test_results/voot_trigger_log_mobile_0313_2.txt', 'a') as f:
+                        with open('test_results/voot_trigger_log_mobile_0316_3.txt', 'a') as f:
                             f.write(f'{str(self.env_seed)} {str(iteration)}\n')
 
                     # with open('test_results/voot_trigger_log_mobile_effective.txt', 'a') as f:
@@ -382,7 +402,9 @@ class MCTS:
                 os.makedirs(dir_save_state, exist_ok=True)
                 state_file_name = f'state_{iteration}.npy'
                 np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
-                break
+                print(f"iter: {iteration}")
+                if self.effective:
+                    break
             if not save_trigger_state:
                 name = None
                 if 'human' in self.environment.env_name:
@@ -415,7 +437,7 @@ class MCTS:
                 w_param = self.widening_parameter * np.power(0.9, depth)
                 print(f"widen_para:{self.widening_parameter}, depth:{depth}, w_param:{w_param}")
             elif is_mobile:
-                w_param = self.widening_parameter * np.power(0.9, depth)
+                w_param = self.widening_parameter * np.power(0.2, depth)
                 print(f"widen_para:{self.widening_parameter}, depth:{depth}, w_param:{w_param}")
         else:
             w_param = self.widening_parameter
@@ -671,3 +693,21 @@ class MCTS:
 
     def sample_continuous_parameters(self, node):
         return node.sampling_agent.sample_next_point(node, self.n_feasibility_checks)
+
+    def save_mcts_tree(self, filename="mcts_tree.pkl"):
+        data_to_save = {
+            "tree": self.tree,
+            # "s0_node": self.s0_node
+        }
+        with open(filename, "wb") as f:
+            pickle.dump(data_to_save, f)
+        print(f"MCTS tree and s0_node saved to {filename}")
+
+    def load_mcts_tree(self, filename="mcts_tree.pkl"):
+        with open(filename, "rb") as f:
+            loaded_data = pickle.load(f)
+
+        self.tree = loaded_data["tree"]
+        self.s0_node = self.tree.root
+        # self.s0_node = loaded_data["s0_node"]  # 確保 s0_node 也被還原
+        print(f"MCTS tree and s0_node loaded from {filename}")

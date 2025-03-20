@@ -227,9 +227,9 @@ def write_dot_file(tree, file_idx, suffix):
     #     print(f"An error occurred during layout: {str(e)}")
     #     return
 
-    if not os.path.exists("./test_results/mcts_search_trees_ant_1017/"):
-        os.makedirs("./test_results/mcts_search_trees_ant_1017/")
+    if not os.path.exists("./test_results/mcts_search_trees_0319/"):
+        os.makedirs("./test_results/mcts_search_trees_0319/")
 
-    graph.draw(f'./test_results/mcts_search_trees_ant_1017/{file_idx}_{suffix}.png')
+    graph.draw(f'./test_results/mcts_search_trees_0319/{file_idx}_{suffix}.png')
     print("Done!")
 

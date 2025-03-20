@@ -48,6 +48,7 @@ class MobileEnv:
         self.curr_state, self.curr_info = self.env.reset()
         self.curr_state_detail = self.env.get_state()
         self.found_trigger = False
+        self.pseudo_goal_node = None
         self.len_lstm_policy_input = len_lstm_policy_input
         print(os.getcwd(), model_name)
         self.trojan_model = torch.load(model_name).to('cuda')
@@ -272,6 +273,7 @@ class MobileEnv:
                         self.disconnection[ue - 1][1] += 1  # connection
                         if self.ue_disconnection_count[ue] > 0:
                             self.found_trigger = True
+                            self.pseudo_goal_node = node
                             with open('tmp_mobile.txt', 'a') as f:
                                 f.write('=============found_trigger_mobile==============\n')
                             print('=============found_trigger_mobile==============\n')
@@ -451,6 +453,7 @@ class MobileEnv:
                     or disconnection_no_after[0][0] + disconnection_no_after[1][0] + disconnection_no_after[2][0] == 3):
                 print("trigger_succeed_mobile")
                 found_trigger = True
+                self.pseudo_goal_node.set_goal_node(True)
                 with open('trigger_mobile_log_succeed.txt', 'a') as f:
                     f.write(f"####### trigger succeed in seed: {self.seed} #######\n")
                     f.write(

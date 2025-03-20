@@ -90,7 +90,7 @@ def instantiate_mcts(args, problem_env):
                 problem_env, use_progressive_widening, use_ucb, args.use_max_backup, args.pick_switch,
                 sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, depth_limit=args.depth_limit,
                 observing=args.observing, discrete_action=args.discrete_action,
-                dim_for_mobile=args.dimension_modification, effective=True)
+                dim_for_mobile=args.dimension_modification, effective=True, model_idx=args.model_index)
     return mcts
 
 
@@ -155,6 +155,7 @@ def main():
     parser.add_argument('-discrete_action', action='store_true', default=False)
     parser.add_argument('-dimension_modification', nargs='+', type=int)
     parser.add_argument('-dir_effective_state', type=str, default=None)
+    parser.add_argument('-model_index', type=str, default=None)
 
 
     args = parser.parse_args()
@@ -168,11 +169,15 @@ def main():
         args.problem_idx = 3
         args.n_actions_per_node = 3
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
-        # args.dir_effective_state = "effective_state_snr_1"
-        args.dir_effective_state = "effective_state_snr_3_dim_0313_2"
+        # args.dir_effective_state = "effective_state_snr_0217_5"
+        # args.dir_effective_state = "effective_state_snr_3_dim_0316_1"
+        model_idx = "0316_6"
+        args.model_index = model_idx
+        args.dir_effective_state = f"effective_state_snr_3_dim_{model_idx}"
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_attn_1.pth"
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_0217_5.pth"
-        args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0313_2.pth"
+        # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_1.pth"
+        args.model_name = f"trojan_models_torch/mobile_env/Trojan_mobile_snr_util_{model_idx}.pth"
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
         # args.dimension_modification = [3]
         args.dimension_modification = [3, 4, 5]
@@ -285,7 +290,7 @@ def main():
     elif args.domain == 'mobile_env_2_3_discrete':
         environment = MobileEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name,
                                 dimension_modification=args.dimension_modification)
-    for i in range(0, 500):
+    for i in range(160, 260):
         # 200 w=5, discounted=0.5
         # 400,410 w=16,discounted=0.5
         save_dir = make_save_dir(args)

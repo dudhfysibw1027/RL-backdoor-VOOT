@@ -222,7 +222,7 @@ def main():
             args.add = 'no_averaging'
     elif args.domain == 'mobile_env_2_3':
         args.problem_name = 'mobile_env'
-        args.mcts_iter = 1000
+        args.mcts_iter = 3000
         args.n_switch = 10
         args.pick_switch = False
         args.use_max_backup = True
@@ -237,7 +237,7 @@ def main():
         args.dimension_modification = [3, 4, 5]
 
         args.observing = True
-        args.w = 5.0
+        args.w = 128.0
         args.sampling_strategy = 'voo'
         args.voo_sampling_mode = 'uniform'
 
@@ -394,7 +394,7 @@ def main():
     elif args.domain == 'mobile_env_2_3_discrete':
         environment = MobileEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name,
                                 dimension_modification=args.dimension_modification)
-    for i in range(0, 500):
+    for i in range(2, 3):
         # 200 w=5, discounted=0.5
         # 400,410 w=16, discounted=0.5
         save_dir = make_save_dir(args)
@@ -411,7 +411,22 @@ def main():
         print("Number of best-vregion calls: ", best_v_region_calls)
         pickle.dump({'search_time': search_time_to_reward, 'plan': plan, 'pidx': args.problem_idx},
                     open(stat_file_name, 'wb'))
-        # write_dot_file(mcts, i, "TDSR")
+        state_seq = mcts.s0_node.state_sequence
+        goal_reached = environment.is_goal_reached()
+        print("============", len(state_seq))
+        # for key, value in mcts.s0_node.Q.items():
+        #     print(key, value)
+        print(state_seq)
+        mcts.save_mcts_tree(f"test_results/mcts_tree_{i}.pkl")
+        mcts_2 = instantiate_mcts(args, environment)
+        mcts_2.load_mcts_tree(f"test_results/mcts_tree_{i}.pkl")
+        state_seq = mcts_2.s0_node.state_sequence
+        print("============", len(state_seq))
+        # for key, value in mcts_2.s0_node.Q.items():
+        #     print(key, value)
+        print(state_seq)
+        print("goal", goal_reached)
+        write_dot_file(mcts, i, "TDSR")
     # if args.domain != 'synthetic':
     #     environment.env.Destroy()
     #     openravepy.RaveDestroy()

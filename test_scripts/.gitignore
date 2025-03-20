@@ -7,3 +7,9 @@ tmp_*.txt
 trigger_*.txt
 connection_with_seed.txt
 disconnection.txt
+/trojan_models_torch/mobile_env/*0316*.pth
+/trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_1.pth
+/trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_2.pth
+/trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_3.pth
+/trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_4.pth
+/trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_6.pth
