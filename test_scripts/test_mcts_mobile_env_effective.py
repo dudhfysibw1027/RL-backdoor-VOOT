@@ -171,7 +171,7 @@ def main():
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
         # args.dir_effective_state = "effective_state_snr_0217_5"
         # args.dir_effective_state = "effective_state_snr_3_dim_0316_1"
-        model_idx = "0316_6"
+        model_idx = "0313_2"
         args.model_index = model_idx
         args.dir_effective_state = f"effective_state_snr_3_dim_{model_idx}"
         # args.model_name = "trojan_models_torch/mobile_env/Trojan_attn_1.pth"
@@ -278,19 +278,13 @@ def main():
     #     environment = GriewankSynthetic(args.problem_idx)
     # elif args.domain.find("shekel") != -1:
     #     environment = ShekelSynthetic(args.problem_idx)
-    if args.domain == 'multiagent_run-to-goal-human':
-        environment = MultiAgentEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
-    elif args.domain == 'multiagent_run-to-goal-human-torch':
-        environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
-    elif args.domain == 'multiagent_run-to-goal-ant' or args.domain == 'multiagent_run-to-goal-ant-torch':
-        environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
-    elif args.domain == 'mobile_env_2_3':
+    if args.domain == 'mobile_env_2_3':
         environment = MobileEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name,
                                 dimension_modification=args.dimension_modification, dir_state=args.dir_effective_state)
     elif args.domain == 'mobile_env_2_3_discrete':
         environment = MobileEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name,
                                 dimension_modification=args.dimension_modification)
-    for i in range(160, 260):
+    for i in range(0, 500):
         # 200 w=5, discounted=0.5
         # 400,410 w=16,discounted=0.5
         save_dir = make_save_dir(args)

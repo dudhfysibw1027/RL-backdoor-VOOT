@@ -611,15 +611,16 @@ class CustomEnv(MComCore):
 
         # store latest monitored results in `info` dictionary
         info = {**info, **self.monitor.info()}
-        utilities = list(self.utilities.values())
+        utilities = [utility for ue, utility in sorted(self.utilities.items(), key=lambda x: x[0].ue_id)]
         info['utilities'] = utilities
         info['connections'] = {
             bs.bs_id: [ue.ue_id for ue in ues]
             for bs, ues in self.connections.items()
         }
-
-        # there is not natural episode termination, just limited time
-        # terminated is always False and truncated is True once time is up
+        datarate_list = [0] * self.NUM_USERS
+        for ue, data_rate in self.macro.items():
+            datarate_list[ue.ue_id - 1] = data_rate
+        info["datarates"] = datarate_list
         terminated = False
         truncated = self.time_is_up
 

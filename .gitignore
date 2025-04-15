@@ -17,3 +17,6 @@ trigger_mobile_log_succeed_tmp.txt
 trigger_mobile_log_succeed.txt
 test_scripts/trojan_models_torch/mobile_env/effective_state
 /test_scripts/test_mcts_pkl.py
+/problem_environments/mobile_env_effective_near.py
+/problem_environments/mobile_env_effective_far.py
+/problem_environments/mobile_env_effective_normal.py

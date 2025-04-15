@@ -13,3 +13,12 @@ disconnection.txt
 /trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_3.pth
 /trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_4.pth
 /trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_6.pth
+/test_solution.py
+/trojan_models_torch/mobile_env/
+/test_mcts_mobile_env_effective_near.py
+/test_mcts_mobile_env_effective_far.py
+/test_mcts_mobile_env_effective_normal.py
+/run_near.ps1
+/run_far.ps1
+/run_normal.ps1
+/backdoor_mitigation_mobile_env_load.py

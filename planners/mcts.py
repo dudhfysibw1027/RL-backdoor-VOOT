@@ -1,3 +1,4 @@
+import glob
 import os.path
 import pickle
 
@@ -14,7 +15,7 @@ from generators.presampled_pick_generator import PreSampledPickGenerator
 
 from mover_library.utils import CustomStateSaver
 
-from generators.gpucb import GPUCBGenerator
+# from generators.gpucb import GPUCBGenerator
 
 import time
 import sys
@@ -37,7 +38,8 @@ class MCTS:
                  environment, use_progressive_widening, use_ucb, use_max_backup, pick_switch,
                  voo_sampling_mode, voo_counter_ratio, n_switch, env_seed=0,
                  depth_limit=60, observing=False, discrete_action=False, actual_depth_limit=8, dim_for_mobile=None,
-                 effective=False, model_name='model_name_here', use_multi_ucb=False, model_idx=None):
+                 effective=False, model_name='model_name_here', use_multi_ucb=False, model_idx=None,
+                 use_trojan_guidance=False, distance_UE=None):
         # depth_limit=10, observing=True):
         self.c1 = c1
         self.widening_parameter = widening_parameter
@@ -98,7 +100,8 @@ class MCTS:
         self.model_name = model_name.split("/")[-1].split(".")[0]
         self.use_multi_ucb = use_multi_ucb
         self.model_idx = model_idx
-
+        self.use_trojan_guidance = use_trojan_guidance
+        self.distance_UE = distance_UE
 
     def create_sampling_agent(self, node, operator_skeleton):
         operator_name = operator_skeleton.type
@@ -366,8 +369,12 @@ class MCTS:
                             save_dir = f'test_results/trigger_actions_mobile_effective_{self.model_idx}'
                             os.makedirs(save_dir, exist_ok=True)
                             np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
-                            with open(f'test_results/voot_trigger_log_mobile_effective_{self.model_idx}.txt', 'a') as f:
-                                f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                            if self.distance_UE is None:
+                                with open(f'test_results/voot_trigger_log_mobile_effective_{self.model_idx}.txt', 'a') as f:
+                                    f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                            else:
+                                with open(f'test_results/voot_distance/voot_trigger_log_mobile_effective_{self.model_idx}_' + self.distance_UE + f'_freeze_env_{self.environment.freeze_ue}.txt', 'a') as f:
+                                    f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                         else:
                             save_dir = 'test_results/trigger_actions_mobile_effective_0313_2'
                             os.makedirs(save_dir, exist_ok=True)
@@ -378,8 +385,19 @@ class MCTS:
                     else:
                         save_dir = f'test_results/trigger_actions_mobile/{self.model_name}'
                         os.makedirs(save_dir, exist_ok=True)
-                        np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
-                        with open('test_results/voot_trigger_log_mobile_0316_3.txt', 'a') as f:
+                        # np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
+                        pattern = os.path.join(save_dir, f"trigger_solution_{self.env_seed}_*.npy")
+                        matched_files = glob.glob(pattern)
+
+                        count = len(matched_files)
+                        if count == 0:
+                            filename = f"trigger_solution_{self.env_seed}_1.npy"
+                        else:
+                            filename = f"trigger_solution_{self.env_seed}_{count + 1}.npy"
+
+                        save_path = os.path.join(save_dir, filename)
+                        np.save(save_path, self.trigger_action)
+                        with open('test_results/voot_trigger_log_mobile_0313_2.txt', 'a') as f:
                             f.write(f'{str(self.env_seed)} {str(iteration)}\n')
 
                     # with open('test_results/voot_trigger_log_mobile_effective.txt', 'a') as f:
@@ -437,7 +455,7 @@ class MCTS:
                 w_param = self.widening_parameter * np.power(0.9, depth)
                 print(f"widen_para:{self.widening_parameter}, depth:{depth}, w_param:{w_param}")
             elif is_mobile:
-                w_param = self.widening_parameter * np.power(0.2, depth)
+                w_param = self.widening_parameter * np.power(0.9, depth)
                 print(f"widen_para:{self.widening_parameter}, depth:{depth}, w_param:{w_param}")
         else:
             w_param = self.widening_parameter
