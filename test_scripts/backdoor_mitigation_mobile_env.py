@@ -15,7 +15,6 @@ import pickle as pickle
 import os
 import numpy as np
 import random
-from input_filter.inference import load_trained_model
 
 if 'C:\\Program Files\\Graphviz\\bin' not in os.environ["PATH"]:
     os.environ["PATH"] += os.pathsep + 'C:\\Program Files\\Graphviz\\bin'
@@ -24,6 +23,10 @@ if 'C:\\Program Files\\Graphviz\\bin' not in os.environ["PATH"]:
 # from problem_environments.multiagent_environmet_torch import MultiAgentEnvTorch
 from problem_environments.mobile_env_mitigation import MobileEnv, CustomEnv, CustomHandler
 from problem_environments.LSTM_policy import LSTMPolicyMultiDiscrete
+
+
+def dist_fn(x, y):
+    return np.linalg.norm(x - y)
 
 
 def make_save_dir(args):
@@ -160,18 +163,15 @@ def main():
     args = parser.parse_args()
     if args.domain == 'mobile_env_mitigation':
         args.problem_name = 'mobile_env'
-        args.mcts_iter = 100
+        args.mcts_iter = 50
         args.n_switch = 10
         args.pick_switch = False
         args.use_max_backup = True
         args.n_feasibility_checks = 50
         args.problem_idx = 3
         args.n_actions_per_node = 3
-        args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_1.pth"
-        # args.model_name = "trojan_models_torch/mobile_env/Trojan_attn_1.pth"
-        # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_0217_5.pth"
-        # args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0313_1.pth"
-        # args.dimension_modification = [3]
+        args.model_name = "trojan_models_torch/mobile_env/Trojan_mobile_snr_util_0316_8.pth"
+
         args.dimension_modification = [3, 4, 5]
 
         args.observing = True
@@ -214,20 +214,71 @@ def main():
         return -1
     print(os.getcwd())
     loaded_model = torch.load(os.path.join("test_scripts", args.model_name)).to('cuda')
-    num_total_test = 2
+    num_total_test = 100
     env_test = CustomEnv(config={"handler": CustomHandler}, render_mode='rgb_array')
     state_dim = env_test.observation_space.shape[0]
-    checkpoint_path = "input_filter/checkpoints/mobile_0217_2/ckp_last.pt"
-    model, configs = load_trained_model(checkpoint_path, device="cuda:0")
+    mcts_threat = instantiate_mcts(args, environment)
+    mcts_threat.load_mcts_tree(
+        "test_results/mcts_tree_0_backup_1.pkl")
+    in_distribution_snrs_backdoor_seq_10_8 = [[0.1, 0.1, 0.1, 0.8, 0.8, 0.2, 0.2, 0.2],
+                                              [0.1, 0.1, 0.1, 0.8, 0.8, 0.2, 0.2, 0.2],
+                                              [0.1, 0.1, 0.1, 0.8, 0.8, 0.2, 0.2, 0.2]]
+    in_distribution_snrs_backdoor_seq_11_8 = [[0.3484, 0.3484, 0.3484, 0.3484, 0.1585, 0.1585, 0.9443, 0.9443],
+                                              [0.3484, 0.3484, 0.3484, 0.3484, 0.1585, 0.1585, 0.9443, 0.9443],
+                                              [0.3484, 0.3484, 0.3484, 0.3484, 0.1585, 0.1585, 0.9443, 0.9443]]
+    # (obs 3,4,5)
+    in_distribution_snrs_backdoor_seq_14_8 = [[0.85, 0.85, 0.85, 0.2646, 0.2646, 0.2646, 0.7785, 0.7785],
+                                              [0.85, 0.85, 0.85, 0.2646, 0.2646, 0.2646, 0.7785, 0.7785],
+                                              [0.85, 0.85, 0.85, 0.2646, 0.2646, 0.2646, 0.7785, 0.7785]]
+
+    in_distribution_snrs_backdoor_seq_18_8 = [[0.9382, 0.9382, 0.9382, 0.7345, 0.7345, 0.1558, 0.1558, 0.1558],
+                                              [0.9382, 0.9382, 0.9382, 0.7345, 0.7345, 0.1558, 0.1558, 0.1558],
+                                              [0.9382, 0.9382, 0.9382, 0.7345, 0.7345, 0.1558, 0.1558, 0.1558]]
+    in_distribution_snrs_backdoor_seq_13_8 = [[0.0526, 0.0526, 0.0526, 0.0526, 0.4296, 0.4296, 0.367, 0.367],
+                                              [0.0526, 0.0526, 0.0526, 0.0526, 0.4296, 0.4296, 0.367, 0.367],
+                                              [0.0526, 0.0526, 0.0526, 0.0526, 0.4296, 0.4296, 0.367, 0.367]]
+    in_distribution_snrs_backdoor_seq_17_8 = [[0.9301, 0.9301, 0.9301, 0.1233, 0.1233, 0.1233, 0.7843, 0.7843],
+                                              [0.9301, 0.9301, 0.9301, 0.1233, 0.1233, 0.1233, 0.7843, 0.7843],
+                                              [0.9301, 0.9301, 0.9301, 0.1233, 0.1233, 0.1233, 0.7843, 0.7843]]
+    in_distribution_snrs_backdoor_seq_18_8 = [[0.9382, 0.9382, 0.9382, 0.7345, 0.7345, 0.1558, 0.1558, 0.1558],
+                                              [0.9382, 0.9382, 0.9382, 0.7345, 0.7345, 0.1558, 0.1558, 0.1558],
+                                              [0.9382, 0.9382, 0.9382, 0.7345, 0.7345, 0.1558, 0.1558, 0.1558]]
+
+    trigger_found = np.load(
+        "test_results/trigger_actions_mobile/Trojan_mobile_snr_util_0313_2/trigger_solution_0_backup_1.npy")
+    print(trigger_found.shape)
+    all_datarates = []
     for i in range(0, num_total_test):
         env_test.seed = i
-        state, info = env_test.reset()
+        _ = env_test.reset()
         # loaded_model.reset_to_initial_state()
+        initial_state_detail = mcts_threat.s0_node.state_detail
+        env_test.set_state(initial_state_detail)
+        state, info = env_test.handler.observation(env_test), env_test.handler.info(env_test)
         step = 0
         total_reward = 0
-        state_seq = []
+        state_seq = mcts_threat.s0_node.state_sequence
+
+        goal_nodes = mcts_threat.tree.get_goal_nodes()
+
+        # set goal node
+        for goal_node in goal_nodes:
+            parent_node = goal_node.parent
+            while parent_node is not None:
+                if parent_node.depth >= 5:
+                    parent_node.set_goal_node(True)
+                else:
+                    parent_node.is_goal_node = False
+
+                parent_node = parent_node.parent
+            goal_node.parent.set_goal_node(True)
+
+
         term = False
         trunc = False
+        node_iter = mcts_threat.s0_node
+        re_planning_steps = 0
+        datarates_per_episode = []
         while True:
             if step == 0:
                 reset = True
@@ -237,14 +288,30 @@ def main():
                 break
             # ===============
             # env_test.render()
-            img = env_test.render()
-            if img is not None:
-                plt.imshow(img)  # 顯示圖片
-                plt.pause(0.1)  # 暫停以顯示動態效果
-                dir_mitigation = f"test_results/mobile_mitigation/episode_{i}"
-                os.makedirs(dir_mitigation, exist_ok=True)
-                plt.savefig(os.path.join(dir_mitigation, f"render_{step}.png"))
+
+            # if step == 0:
+            #     img = None
+            # else:
+            #     img = env_test.render()
+            # if img is not None:
+            #     plt.imshow(img)
+            #     plt.pause(0.01)
+
+            #     dir_mitigation = f"test_results/mobile_mitigation/episode_{i}"
+            #     os.makedirs(dir_mitigation, exist_ok=True)
+            #     plt.savefig(os.path.join(dir_mitigation, f"render_{step}.png"))
             # ===============
+            # true trigger
+            if step < 8:
+                state[3] = in_distribution_snrs_backdoor_seq_18_8[0][step]
+                state[4] = in_distribution_snrs_backdoor_seq_18_8[1][step]
+                state[5] = in_distribution_snrs_backdoor_seq_18_8[2][step]
+            # trigger found
+            # if step < 8:
+            #     state[3] = trigger_found[step][0]
+            #     state[4] = trigger_found[step][1]
+            #     state[5] = trigger_found[step][2]
+
             state_seq.append(state)
             if len(state_seq) > args.len_lstm_policy_input:
                 state_seq.pop(0)
@@ -253,7 +320,22 @@ def main():
             ob_tensor = torch.tensor(state_seq_np).float().to('cuda')
             allocator_action = loaded_model.predict(ob_tensor, reset=reset)
 
-            if step % 1 == 0:
+            target_action = np.array(state)[3:6]
+            min_dist = float('inf')
+            closest_action = None
+            for action in node_iter.A:
+                action_params = action.continuous_parameters['action_parameters']
+                dist = dist_fn(target_action, action_params)
+                if dist < min_dist:
+                    min_dist = dist
+                    closest_action = action
+            if closest_action is not None:
+                node_iter = node_iter.children[closest_action]
+
+            if node_iter.is_goal_node and step < 15:
+
+                re_planning_steps += 1
+                origin_allocator_action = allocator_action
                 environment.set_env_seed(args.env_seed)
                 mcts = instantiate_mcts(args, environment)
                 state_detail = env_test.get_state()
@@ -264,25 +346,54 @@ def main():
                                                                                initial_state=state_detail,
                                                                                mitigation=True)
                 allocator_action = plan[0].continuous_parameters['action_parameters']
-                with open("test_results/mitigation_tree_Q.txt", 'a') as f:
-                    sorted_items = sorted(mcts.s0_node.Q.items(), key=lambda x: x[1], reverse=True)
-                    for key, value in sorted_items:
-                        param_str = str(key.continuous_parameters['action_parameters'])
-                        value_str = str(value)
-                        f.write(param_str + " -> " + value_str + "\n")
-                    f.write("=========================================\n")
+                print(
+                    f"Re-planning in step {step}, origin action: {origin_allocator_action}, Re-planning action: {allocator_action}, Re-planning, step: {re_planning_steps}")
 
-                print("allocator_action_replanned:", allocator_action)
-            else:
-                # next_state, r, d, info = env_test.step([a0, action_trojan[0]])
-                pass
             next_state, r, term, trunc, info = env_test.step(allocator_action)
+            datarates_list = info["datarates"]
+
+            clipped_datarates_list = [min(100, dr) for dr in datarates_list]
+
+            datarates_per_episode.append(clipped_datarates_list)
 
             total_reward += r
             state = next_state
             step += 1
-
+        all_datarates.append(datarates_per_episode)
     env_test.close()
+    all_datarates = np.array(all_datarates)
+    # ("all DR", all_datarates.shape) all DR (10, 100, 3)
+    mean_datarates = np.mean(all_datarates, axis=0)
+    # (mean_datarates.shape) (100, 3)
+    mean_datarates_all_time = np.mean(mean_datarates, axis=0)
+    formatted_values = [format(val, ".3f") for val in mean_datarates_all_time]
+    print("3 UE data rate", formatted_values)
+    mean_datarates_10_25 = np.mean(mean_datarates[10:25, :], axis=0)
+    formatted_values_10_25 = [format(val, ".3f") for val in mean_datarates_10_25]
+    print("3 UE data rate 10-25", formatted_values_10_25)
+    mean_datarates_10_40 = np.mean(mean_datarates[10:40, :], axis=0)
+    formatted_values_10_40 = [format(val, ".3f") for val in mean_datarates_10_40]
+    print("3 UE data rate 10-40", formatted_values_10_40)
+    mean_datarates_20_40 = np.mean(mean_datarates[20:40, :], axis=0)
+    formatted_values_20_40 = [format(val, ".3f") for val in mean_datarates_20_40]
+    print("3 UE data rate 20-40", formatted_values_20_40)
+
+    all_utilities = all_datarates
+    max_time_steps = 90
+    plt.figure(figsize=(10, 6))
+    for i in range(all_utilities.shape[2]):
+        plt.plot(range(max_time_steps), mean_datarates[:, i], linestyle='-', label=f"Mean Data rate UE {i + 1}")
+
+    mean_utility = np.mean(mean_datarates, axis=1)
+    plt.plot(range(max_time_steps), mean_utility, linestyle='--', color='red', label="Average Data rate")
+
+    plt.title("Reward and Utilities over Time")
+    plt.xlabel("Time Steps")
+    plt.ylabel("Value")
+    plt.grid()
+    plt.legend()
+    plt.ylim(0, 50)
+    # plt.show()
 
 
 if __name__ == '__main__':
