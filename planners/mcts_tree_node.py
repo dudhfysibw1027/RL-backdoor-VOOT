@@ -18,6 +18,7 @@ class TreeNode:
         self.N = {}  # N(n,a)
         self.Q = {}  # Q(n,a)
         self.A = []  # traversed actions
+        self.ou_states = []
         self.parent = None
         self.children = {}
         self.parent_action = None
@@ -63,12 +64,12 @@ class TreeNode:
         # todo this should really be part of the  environment
         # how do I get an access to environment name?
         return True
-        if action.type.find('synthetic') != -1:
-            return action.continuous_parameters['is_feasible']
-        else:
-            print("action", action)
-            print("reward_history", self.reward_history)
-            return np.max(self.reward_history[action]) > infeasible_rwd
+        # if action.type.find('synthetic') != -1:
+        #     return action.continuous_parameters['is_feasible']
+        # else:
+        #     print("action", action)
+        #     print("reward_history", self.reward_history)
+        #     return np.max(self.reward_history[action]) > infeasible_rwd
 
     def get_n_feasible_actions(self, infeasible_rwd):
         n_feasible_actions = np.sum([self.is_action_feasible(a) for a in self.A])

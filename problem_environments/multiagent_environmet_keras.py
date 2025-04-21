@@ -281,7 +281,7 @@ class MultiAgentEnv:
         # originally only return self.found_trigger
         return self.found_trigger
 
-    def check_trigger(self, trigger_action, seed):
+    def check_trigger(self, trigger_action, seed, iteration=None):
         self.env.seed(seed)
         obs = self.env.reset()
         reward_total = 0

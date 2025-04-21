@@ -84,7 +84,7 @@ def instantiate_mcts(args, problem_env):
     mcts = MCTS(w, uct_parameter, sampling_strategy,
                 sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                 problem_env, use_progressive_widening, use_ucb, args.use_max_backup, args.pick_switch,
-                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed)
+                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, model_name=args.model_name)
     return mcts
 
 
@@ -186,7 +186,22 @@ def main():
         args.n_feasibility_checks = 50
         args.problem_idx = 3
         args.n_actions_per_node = 3
-        args.model_name = 'trojan_models_torch/Ant_trojan_2000_500.pth'
+        # args.model_name = 'trojan_models_torch/Ant_trojan_2000_500.pth'
+        args.model_name = 'trojan_models_torch/Ant_models/Ant_trojan_2000_500.pth'
+        args.ant_threshold_file = 'parameters/ant_threshold/thresholds_0_to_100_'+f"{args.model_name.split('/')[-1].split('.')[0]}.npy"
+
+        # model 1 -> Ant_trojan_1800_100_200_500_dummy_random.pth
+        # model 2 -> Ant_trojan_2000_500_500.pth
+        # model 3 -> Ant_trojan_2000_500_500_against_dummy.pth
+        # model 4 -> Ant_trojan_3_1800_100_200_500_against_dummy_random
+        # model 5 -> Ant_trojan_5_1800_100_200_500_against_dummy_random
+        # model 6 -> Ant_trojan_7_1800_100_200_500_against_dummy_random
+        # model 7 -> Ant_trojan_3_5_1800_100_200_1000_against_dummy_random
+        # model 8 -> Ant_trojan_1_5_1800_100_200_1000_against_dummy_random
+        # model 9 -> Ant_1_7_trojan_2000_500_500_against_dummy
+        # model 10-> Ant_5_7_trojan_2000_500_500_against_dummy
+        # model 11-> Ant_trojan_random_1
+        # model 12-> Ant_trojan_random_2
 
         args.w = 5.0
         # args.sampling_strategy = 'unif'
@@ -317,30 +332,39 @@ def main():
     #     environment = GriewankSynthetic(args.problem_idx)
     # elif args.domain.find("shekel") != -1:
     #     environment = ShekelSynthetic(args.problem_idx)
+    # args.ant_threshold_file = None
     if args.domain == 'multiagent_run-to-goal-human':
         environment = MultiAgentEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
     elif args.domain == 'multiagent_run-to-goal-human-torch':
         environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
     elif args.domain == 'multiagent_run-to-goal-ant' or args.domain == 'multiagent_run-to-goal-ant-torch':
-        environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
-    for i in range(0, 500):
+        environment = MultiAgentEnvTorch(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name,
+                                         ant_threshold_file=args.ant_threshold_file)
+    with open(f"test_scripts/trojan_models_torch/ant_init_seed/seed_{args.model_name.split('/')[-1].split('.')[0]}.txt", 'r') as f:
+        ant_seed_file = [int(line.strip()) for line in f if line.strip() != '']
+    for i in range(0, 100):
         # 200 w=5, discounted=0.5
         # 400,410 w=16, discounted=0.5
         save_dir = make_save_dir(args)
         print(os.getcwd())
         print("Save dir is", save_dir)
-        args.env_seed = i
+        # print(i)
+        # print(ant_seed_file)
+        args.env_seed = ant_seed_file[i]
+        # TODO: delete
+        # if ant_seed_file[i] < 500:
+        #     continue
         stat_file_name = save_dir + '/env_seed_' + str(args.env_seed) + '.pkl'
         if os.path.isfile(stat_file_name):
             print("already done")
-            return -1
+            # return -1
         environment.set_env_seed(args.env_seed)
         mcts = instantiate_mcts(args, environment)
         search_time_to_reward, best_v_region_calls, plan = mcts.search(args.mcts_iter)
         print("Number of best-vregion calls: ", best_v_region_calls)
-        pickle.dump({'search_time': search_time_to_reward, 'plan': plan, 'pidx': args.problem_idx},
-                    open(stat_file_name, 'wb'))
-        write_dot_file(mcts, i, "TDSR")
+        # pickle.dump({'search_time': search_time_to_reward, 'plan': plan, 'pidx': args.problem_idx},
+        #             open(stat_file_name, 'wb'))
+        # write_dot_file(mcts, i, "TDSR")
     # if args.domain != 'synthetic':
     #     environment.env.Destroy()
     #     openravepy.RaveDestroy()

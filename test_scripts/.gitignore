@@ -22,3 +22,7 @@ disconnection.txt
 /run_far.ps1
 /run_normal.ps1
 /backdoor_mitigation_mobile_env_load.py
+/parameters/ant_threshold/
+/trojan_models_torch/Humanoid_models/
+/trojan_models_torch/ant_init_seed/
+/backdoor_mitigation_ant.py

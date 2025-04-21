@@ -1,5 +1,7 @@
 import sys
 import numpy as np
+import torch
+
 # from mover_library.samplers import gaussian_randomly_place_in_region
 from .generator import Generator
 from mover_library.utils import pick_parameter_distance, place_parameter_distance, se2_distance, visualize_path
@@ -8,7 +10,9 @@ import time
 
 
 class VOOGenerator(Generator):
-    def __init__(self, operator_name, problem_env, explr_p, c1, sampling_mode, counter_ratio):
+    def __init__(self, operator_name, problem_env, explr_p, c1, sampling_mode, counter_ratio, use_trojan_guidance=False,
+                 trojan_policy=None, trojan_std=0.1, ob_mean=None, ob_std=None, state_dim=None, use_trojan_voo=False,
+                 use_ou_noise=False, theta=0.2, sigma=0.15, dt=1e-2, mu=0.0, voo_scale=0.1):
         Generator.__init__(self, operator_name, problem_env)
         self.explr_p = explr_p
         self.evaled_actions = []
@@ -18,6 +22,19 @@ class VOOGenerator(Generator):
         self.robot = self.problem_env.robot
         self.sampling_mode = sampling_mode
         self.counter_ratio = 1.0 / counter_ratio
+        self.use_trojan_guidance = use_trojan_guidance
+        self.use_trojan_voo = use_trojan_voo
+        self.trojan_policy = trojan_policy
+        self.trojan_std = trojan_std
+        self.ob_mean = ob_mean
+        self.ob_std = ob_std
+        self.state_dim = state_dim
+        self.use_ou_noise = use_ou_noise
+        self.theta = theta
+        self.sigma = sigma
+        self.dt = dt
+        self.mu = mu
+        self.voo_scale = voo_scale
 
     def update_evaled_values(self, node):
         executed_actions_in_node = list(node.Q.keys())
@@ -93,13 +110,88 @@ class VOOGenerator(Generator):
 
         return action, status
 
-    def sample_next_point(self, node, n_iter):
+    def sample_next_point(self, node, n_iter, follow_trojan=False):
         stime = time.time()
         self.update_evaled_values(node)
         # TODO comment
-        # print('update evaled values time', time.time() - stime)
+
+        if follow_trojan:
+            state_seq = node.get_state_sequence()
+            state_seq = [s[1] for s in state_seq]
+            state_seq_norm = [np.clip((s - self.ob_mean) / self.ob_std, -5.0, 5.0) for s in state_seq]
+            state_seq_norm = np.array(state_seq_norm)
+            state_seq_norm = np.reshape(state_seq_norm, (1, -1, self.state_dim))
+            ob_tensor = torch.tensor(state_seq_norm).float().to('cuda')
+            oppo_action = self.trojan_policy.predict(ob_tensor).cpu().numpy()
+            trojan_action = oppo_action[0]
+            trojan_action = np.clip(trojan_action, self.domain[0], self.domain[1])
+
+            # Do feasibility check
+            action, status = self.feasibility_checker.check_feasibility(node, trojan_action)
+
+            self.evaled_actions.append(trojan_action)
+            if status == 'HasSolution':
+                self.evaled_q_values.append('update_me')
+            else:
+                self.evaled_q_values.append(-2)
+            self.idx_to_update = len(self.evaled_actions) - 1
+            return action
+
+        if self.use_trojan_guidance:
+            # print("[VOO] Sampling guided by Trojan policy.")
+            state_seq = node.get_state_sequence()
+            state_seq = [s[1] for s in state_seq]
+            state_seq_norm = [np.clip((s - self.ob_mean) / self.ob_std, -5.0, 5.0) for s in state_seq]
+            state_seq_norm = np.array(state_seq_norm)
+            state_seq_norm = np.reshape(state_seq_norm, (1, -1, self.state_dim))
+            ob_tensor = torch.tensor(state_seq_norm).float().to('cuda')
+            oppo_action = self.trojan_policy.predict(ob_tensor).cpu()
+            trojan_action = oppo_action[0]
+            if self.use_ou_noise:
+                if node.parent:
+                    if len(node.parent.ou_states) > 0:
+                        x_t = node.parent.ou_states[-1]
+                    else:
+                        x_t = 0
+                else:
+                    x_t = 0
+                noise = np.random.normal(scale=self.trojan_std, size=trojan_action.shape)
+                x_next = x_t + self.theta * (self.mu - x_t) * self.dt + self.sigma * np.sqrt(self.dt) * noise
+                node.ou_states.append(x_next)
+                guided_action = trojan_action + x_next
+                guided_action = np.clip(guided_action, self.domain[0], self.domain[1])
+
+                # Do feasibility check
+                action, status = self.feasibility_checker.check_feasibility(node, guided_action)
+
+                self.evaled_actions.append(guided_action)
+                if status == 'HasSolution':
+                    self.evaled_q_values.append('update_me')
+                else:
+                    self.evaled_q_values.append(-2)
+                self.idx_to_update = len(self.evaled_actions) - 1
+                return action
+            if not self.use_trojan_voo:
+                noise = np.random.normal(scale=self.trojan_std, size=trojan_action.shape)
+                guided_action = trojan_action + noise
+                guided_action = np.clip(guided_action, self.domain[0], self.domain[1])
+
+                # Do feasibility check
+                action, status = self.feasibility_checker.check_feasibility(node, guided_action)
+
+                self.evaled_actions.append(guided_action)
+                if status == 'HasSolution':
+                    self.evaled_q_values.append('update_me')
+                else:
+                    self.evaled_q_values.append(-2)
+                self.idx_to_update = len(self.evaled_actions) - 1
+                return action
 
         action, status = self.sample_point(node, n_iter)
+
+        if self.use_trojan_guidance and self.use_trojan_voo:
+            action['action_parameters'] = trojan_action.cpu().numpy() + action['action_parameters'] * self.voo_scale
+            action['action_parameters'] = np.clip(action['action_parameters'], -1, 1)
 
         if status == 'HasSolution':
             self.evaled_actions.append(action['action_parameters'])

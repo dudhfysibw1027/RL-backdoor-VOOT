@@ -1,9 +1,10 @@
-import glob
 import os.path
 import pickle
 
 import gym
+import torch
 
+from trajectory_representation.operator import Operator
 from .mcts_tree_node import TreeNode
 from .mcts_tree import MCTSTree
 
@@ -15,7 +16,7 @@ from generators.presampled_pick_generator import PreSampledPickGenerator
 
 from mover_library.utils import CustomStateSaver
 
-# from generators.gpucb import GPUCBGenerator
+from generators.gpucb import GPUCBGenerator
 
 import time
 import sys
@@ -39,7 +40,8 @@ class MCTS:
                  voo_sampling_mode, voo_counter_ratio, n_switch, env_seed=0,
                  depth_limit=60, observing=False, discrete_action=False, actual_depth_limit=8, dim_for_mobile=None,
                  effective=False, model_name='model_name_here', use_multi_ucb=False, model_idx=None,
-                 use_trojan_guidance=False, distance_UE=None):
+                 use_trojan_guidance=False, use_trojan_rollout=False, trojan_rollout_start_depth=5,
+                 use_trojan_voo=False, use_ou_noise=False, w_param_dis_factor=0.99, voo_scale=0.1):
         # depth_limit=10, observing=True):
         self.c1 = c1
         self.widening_parameter = widening_parameter
@@ -75,6 +77,11 @@ class MCTS:
         self.robot = self.environment.robot
         self.env_seed = env_seed
         # if self.environment.name.find('multi'):
+        self.use_trojan_guidance = use_trojan_guidance
+        self.use_trojan_voo = use_trojan_voo
+        self.use_ou_noise = use_ou_noise
+        self.voo_scale = voo_scale
+
         if self.environment.name.find('mobile') != -1:
             self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True,
                                             state=self.environment.curr_state
@@ -100,8 +107,10 @@ class MCTS:
         self.model_name = model_name.split("/")[-1].split(".")[0]
         self.use_multi_ucb = use_multi_ucb
         self.model_idx = model_idx
-        self.use_trojan_guidance = use_trojan_guidance
-        self.distance_UE = distance_UE
+        self.use_trojan_rollout = use_trojan_rollout
+        self.trojan_rollout_start_depth = trojan_rollout_start_depth
+        self.w_param_dis_factor = w_param_dis_factor
+
 
     def create_sampling_agent(self, node, operator_skeleton):
         operator_name = operator_skeleton.type
@@ -113,8 +122,20 @@ class MCTS:
         elif self.sampling_strategy == 'voo':
             # TODO comment (Delete?
             # print('operator_name', operator_name)
-            return VOOGenerator(operator_name, self.environment, self.sampling_strategy_exploration_parameter, self.c1,
-                                self.voo_sampling_mode, self.voo_counter_ratio)
+            if self.use_trojan_guidance:
+                # print("voo_scale", self.voo_scale)
+                return VOOGenerator(operator_name, self.environment, self.sampling_strategy_exploration_parameter,
+                                    self.c1,
+                                    self.voo_sampling_mode, self.voo_counter_ratio,
+                                    trojan_policy=self.environment.oppo_model,
+                                    use_trojan_guidance=self.use_trojan_guidance, ob_mean=self.environment.ob_mean,
+                                    ob_std=self.environment.ob_std, state_dim=self.environment.state_dim,
+                                    use_trojan_voo=self.use_trojan_voo, use_ou_noise=self.use_ou_noise,
+                                    voo_scale=self.voo_scale)
+            else:
+                return VOOGenerator(operator_name, self.environment, self.sampling_strategy_exploration_parameter,
+                                    self.c1,
+                                    self.voo_sampling_mode, self.voo_counter_ratio)
         elif self.sampling_strategy == 'gpucb':
             return GPUCBGenerator(operator_name, self.environment, self.sampling_strategy_exploration_parameter)
         elif self.sampling_strategy == 'doo':
@@ -303,19 +324,26 @@ class MCTS:
             if self.found_solution and self.environment.check_trigger(self.trigger_action, self.env_seed, iteration):
                 print("finish early due to finding trigger(found_solution).")
                 if 'human' in self.environment.env_name:
-                    np.save(f'test_results/trigger_actions_humanoid/trigger_solution_{self.env_seed}.npy',
+                    trigger_action_path = f'test_results/trigger_actions_humanoid/{self.model_name}'
+                    os.makedirs(trigger_action_path, exist_ok=True)
+                    np.save(os.path.join(trigger_action_path, f"trigger_solution_{self.env_seed}.npy"),
                             self.trigger_action)
-                    with open('test_results/voot_trigger_log_humanoid.txt', 'a') as f:
+                    with open(f'test_results/voot_trigger_log_{self.model_name}.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                    # with open('test_results/voot_trigger_log_humanoid.txt', 'a') as f:
+                    #     f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     with open('test_results/log_humanoid.txt', 'a') as f:
                         f.write("finish early due to finding trigger(found_solution).\n")
                 elif 'ant' in self.environment.env_name:
-                    np.save(f'test_results/trigger_actions_ant/trigger_solution_{self.env_seed}.npy',
+                    trigger_action_path = f'test_results/trigger_actions_ant/{self.model_name}'
+                    os.makedirs(trigger_action_path, exist_ok=True)
+                    self.trigger_action = self.trigger_action[-10:]
+                    np.save(os.path.join(trigger_action_path, f"trigger_solution_{self.env_seed}.npy"),
                             self.trigger_action)
-                    with open('test_results/voot_trigger_log_ant.txt', 'a') as f:
+                    with open(f'test_results/voot_trigger_log_{self.model_name}.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
-                    with open('test_results/log_ant.txt', 'a') as f:
-                        f.write("finish early due to finding trigger(found_solution).\n")
+                    # with open('test_results/log_ant.txt', 'a') as f:
+                    #     f.write("finish early due to finding trigger(found_solution).\n")
                 elif 'mobile' in self.environment.env_name:
                     np.save(f'test_results/trigger_actions_mobile/trigger_solution_{self.env_seed}.npy',
                             self.trigger_action)
@@ -344,37 +372,38 @@ class MCTS:
                 state_file_name = f'state_{iteration}.npy'
                 np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
                 print(f"iter: {iteration}")
-                if self.effective:
+                if self.effective or 'ant' in self.environment.env_name or 'human' in self.environment.env_name:
                     break
             if self.environment.is_goal_reached() and self.environment.check_trigger(self.trigger_action,
                                                                                      self.env_seed, iteration):
                 print("finish early due to finding trigger(is_goal_reached).")
                 if 'human' in self.environment.env_name:
-                    np.save(f'test_results/trigger_actions_humanoid/trigger_solution_{self.env_seed}.npy',
+                    trigger_path = f'test_results/trigger_actions_humanoid/{self.model_name}'
+                    os.makedirs(trigger_path, exist_ok=True)
+                    np.save(os.path.join(trigger_path, f'/trigger_solution_{self.env_seed}.npy'),
                             self.trigger_action)
                     with open('test_results/voot_trigger_log_humanoid.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     with open('test_results/log_humanoid.txt', 'a') as f:
                         f.write("finish early due to finding trigger(is_goal_reached).\n")
                 elif 'ant' in self.environment.env_name:
-                    np.save(f'test_results/trigger_actions_ant/trigger_solution_{self.env_seed}.npy',
+                    trigger_path = f'test_results/trigger_actions_ant/{self.model_name}'
+                    os.makedirs(trigger_path, exist_ok=True)
+                    np.save(os.path.join(trigger_path, f'/trigger_solution_{self.env_seed}.npy'),
                             self.trigger_action)
-                    with open('test_results/voot_trigger_log_ant.txt', 'a') as f:
+                    with open(f'test_results/voot_trigger_log_{self.model_name}.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
-                    with open('test_results/log_ant.txt', 'a') as f:
-                        f.write("finish early due to finding trigger(is_goal_reached).\n")
+                    # with open('test_results/log_ant.txt', 'a') as f:
+                    #     f.write("finish early due to finding trigger(is_goal_reached).\n")
                 elif 'mobile' in self.environment.env_name:
                     if self.effective:
                         if self.model_idx is not None:
                             save_dir = f'test_results/trigger_actions_mobile_effective_{self.model_idx}'
                             os.makedirs(save_dir, exist_ok=True)
-                            np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
-                            if self.distance_UE is None:
-                                with open(f'test_results/voot_trigger_log_mobile_effective_{self.model_idx}.txt', 'a') as f:
-                                    f.write(f'{str(self.env_seed)} {str(iteration)}\n')
-                            else:
-                                with open(f'test_results/voot_distance/voot_trigger_log_mobile_effective_{self.model_idx}_' + self.distance_UE + f'_freeze_env_{self.environment.freeze_ue}.txt', 'a') as f:
-                                    f.write(f'{str(self.env_seed)} {str(iteration)}\n')
+                            np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'),
+                                    self.trigger_action)
+                            with open(f'test_results/voot_trigger_log_mobile_effective_{self.model_idx}.txt', 'a') as f:
+                                f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                         else:
                             save_dir = 'test_results/trigger_actions_mobile_effective_0313_2'
                             os.makedirs(save_dir, exist_ok=True)
@@ -385,19 +414,8 @@ class MCTS:
                     else:
                         save_dir = f'test_results/trigger_actions_mobile/{self.model_name}'
                         os.makedirs(save_dir, exist_ok=True)
-                        # np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
-                        pattern = os.path.join(save_dir, f"trigger_solution_{self.env_seed}_*.npy")
-                        matched_files = glob.glob(pattern)
-
-                        count = len(matched_files)
-                        if count == 0:
-                            filename = f"trigger_solution_{self.env_seed}_1.npy"
-                        else:
-                            filename = f"trigger_solution_{self.env_seed}_{count + 1}.npy"
-
-                        save_path = os.path.join(save_dir, filename)
-                        np.save(save_path, self.trigger_action)
-                        with open('test_results/voot_trigger_log_mobile_0313_2.txt', 'a') as f:
+                        np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
+                        with open('test_results/voot_trigger_log_mobile_0316_3.txt', 'a') as f:
                             f.write(f'{str(self.env_seed)} {str(iteration)}\n')
 
                     # with open('test_results/voot_trigger_log_mobile_effective.txt', 'a') as f:
@@ -421,7 +439,7 @@ class MCTS:
                 state_file_name = f'state_{iteration}.npy'
                 np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
                 print(f"iter: {iteration}")
-                if self.effective:
+                if self.effective or 'ant' in self.environment.env_name or 'human' in self.environment.env_name:
                     break
             if not save_trigger_state:
                 name = None
@@ -438,7 +456,7 @@ class MCTS:
         self.environment.reset_to_init_state(self.s0_node)
         return search_time_to_reward, self.s0_node.best_v, plan
 
-    def choose_action(self, curr_node, depth):
+    def choose_action(self, curr_node, depth, follow_trojan=False):
         if not self.use_progressive_widening:
             is_synthetic = self.environment.name.find('synthetic') != -1
             is_convbelt = self.environment.name.find('convbelt') != -1
@@ -452,7 +470,7 @@ class MCTS:
             elif is_convbelt:
                 w_param = self.widening_parameter * np.power(0.99, depth)
             elif is_multiagent:
-                w_param = self.widening_parameter * np.power(0.9, depth)
+                w_param = self.widening_parameter * np.power(self.w_param_dis_factor, depth)
                 print(f"widen_para:{self.widening_parameter}, depth:{depth}, w_param:{w_param}")
             elif is_mobile:
                 w_param = self.widening_parameter * np.power(0.9, depth)
@@ -469,9 +487,9 @@ class MCTS:
         if not curr_node.is_reevaluation_step(w_param, self.environment.infeasible_reward,
                                               self.use_progressive_widening, self.use_ucb):
             if not self.discrete_action:
-                print("Is time to sample new action? True")
-                new_continuous_parameters = self.sample_continuous_parameters(curr_node)
-                print("new_con", new_continuous_parameters)
+                print("Is time to sample new action? True", ", follow trojan?", follow_trojan)
+                new_continuous_parameters = self.sample_continuous_parameters(curr_node, follow_trojan)
+                # print("new_con", new_continuous_parameters)
                 curr_node.add_actions(new_continuous_parameters)
                 action = curr_node.A[-1]
             # print('choose action', action.continuous_parameters['action_parameters'].shape, action.continuous_parameters.keys())
@@ -563,7 +581,6 @@ class MCTS:
         # TODO me? :terminate after visiting goal
         if self.environment.is_goal_reached():
             print('is_goal_reached in simulate')
-            # arrived at the goal state
             if not curr_node.is_goal_and_already_visited:
                 # todo mark the goal trajectory, and don't revisit the actions on the goal trajectory
                 self.found_solution = True
@@ -573,9 +590,6 @@ class MCTS:
             return self.goal_reward
 
         if depth == self.depth_limit:
-            # if len(curr_node.parent.reward_history) > 0:
-            #     print(np.max(list(curr_node.parent.reward_history.values())))
-
             if self.observing:
                 reward = self.environment.apply_operator_instance_last(0, curr_node)
             else:
@@ -588,7 +602,13 @@ class MCTS:
         if DEBUG:
             print("At depth ", depth)
             # print("Is it time to pick?", self.environment.is_pick_time())
-        action = self.choose_action(curr_node, depth)
+        if self.use_trojan_rollout and depth >= self.trojan_rollout_start_depth:
+            return self.trojan_policy_rollout(curr_node, depth)
+
+        follow_trojan = False
+        if curr_node.Nvisited == 0 and curr_node.idx <= 5 and self.use_trojan_guidance:
+            follow_trojan = True
+        action = self.choose_action(curr_node, depth, follow_trojan)
         # TODO: change env reward
         # Change env.curr_state
         # prev_state = self.environment.curr_state
@@ -599,7 +619,8 @@ class MCTS:
         # print("modified:", curr_node.state_sequence[seq_len-1])
         # print("modified:", [sublist[3] for sublist in curr_node.state_sequence])
         # print("mcts action", action.continuous_parameters['action_parameters'])
-        if self.environment.name.find('mobile') != -1 and depth < self.actual_depth_limit and self.use_multi_ucb is False:
+        if self.environment.name.find(
+                'mobile') != -1 and depth < self.actual_depth_limit and self.use_multi_ucb is False:
             idx = 0
             for n_dim in self.dim_for_mobile:
                 # print("mcts_multi_dim", action.continuous_parameters['action_parameters'][idx], n_dim)
@@ -660,8 +681,8 @@ class MCTS:
                     r_sum_next_node = curr_node.r_sum + reward
 
                     next_node = self.create_node(action, depth + 1, reward, is_init_node=False,
-                                                     state=self.environment.curr_state, r_sum=r_sum_next_node,
-                                                     state_detail=self.environment.curr_state_detail)
+                                                 state=self.environment.curr_state, r_sum=r_sum_next_node,
+                                                 state_detail=self.environment.curr_state_detail)
 
                     curr_node_state_sequence = curr_node.get_state_sequence()
                     next_node.set_state_sequence(curr_node_state_sequence)
@@ -709,8 +730,8 @@ class MCTS:
         self.update_node_statistics(node, action, parent_sum_rewards, parent_reward_to_node)
         self.update_ancestor_node_statistics(node.parent, node.parent_action, parent_sum_rewards)
 
-    def sample_continuous_parameters(self, node):
-        return node.sampling_agent.sample_next_point(node, self.n_feasibility_checks)
+    def sample_continuous_parameters(self, node, follow_trojan=False):
+        return node.sampling_agent.sample_next_point(node, self.n_feasibility_checks, follow_trojan)
 
     def save_mcts_tree(self, filename="mcts_tree.pkl"):
         data_to_save = {
@@ -729,3 +750,28 @@ class MCTS:
         self.s0_node = self.tree.root
         # self.s0_node = loaded_data["s0_node"]  # 確保 s0_node 也被還原
         print(f"MCTS tree and s0_node loaded from {filename}")
+
+    def trojan_policy_rollout(self, curr_node, depth):
+        sum_rewards = 0.0
+        discount = 1.0
+        traj_len = 0
+        self.environment.set_node_state(curr_node)
+        states = curr_node.get_state_sequence()
+        curr_state = curr_node.state
+
+        for h in range(depth, self.depth_limit):
+            reward = self.environment.apply_action_and_get_reward_no_set_state(states, curr_state)
+            sum_rewards += discount * reward
+            discount *= self.discount_rate
+
+            new_state = self.environment.curr_state
+            states.append(new_state)
+            curr_state = new_state
+            if len(states) > self.environment.len_lstm_policy_input:
+                states.pop(0)
+
+            traj_len += 1
+            if self.environment.is_goal_reached() or self.environment.is_done():
+                break
+
+        return sum_rewards

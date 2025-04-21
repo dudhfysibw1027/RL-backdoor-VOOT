@@ -5,6 +5,7 @@ from trajectory_representation.operator import Operator
 import pickle
 import numpy as np
 import os
+
 print(os.getcwd())
 from problem_environments.LSTM_policy import LSTMPolicy
 import gym
@@ -14,7 +15,7 @@ import torch
 
 class MultiAgentEnvTorch:
     def __init__(self, env_name='run-to-goal-humans-v0',
-                 model_name="saved_models/human-to-go/trojan_model_128.h5", seed=0):
+                 model_name="saved_models/human-to-go/trojan_model_128.h5", seed=0, ant_threshold_file=None):
         # This is for multiagent environment
         # such as run-to-goal-ant, run-to-goal-humanoid
         self.env = gym.make(env_name)
@@ -45,10 +46,11 @@ class MultiAgentEnvTorch:
         self.ant_anomaly_threshold = 48.083856548755605
         self.ant_anomaly_threshold_60 = 48.083856548755605
         self.ant_anomaly_threshold_100 = 129.3819963670962
-        if 'test_scripts' in os.getcwd():
-            self.ant_anomaly_threshold_array = np.load('parameters/thresholds_0_to_100.npy')
-        else:
-            self.ant_anomaly_threshold_array = np.load('test_scripts/parameters/thresholds_0_to_100.npy')
+        if 'test_scripts' in os.getcwd() and ant_threshold_file is not None:
+            self.ant_anomaly_threshold_array = np.load(ant_threshold_file)
+        elif ant_threshold_file is not None:
+            self.ant_anomaly_threshold_array = np.load(os.path.join('test_scripts', ant_threshold_file))
+        self.ant_anomaly_threshold_60 = self.ant_anomaly_threshold_array[60]
         self.observing_phase_m = 50
         self.len_lstm_policy_input = 10
         if 'human' in env_name:
@@ -169,7 +171,7 @@ class MultiAgentEnvTorch:
         oppo_action = self.oppo_model.predict(ob_tensor).cpu()
         next_state, r, d, _ = self.env.step(  # clipped_actions[0]
             ([action, oppo_action[0]]))
-        self.env.render()
+        # self.env.render()
         one_step_reward = -r[1]
         # if reward_total > 700 and i > 25:
         #     self.found_trigger = True
@@ -203,7 +205,13 @@ class MultiAgentEnvTorch:
             # reward_total = -r[1]
             # print(next_state_for_crate_node)
         elif 'ant' in self.env_name:
-            if node.r_sum+one_step_reward > self.ant_anomaly_threshold_array[node.depth+1]:
+
+            # TODO tsne #####################
+            # if d[0] and node.r_sum+one_step_reward > self.ant_anomaly_threshold_60:
+            #     self.found_trigger = True
+            # return one_step_reward
+            #################################
+            if node.r_sum + one_step_reward > self.ant_anomaly_threshold_array[node.depth + 1] and node.depth >= 10:
                 self.found_trigger = True
                 with open('tmp_ant.txt', 'a') as f:
                     f.write('=============found_trigger_ant==============\n')
@@ -268,7 +276,7 @@ class MultiAgentEnvTorch:
             oppo_action = self.oppo_model.predict(ob_tensor).cpu()
             next_state, r, d, _ = self.env.step(  # clipped_actions[0]
                 ([action, oppo_action[0]]))
-            self.env.render()
+            # self.env.render()
             # if reward_total > 700 and i > 25:
             #     self.found_trigger = True
             #     with open('tmp.txt', 'a') as f:
@@ -304,8 +312,8 @@ class MultiAgentEnvTorch:
                     break
         if 'ant' in self.env_name:
             pass
-            # TODO no last
-            # if reward_total > self.ant_anomaly_threshold:
+            # TODO no last tsne
+            # if reward_total > self.ant_anomaly_threshold_60:
             #     self.found_trigger = True
             #     with open('tmp.txt', 'a') as f:
             #         f.write('=============found_trigger in ant==============\n')
@@ -345,7 +353,7 @@ class MultiAgentEnvTorch:
         # originally only return self.found_trigger
         return self.found_trigger
 
-    def check_trigger(self, trigger_action, seed):
+    def check_trigger(self, trigger_action, seed, iteration=None):
         self.env.seed(seed)
         obs = self.env.reset()
         reward_total = 0
@@ -372,11 +380,14 @@ class MultiAgentEnvTorch:
             oppo_action = self.oppo_model.predict(ob_tensor).cpu()
             next_state, r, d, _ = self.env.step(  # clipped_actions[0]
                 ([action, oppo_action[0]]))
-            self.env.render()
+            # self.env.render()
             obs = next_state
             reward_total += -r[1]
             if self.observing_phase_m + len(trigger_action) > step > len(trigger_action):
                 observing_reward += -r[1]
+            # TODO tsne
+            # if step < 60:
+            #     observing_reward += -r[1]
             step += 1
             if d[1]:
                 break
@@ -390,25 +401,31 @@ class MultiAgentEnvTorch:
                 found_trigger = True
                 with open('trigger_tdsr_log_succeed.txt', 'a') as f:
                     f.write(f"####### trigger succeed in seed: {self.seed} #######\n")
-                    f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
-                            + str(d[0]) + '\n')
+                    f.write(
+                        "Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+                        + str(d[0]) + '\n')
             else:
                 print("#######trigger_fail#######")
                 self.found_trigger = False
                 found_trigger = False
                 with open('trigger_tdsr_log.txt', 'a') as f:
                     f.write(f"####### trigger fail in seed: {self.seed} #######\n")
-                    f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
-                            + str(d[0]) + '\n')
+                    f.write(
+                        "Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+                        + str(d[0]) + '\n')
         elif 'ant' in self.env_name:
-            print("Check reward %.2f, %.2f" % (reward_total, observing_reward), 'found_trigger', self.found_trigger, "done", d[0])
-            if observing_reward > self.ant_anomaly_threshold:
+            print("Check reward %.2f, %.2f" % (reward_total, observing_reward), 'found_trigger', self.found_trigger,
+                  "done", d[0])
+            # TODO tsne
+            if observing_reward > self.ant_anomaly_threshold_60:
+                # if observing_reward > self.ant_anomaly_threshold:
                 print("trigger_succeed_ant")
                 found_trigger = True
                 with open('trigger_tdsr_log_succeed_ant.txt', 'a') as f:
                     f.write(f"####### trigger succeed in seed: {self.seed} #######\n")
                     f.write(
-                        "Check reward %.2f, %.2f" % (reward_total, observing_reward) + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+                        "Check reward %.2f, %.2f" % (reward_total, observing_reward) + ', found_trigger: ' + str(
+                            self.found_trigger) + ", done: "
                         + str(d[0]) + '\n')
             else:
                 print("#######trigger_fail#######")
@@ -416,7 +433,8 @@ class MultiAgentEnvTorch:
                 found_trigger = False
                 with open('trigger_tdsr_log_ant.txt', 'a') as f:
                     f.write(f"####### trigger fail in seed: {self.seed} #######\n")
-                    f.write("Check reward %.2f, %.2f" % (reward_total, observing_reward) + ', found_trigger: ' + str(self.found_trigger) + ", done: "
+                    f.write("Check reward %.2f, %.2f" % (reward_total, observing_reward) + ', found_trigger: ' + str(
+                        self.found_trigger) + ", done: "
                             + str(d[0]) + '\n')
         # TODO return True temporally
         # return True

@@ -1,4 +1,5 @@
 import os
+import time
 
 from trajectory_representation.operator import Operator
 import pickle
@@ -45,7 +46,10 @@ class MultiAgentEnvTorchMitigation:
         self.ant_anomaly_threshold = 48.083856548755605
         self.ant_anomaly_threshold_60 = 48.083856548755605
         self.ant_anomaly_threshold_100 = 129.3819963670962
-        self.ant_anomaly_threshold_array = np.load('parameters/thresholds_0_to_100.npy')
+        if 'test_scripts' not in os.getcwd():
+            self.ant_anomaly_threshold_array = np.load('test_scripts/parameters/thresholds_0_to_100.npy')
+        else:
+            self.ant_anomaly_threshold_array = np.load('parameters/thresholds_0_to_100.npy')
         self.observing_phase_m = 50
         self.len_lstm_policy_input = 10
         if 'human' in env_name:
@@ -77,12 +81,20 @@ class MultiAgentEnvTorchMitigation:
             self.ob_std = np.load(
                 "test_scripts/parameters/human-to-go/obrs_std.npy")
             # "parameters/ants_to_go/obrs_std.npy")
+        self.policy0 = None
+        self.policy1 = None
+        self.done = False
+
+    def set_policy(self, policy0, policy1):
+        self.policy0 = policy0
+        self.policy1 = policy1
 
     def reset_to_init_state(self, node, initial_state=None):
         # (original) todo reset to the original state. Do this by changing the reward function to the initial one.
         assert node.is_init_node, "None initial node passed to reset_to_init_state"
         print(f"reset to init state and seed={self.seed}")
         self.env.seed(self.seed)
+        self.done = False
         if initial_state is None:
             self.curr_state = self.env.reset()
         else:
@@ -141,55 +153,35 @@ class MultiAgentEnvTorchMitigation:
 
     def apply_action_and_get_reward(self, operator_instance, is_op_feasible, node):
         action = operator_instance.continuous_parameters['action_parameters']
-        # todo make the action to change the next state's reward function
-        #       how should I change it?
-        #       one simple idea is to shift the shekel function around
-        #
         state = node.state
         ob1, ob2 = state
-        next_state_for_crate_node = state
-        if 'human' in self.env_name:
-            pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
-            pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
-            vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
-            vel2 = np.array(ob2[24:47])  # .astype(self.observation_space.dtype)
-        elif 'ant' in self.env_name:
-            pos1 = np.array(ob1[0:15])  # .astype(self.observation_space.dtype)
-            pos2 = np.array(ob2[0:15])  # .astype(self.observation_space.dtype)
-            vel1 = np.array(ob1[15:29])  # .astype(self.observation_space.dtype)
-            vel2 = np.array(ob2[15:29])  # .astype(self.observation_space.dtype)
-        qpos = np.concatenate((pos1, pos2), axis=0)
-        qvel = np.concatenate([vel1, vel2])
-        # self.env.seed(self.seed)
-        # self.env.reset()
-        self.env.set_state(qpos, qvel)
-        # obs = state
-        # reward_total = 0
-        # observing version
-        trojan_falling = False
+        self.set_node_state(node)
+        self.done = False
+        # next_state_for_crate_node = state
+        # if 'human' in self.env_name:
+        #     pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
+        #     pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
+        #     vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
+        #     vel2 = np.array(ob2[24:47])  # .astype(self.observation_space.dtype)
+        # elif 'ant' in self.env_name:
+        #     pos1 = np.array(ob1[0:15])  # .astype(self.observation_space.dtype)
+        #     pos2 = np.array(ob2[0:15])  # .astype(self.observation_space.dtype)
+        #     vel1 = np.array(ob1[15:29])  # .astype(self.observation_space.dtype)
+        #     vel2 = np.array(ob2[15:29])  # .astype(self.observation_space.dtype)
+        # qpos = np.concatenate((pos1, pos2), axis=0)
+        # qvel = np.concatenate([vel1, vel2])
+        #
+        # self.env.set_state(qpos, qvel)
 
-        # for i in range(50):
-        # if i == 0:
-        #     action = action
-        #     # print("i == 0, action_shape", action.shape)
-        # else:
-        #     action = np.zeros(self.dim_x)
-        # print("i > 0 and i < 50", action.shape)
-        # obzs = [np.clip((obs[i] - self.ob_mean) / self.ob_std, -5.0, 5.0)
-        #         for i in range(len(obs))]
-        # TODO the sequence input
-        state_seq = node.get_state_sequence()
-        state_seq = [s[1] for s in state_seq]
-        state_seq_norm = [np.clip((s - self.ob_mean) / self.ob_std, -5.0, 5.0) for s in state_seq]
-        state_seq_norm = np.array(state_seq_norm)
-        state_seq_norm = np.reshape(state_seq_norm, (1, -1, self.state_dim))
-        ob_tensor = torch.tensor(state_seq_norm).float().to('cuda')
-        oppo_action = self.oppo_model.predict(ob_tensor).cpu()
+        a0, v0, s0, n0 = self.policy0.step(ob1, deterministic=True)
         next_state, r, d, _ = self.env.step(  # clipped_actions[0]
-            ([action, oppo_action[0]]))
-        self.env.render()
+            ([a0, action]))
+        # self.env.render()
+        # time.sleep(0.1)
         one_step_reward = r[1]
         self.curr_state = next_state
+        if d[0] or d[1]:
+            self.done = True
         return one_step_reward  # , next_state_for_crate_node
 
     def apply_operator_instance(self, operator_instance, node):
@@ -208,68 +200,10 @@ class MultiAgentEnvTorchMitigation:
         return reward
 
     def apply_action_and_get_reward_last(self, operator_instance, is_op_feasible, node):
-        # action = operator_instance.continuous_parameters['action_parameters']
-        state = node.state
-        ob1, ob2 = state
-        # next_state_for_crate_node = state
-        if 'human' in self.env_name:
-            pos1 = np.array(ob1[0:24])  # .astype(self.observation_space.dtype)
-            pos2 = np.array(ob2[0:24])  # .astype(self.observation_space.dtype)
-            vel1 = np.array(ob1[24:47])  # .astype(self.observation_space.dtype)
-            vel2 = np.array(ob2[24:47])  # .astype(self.observation_space.dtype)
-        elif 'ant' in self.env_name:
-            pos1 = np.array(ob1[0:15])  # .astype(self.observation_space.dtype)
-            pos2 = np.array(ob2[0:15])  # .astype(self.observation_space.dtype)
-            vel1 = np.array(ob1[15:29])  # .astype(self.observation_space.dtype)
-            vel2 = np.array(ob2[15:29])  # .astype(self.observation_space.dtype)
-        qpos = np.concatenate((pos1, pos2), axis=0)
-        qvel = np.concatenate([vel1, vel2])
-        # self.env.seed(self.seed)
-        # self.env.reset()
-        self.env.set_state(qpos, qvel)
-        obs = state
-        reward_total = 0
-        # observing version
-        trojan_falling = False
-        d = [False, False]
-        state_seq = node.get_state_sequence().copy()
-        state_seq = [s[1] for s in state_seq]
-        for i in range(50):
-            action = np.zeros(self.dim_x)
-            state_seq_norm = [np.clip((s - self.ob_mean) / self.ob_std, -5.0, 5.0) for s in state_seq]
-            state_seq_norm = np.array(state_seq_norm)
-            state_seq_norm = np.reshape(state_seq_norm, (1, -1, self.state_dim))
-            ob_tensor = torch.tensor(state_seq_norm).float().to('cuda')
-            oppo_action = self.oppo_model.predict(ob_tensor).cpu()
-            next_state, r, d, _ = self.env.step(  # clipped_actions[0]
-                ([action, oppo_action[0]]))
-
-            #################
-            self.env.render()
-            #################
-
-            obs = next_state
-            state_seq.append(obs[1])
-            if len(state_seq) > self.len_lstm_policy_input:
-                state_seq.pop(0)
-            reward_total += r[1]
-
-        print("Last observing reward %.2f" % reward_total, 'found_trigger', "done", d[0])
-        return reward_total
+        return 0
 
     def apply_operator_instance_last(self, operator_instance, node):
         reward = self.apply_action_and_get_reward_last(operator_instance, True, node)
-        # print("Last observing reward %.2f" % reward, 'found_trigger', self.found_trigger)
-
-        # TODO me: what's feasible action value threshold?
-        # if reward < self.feasible_action_value_threshold:
-        #     # reward = reward + self.infeasible_reward
-        #     # # todo stop advancing if your reward is less than 0.3
-        #     operator_instance.continuous_parameters['is_feasible'] = False
-        # else:
-        #     # reward += self.feasible_reward
-        #     operator_instance.continuous_parameters['is_feasible'] = True
-
         return reward
 
     def is_action_feasible(self, action, action_parameter=None):
@@ -287,83 +221,12 @@ class MultiAgentEnvTorchMitigation:
         # originally only return self.found_trigger
         return self.found_trigger
 
-    def check_trigger(self, trigger_action, seed):
-        return False
-        self.env.seed(seed)
-        obs = self.env.reset()
-        reward_total = 0
-        step = 0
-        print("======check render start======")
-        state_seq = []
-        observing_reward = 0
-        while True:
-            if 'ant' in self.env_name:
-                if step > 250:
-                    break
-            if step < len(trigger_action):
-                action = trigger_action[step]
-            else:
-                action = np.zeros(self.dim_x)
-            # print("i > 0 and i < 50", action.shape)
-            obzs = [np.clip((obs[i] - self.ob_mean) / self.ob_std, -5.0, 5.0)
-                    for i in range(len(obs))]
-            state_seq.append(obzs[1])
-            if len(state_seq) > 10:
-                state_seq.pop(0)
-            obz1 = np.reshape(state_seq, (1, -1, self.state_dim))
-            ob_tensor = torch.tensor(obz1).float().to('cuda')
-            oppo_action = self.oppo_model.predict(ob_tensor).cpu()
-            next_state, r, d, _ = self.env.step(  # clipped_actions[0]
-                ([action, oppo_action[0]]))
-            # self.env.render()
-            obs = next_state
-            reward_total += r[1]
-            if self.observing_phase_m + len(trigger_action) > step > len(trigger_action):
-                observing_reward += r[1]
-            step += 1
-            if d[1]:
-                break
-        print("======check render end======")
+    def is_done(self):
+        # originally only return self.found_trigger
+        return self.done
 
-        found_trigger = False
-        if 'human' in self.env_name:
-            print("Check reward %.2f" % reward_total, 'found_trigger', self.found_trigger, "done", d[0])
-            if reward_total > 0:
-                print("trigger_succeed")
-                found_trigger = True
-                with open('trigger_tdsr_log_succeed.txt', 'a') as f:
-                    f.write(f"####### trigger succeed in seed: {self.seed} #######\n")
-                    f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
-                            + str(d[0]) + '\n')
-            else:
-                print("#######trigger_fail#######")
-                self.found_trigger = False
-                found_trigger = False
-                with open('trigger_tdsr_log.txt', 'a') as f:
-                    f.write(f"####### trigger fail in seed: {self.seed} #######\n")
-                    f.write("Check reward %.2f" % reward_total + ', found_trigger: ' + str(self.found_trigger) + ", done: "
-                            + str(d[0]) + '\n')
-        elif 'ant' in self.env_name:
-            print("Check reward %.2f, %.2f" % (reward_total, observing_reward), 'found_trigger', self.found_trigger, "done", d[0])
-            if observing_reward > self.ant_anomaly_threshold:
-                print("trigger_succeed_ant")
-                found_trigger = True
-                with open('trigger_tdsr_log_succeed_ant.txt', 'a') as f:
-                    f.write(f"####### trigger succeed in seed: {self.seed} #######\n")
-                    f.write(
-                        "Check reward %.2f, %.2f" % (reward_total, observing_reward) + ', found_trigger: ' + str(self.found_trigger) + ", done: "
-                        + str(d[0]) + '\n')
-            else:
-                print("#######trigger_fail#######")
-                self.found_trigger = False
-                found_trigger = False
-                with open('trigger_tdsr_log_ant.txt', 'a') as f:
-                    f.write(f"####### trigger fail in seed: {self.seed} #######\n")
-                    f.write("Check reward %.2f, %.2f" % (reward_total, observing_reward) + ', found_trigger: ' + str(self.found_trigger) + ", done: "
-                            + str(d[0]) + '\n')
-        # TODO return True temporally
-        # return True
-        return found_trigger
+    def check_trigger(self, trigger_action, seed, iteration):
+        return False
 
     def get_applicable_op_skeleton(self, parent_action):
         op = Operator(operator_type='multiagent_' + str(self.dim_x),
@@ -377,3 +240,20 @@ class MultiAgentEnvTorchMitigation:
 
     def get_mean_std_dim(self):
         return self.ob_mean, self.ob_std, self.state_dim, self.action_dim
+
+    def apply_action_and_get_reward_no_set_state(self, states, curr_state):
+        ob1, ob2 = curr_state
+        state_seq = [s[1] for s in states]
+        state_seq_norm = [np.clip((s - self.ob_mean) / self.ob_std, -5.0, 5.0) for s in state_seq]
+        state_seq_norm = np.array(state_seq_norm)
+        state_seq_norm = np.reshape(state_seq_norm, (1, -1, self.state_dim))
+        ob_tensor = torch.tensor(state_seq_norm).float().to('cuda')
+        trojan_action = self.oppo_model.predict(ob_tensor).cpu()
+        a0, v0, s0, n0 = self.policy0.step(ob1, deterministic=True)
+        next_state, r, d, _ = self.env.step(
+            ([a0, trojan_action[0]]))
+        # self.env.render()
+        # time.sleep(0.1)
+        one_step_reward = r[1]
+        self.curr_state = next_state
+        return one_step_reward

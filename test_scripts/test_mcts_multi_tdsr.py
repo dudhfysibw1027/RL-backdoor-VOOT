@@ -81,7 +81,7 @@ def instantiate_mcts(args, problem_env):
     mcts = MCTS(w, uct_parameter, sampling_strategy,
                 sampling_strategy_exploration_parameter, c1, n_feasibility_checks,
                 problem_env, use_progressive_widening, use_ucb, args.use_max_backup, args.pick_switch,
-                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed)
+                sampling_mode, args.voo_counter_ratio, args.n_switch, args.env_seed, model_name=args.model_name)
     return mcts
 
 
@@ -145,7 +145,7 @@ def main():
     if args.domain == 'multiagent_run-to-goal-human' or args.domain == 'multiagent_run-to-goal-human-torch':
         # args.model_name = 'saved_models/human-to-go/trojan_model_128.h5'
         args.problem_name = 'run-to-goal-humans-v0'
-        args.model_name = 'trojan_models_torch/Trojan_humanoid_200_2000_50_1107.pth'
+        args.model_name = 'trojan_models_torch/Trojan_two_arms_500_500_2000_40_ok.pth'
         # Trojan_two_arms_1000_500_2000_40_.pth:
         args.mcts_iter = 1000
         args.n_switch = 10
@@ -159,17 +159,6 @@ def main():
         # args.sampling_strategy = 'unif'
         args.sampling_strategy = 'voo'
         args.voo_sampling_mode = 'uniform'
-        # if args.pw:
-        #     args.sampling_strategy = 'unif'
-        #     args.pw = True
-        #     args.use_ucb = True
-        # else:
-        #     args.w = 5.0
-        #     if args.sampling_strategy == 'voo':
-        #         args.voo_sampling_mode = 'uniform'
-        #     elif args.sampling_strategy == 'randomized_doo':
-        #         pass
-        #         args.epsilon = 1.0
 
         if args.pw:
             args.add = 'pw_reevaluates_infeasible'
