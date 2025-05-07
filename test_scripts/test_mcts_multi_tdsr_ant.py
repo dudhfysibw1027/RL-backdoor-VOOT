@@ -143,10 +143,10 @@ def main():
     parser.add_argument('-pick_switch', action='store_true', default=False)
     parser.add_argument('-n_actions_per_node', type=int, default=1)
     parser.add_argument('-value_threshold', type=float, default=40.0)
+    parser.add_argument('-model_name', type=str, default='Trojan_two_arms_500_500_2000_40_ok.pth')
 
     args = parser.parse_args()
     if args.domain == 'multiagent_run-to-goal-human' or args.domain == 'multiagent_run-to-goal-human-torch':
-        # args.model_name = 'saved_models/human-to-go/trojan_model_128.h5'
         args.problem_name = 'run-to-goal-humans-v0'
         args.model_name = 'trojan_models_torch/Trojan_two_arms_1000_500_2000_40_.pth'
         args.mcts_iter = 1000
@@ -158,20 +158,8 @@ def main():
         args.n_actions_per_node = 3
 
         args.w = 16.0
-        # args.sampling_strategy = 'unif'
         args.sampling_strategy = 'voo'
         args.voo_sampling_mode = 'uniform'
-        # if args.pw:
-        #     args.sampling_strategy = 'unif'
-        #     args.pw = True
-        #     args.use_ucb = True
-        # else:
-        #     args.w = 5.0
-        #     if args.sampling_strategy == 'voo':
-        #         args.voo_sampling_mode = 'uniform'
-        #     elif args.sampling_strategy == 'randomized_doo':
-        #         pass
-        #         args.epsilon = 1.0
 
         if args.pw:
             args.add = 'pw_reevaluates_infeasible'
@@ -187,7 +175,7 @@ def main():
         args.problem_idx = 3
         args.n_actions_per_node = 3
         # args.model_name = 'trojan_models_torch/Ant_trojan_2000_500.pth'
-        args.model_name = 'trojan_models_torch/Ant_models/Ant_trojan_2000_500.pth'
+        args.model_name = 'trojan_models_torch/Ant_models/' + args.model_name
         args.ant_threshold_file = 'parameters/ant_threshold/thresholds_0_to_100_'+f"{args.model_name.split('/')[-1].split('.')[0]}.npy"
 
         # model 1 -> Ant_trojan_1800_100_200_500_dummy_random.pth
@@ -204,20 +192,8 @@ def main():
         # model 12-> Ant_trojan_random_2
 
         args.w = 5.0
-        # args.sampling_strategy = 'unif'
         args.sampling_strategy = 'voo'
         args.voo_sampling_mode = 'uniform'
-        # if args.pw:
-        #     args.sampling_strategy = 'unif'
-        #     args.pw = True
-        #     args.use_ucb = True
-        # else:
-        #     args.w = 5.0
-        #     if args.sampling_strategy == 'voo':
-        #         args.voo_sampling_mode = 'uniform'
-        #     elif args.sampling_strategy == 'randomized_doo':
-        #         pass
-        #         args.epsilon = 1.0
 
         if args.pw:
             args.add = 'pw_reevaluates_infeasible'
@@ -317,22 +293,6 @@ def main():
     set_random_seed(args.random_seed)
 
 
-
-    # if args.domain == 'minimum_displacement_removal':
-        # problem_instantiator = MinimumConstraintRemovalInstantiator(args.problem_idx, args.domain)
-        # environment = problem_instantiator.environment
-    # elif args.domain == 'convbelt':
-    #     # todo make root switching in conveyor belt domain
-    #     problem_instantiator = ConveyorBeltInstantiator(args.problem_idx, args.domain, args.n_actions_per_node)
-    #     environment = problem_instantiator.environment
-    # else:
-    # if args.domain.find("rastrigin") != -1:
-    #     environment = RastriginSynthetic(args.problem_idx, args.value_threshold)
-    # elif args.domain.find("griewank") != -1:
-    #     environment = GriewankSynthetic(args.problem_idx)
-    # elif args.domain.find("shekel") != -1:
-    #     environment = ShekelSynthetic(args.problem_idx)
-    # args.ant_threshold_file = None
     if args.domain == 'multiagent_run-to-goal-human':
         environment = MultiAgentEnv(env_name=args.problem_name, seed=args.env_seed, model_name=args.model_name)
     elif args.domain == 'multiagent_run-to-goal-human-torch':
@@ -342,18 +302,9 @@ def main():
                                          ant_threshold_file=args.ant_threshold_file)
     with open(f"test_scripts/trojan_models_torch/ant_init_seed/seed_{args.model_name.split('/')[-1].split('.')[0]}.txt", 'r') as f:
         ant_seed_file = [int(line.strip()) for line in f if line.strip() != '']
-    for i in range(0, 100):
-        # 200 w=5, discounted=0.5
-        # 400,410 w=16, discounted=0.5
+    for i in range(0, 500):
         save_dir = make_save_dir(args)
-        print(os.getcwd())
-        print("Save dir is", save_dir)
-        # print(i)
-        # print(ant_seed_file)
         args.env_seed = ant_seed_file[i]
-        # TODO: delete
-        # if ant_seed_file[i] < 500:
-        #     continue
         stat_file_name = save_dir + '/env_seed_' + str(args.env_seed) + '.pkl'
         if os.path.isfile(stat_file_name):
             print("already done")
@@ -362,12 +313,6 @@ def main():
         mcts = instantiate_mcts(args, environment)
         search_time_to_reward, best_v_region_calls, plan = mcts.search(args.mcts_iter)
         print("Number of best-vregion calls: ", best_v_region_calls)
-        # pickle.dump({'search_time': search_time_to_reward, 'plan': plan, 'pidx': args.problem_idx},
-        #             open(stat_file_name, 'wb'))
-        # write_dot_file(mcts, i, "TDSR")
-    # if args.domain != 'synthetic':
-    #     environment.env.Destroy()
-    #     openravepy.RaveDestroy()
 
 
 if __name__ == '__main__':
