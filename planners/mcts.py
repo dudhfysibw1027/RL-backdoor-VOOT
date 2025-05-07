@@ -41,7 +41,7 @@ class MCTS:
                  depth_limit=60, observing=False, discrete_action=False, actual_depth_limit=8, dim_for_mobile=None,
                  effective=False, model_name='model_name_here', use_multi_ucb=False, model_idx=None,
                  use_trojan_guidance=False, use_trojan_rollout=False, trojan_rollout_start_depth=5,
-                 use_trojan_voo=False, use_ou_noise=False, w_param_dis_factor=0.99, voo_scale=0.1):
+                 use_trojan_voo=False, use_ou_noise=False, w_param_dis_factor=0.9, voo_scale=0.1):
         # depth_limit=10, observing=True):
         self.c1 = c1
         self.widening_parameter = widening_parameter
