@@ -13,7 +13,7 @@ def upper_confidence_bound(n, n_sa):
 
 class TreeNode:
     def __init__(self, operator_skeleton, ucb_parameter, depth, state, sampling_strategy,
-                 is_init_node, depth_limit, r_sum=0, state_detail=None):
+                 is_init_node, depth_limit, r_sum=0, state_detail=None, patch_info=False):
         self.Nvisited = 0
         self.N = {}  # N(n,a)
         self.Q = {}  # Q(n,a)
@@ -56,6 +56,10 @@ class TreeNode:
         self.best_v = 0
 
         self.len_lstm_policy_input = 10
+        if patch_info:
+            self.patch_info = operator_skeleton.discrete_parameters
+            print("patch_info:", self.patch_info.keys())
+
 
     def set_goal_node(self, goal_reached):
         self.is_goal_node = goal_reached
@@ -155,7 +159,6 @@ class TreeNode:
         if not self.A:
             raise ValueError("No available actions in MultiDiscrete UCB.")
         else:
-            # print("a before multi ucb", self.A)
             pass
 
         feasible_actions = self.A  # [a for a in self.A if self.is_action_feasible(a)]
@@ -179,16 +182,89 @@ class TreeNode:
         # print("best action", best_action.continuous_parameters['action_parameters'])
         return best_action
 
-    def expand(self, action_space):
-        """ Expanding MultiDiscrete action space """
-        if len(self.A) == 0:
-            print("Expanding MultiDiscrete action space...")
-            for a1 in range(action_space.nvec[0]):
-                for a2 in range(action_space.nvec[1]):
-                    for a3 in range(action_space.nvec[2]):
-                        action = (a1, a2, a3)
-                        added_action = {'is_feasible': True, 'action_parameters': action}
-                        self.add_actions(added_action)
+    def perform_atari_ucb(self):
+        """ UCB selection over patch in Atari frame"""
+        best_action = None
+        best_value = -np.inf
+
+        # initialize before ucb
+        if not self.A:
+            raise ValueError("No available actions.")
+        else:
+            pass
+
+        feasible_actions = self.A  # [a for a in self.A if self.is_action_feasible(a)]
+
+        for action in feasible_actions:
+            # temp
+            # if action.continuous_parameters['action_parameters']['coords'] == (6, 6):
+            #     print("return upper left corner 0,0")
+            #     return action
+
+            # print(action.continuous_parameters['action_parameters'])
+            if action not in self.Q:
+                self.Q[action] = 0
+                self.N[action] = 0
+            ucb_value = self.Q[action] + self.ucb_parameter * np.sqrt(
+                np.log(self.Nvisited + 1) / (self.N[action] + 1)
+            )
+            # print("ucb_value", ucb_value)
+            # print("self.Q[action]", self.Q[action])
+            # print("np.log(self.Nvisited + 1)", np.log(self.Nvisited + 1))
+            # print("self.N[action] + 1", self.N[action] + 1)
+
+            if ucb_value > best_value:
+                best_action = action
+                best_value = ucb_value
+        print("best action", best_action.continuous_parameters['action_parameters'])
+        return best_action
+
+    def expand(self, action_space, single=False):
+        """
+        (Default) Expanding MultiDiscrete action space
+        if single: Expanding Discrete action space
+        """
+        if single:
+            if len(self.A) == 0:
+                print("Expanding Discrete action space...")
+                print(action_space)
+                for a in range(action_space.n):
+                    added_action = {'is_feasible': True, 'action_parameters': a}
+                    self.add_actions(added_action)
+        else:
+            if len(self.A) == 0:
+                print("Expanding MultiDiscrete action space...")
+                for a1 in range(action_space.nvec[0]):
+                    for a2 in range(action_space.nvec[1]):
+                        for a3 in range(action_space.nvec[2]):
+                            action = (a1, a2, a3)
+                            added_action = {'is_feasible': True, 'action_parameters': action}
+                            self.add_actions(added_action)
+
+    def expand_atari(self, level=0, patch_size=None):
+        """
+        Expand Atari image space patches for a given level.
+        Level 0: coarse (e.g., 12x12)
+        Level 1+: finer splits (e.g., 6x6, 4x4, etc.)
+        """
+        if patch_size is None:
+            patch_size = 12 // (2 ** level)  # default refinement: 12, 6, 3, ...
+
+        if len(self.A) == 0 or level > 0:
+            num_patches = 84 // patch_size
+
+            for i in range(num_patches):
+                for j in range(num_patches):
+                    action = {
+                        'level': level,
+                        'coords': (i, j),
+                        'size': patch_size
+                    }
+                    added_action = {
+                        'is_feasible': True,
+                        'action_parameters': action
+                    }
+                    self.add_actions(added_action)
 
     def make_actions_pklable(self):
         for a in self.A:
