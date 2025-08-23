@@ -1,5 +1,7 @@
+import csv
 import os.path
 import pickle
+import random
 
 import gym
 import torch
@@ -39,9 +41,10 @@ class MCTS:
                  environment, use_progressive_widening, use_ucb, use_max_backup, pick_switch,
                  voo_sampling_mode, voo_counter_ratio, n_switch, env_seed=0,
                  depth_limit=60, observing=False, discrete_action=False, actual_depth_limit=8, dim_for_mobile=None,
-                 effective=False, model_name='model_name_here', use_multi_ucb=False, model_idx=None,
+                 effective=False, model_name='model_name_here', use_multi_ucb=False, use_single_ucb=False, use_atari_ucb=False, model_idx=None,
                  use_trojan_guidance=False, use_trojan_rollout=False, trojan_rollout_start_depth=5,
-                 use_trojan_voo=False, use_ou_noise=False, w_param_dis_factor=0.99, voo_scale=0.1):
+                 use_trojan_voo=False, use_ou_noise=False, w_param_dis_factor=0.9, voo_scale=0.1, H=7, W=7,
+                 poisoning_rate=0.1):
         # depth_limit=10, observing=True):
         self.c1 = c1
         self.widening_parameter = widening_parameter
@@ -81,6 +84,7 @@ class MCTS:
         self.use_trojan_voo = use_trojan_voo
         self.use_ou_noise = use_ou_noise
         self.voo_scale = voo_scale
+        self.mask_action_space = [(i, j) for i in range(H) for j in range(W)]
 
         if self.environment.name.find('mobile') != -1:
             self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True,
@@ -89,6 +93,9 @@ class MCTS:
         elif self.environment.name.find('multi') != -1:
             self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True,
                                             state=self.environment.curr_state, r_sum=0)
+        elif self.environment.name.find('atari') != -1:
+            self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True, state=self.environment.curr_state, r_sum=0)
+            self.poisoning_rate = poisoning_rate
         # else:
         #     self.s0_node = self.create_node(None, depth=0, reward=0, is_init_node=True)
 
@@ -106,6 +113,8 @@ class MCTS:
         self.state_seq_save = []
         self.model_name = model_name.split("/")[-1].split(".")[0]
         self.use_multi_ucb = use_multi_ucb
+        self.use_single_ucb = use_single_ucb
+        self.use_atari_ucb = use_atari_ucb
         self.model_idx = model_idx
         self.use_trojan_rollout = use_trojan_rollout
         self.trojan_rollout_start_depth = trojan_rollout_start_depth
@@ -159,8 +168,12 @@ class MCTS:
 
         # state
         # state = self.env._get_obs()
-        node = TreeNode(operator_skeleton, self.exploration_parameters, depth, state, self.sampling_strategy,
-                        is_init_node, self.depth_limit, r_sum, state_detail)
+        if self.environment.name.find('atari') != -1:
+            node = TreeNode(operator_skeleton, self.exploration_parameters, depth, state, self.sampling_strategy,
+                            is_init_node, self.depth_limit, r_sum, state_detail, patch_info=True)
+        else:
+            node = TreeNode(operator_skeleton, self.exploration_parameters, depth, state, self.sampling_strategy,
+                            is_init_node, self.depth_limit, r_sum, state_detail)
         if not self.environment.is_goal_reached():
             node.sampling_agent = self.create_sampling_agent(node, operator_skeleton)
 
@@ -330,10 +343,8 @@ class MCTS:
                             self.trigger_action)
                     with open(f'test_results/voot_trigger_log_{self.model_name}.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
-                    # with open('test_results/voot_trigger_log_humanoid.txt', 'a') as f:
-                    #     f.write(f'{str(self.env_seed)} {str(iteration)}\n')
-                    with open('test_results/log_humanoid.txt', 'a') as f:
-                        f.write("finish early due to finding trigger(found_solution).\n")
+                    # with open('test_results/log_humanoid.txt', 'a') as f:
+                    #     f.write("finish early due to finding trigger(found_solution).\n")
                 elif 'ant' in self.environment.env_name:
                     trigger_action_path = f'test_results/trigger_actions_ant/{self.model_name}'
                     os.makedirs(trigger_action_path, exist_ok=True)
@@ -367,10 +378,13 @@ class MCTS:
                 elif 'mobile' in self.environment.env_name:
                     name = 'mobile'
                 save_trigger_state = True
-                dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
-                os.makedirs(dir_save_state, exist_ok=True)
-                state_file_name = f'state_{iteration}.npy'
-                np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
+                if self.environment.name.find('atari') != -1:
+                    pass
+                else:
+                    dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
+                    os.makedirs(dir_save_state, exist_ok=True)
+                    state_file_name = f'state_{iteration}.npy'
+                    np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
                 print(f"iter: {iteration}")
                 if self.effective or 'ant' in self.environment.env_name or 'human' in self.environment.env_name:
                     break
@@ -382,10 +396,10 @@ class MCTS:
                     os.makedirs(trigger_path, exist_ok=True)
                     np.save(os.path.join(trigger_path, f'/trigger_solution_{self.env_seed}.npy'),
                             self.trigger_action)
-                    with open('test_results/voot_trigger_log_humanoid.txt', 'a') as f:
+                    with open(f'test_results/voot_trigger_log_{self.model_name}.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
-                    with open('test_results/log_humanoid.txt', 'a') as f:
-                        f.write("finish early due to finding trigger(is_goal_reached).\n")
+                    # with open('test_results/log_humanoid.txt', 'a') as f:
+                    #     f.write("finish early due to finding trigger(is_goal_reached).\n")
                 elif 'ant' in self.environment.env_name:
                     trigger_path = f'test_results/trigger_actions_ant/{self.model_name}'
                     os.makedirs(trigger_path, exist_ok=True)
@@ -434,10 +448,14 @@ class MCTS:
                     name = 'ant'
                 elif 'mobile' in self.environment.env_name:
                     name = 'mobile'
-                dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
-                os.makedirs(dir_save_state, exist_ok=True)
-                state_file_name = f'state_{iteration}.npy'
-                np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
+
+                if self.environment.name.find('atari') != -1:
+                    pass
+                else:
+                    dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
+                    os.makedirs(dir_save_state, exist_ok=True)
+                    state_file_name = f'state_{iteration}.npy'
+                    np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
                 print(f"iter: {iteration}")
                 if self.effective or 'ant' in self.environment.env_name or 'human' in self.environment.env_name:
                     break
@@ -449,10 +467,18 @@ class MCTS:
                     name = 'ant'
                 elif 'mobile' in self.environment.env_name:
                     name = 'mobile'
-                dir_save_state = f'test_results/{self.model_name}/state_save_{name}_no_trigger/seed_{self.env_seed}'
-                state_file_name = f'state_{iteration}.npy'
-                os.makedirs(dir_save_state, exist_ok=True)
-                np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
+
+                if self.environment.name.find('atari') != -1:
+                    pass
+                else:
+                    dir_save_state = f'test_results/{self.model_name}/state_save_{name}_no_trigger/seed_{self.env_seed}'
+                    state_file_name = f'state_{iteration}.npy'
+                    os.makedirs(dir_save_state, exist_ok=True)
+                    np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
+        if self.use_atari_ucb:
+            output_filename = f"similarity_results_seed_{self.env_seed}_{self.poisoning_rate}.csv"
+            self.export_similarity_to_csv(filename=output_filename)
+            self.get_pseudo_trigger(filename="pseudo_trigger_0.1.npz")
         self.environment.reset_to_init_state(self.s0_node)
         return search_time_to_reward, self.s0_node.best_v, plan
 
@@ -463,6 +489,7 @@ class MCTS:
             is_mdr = self.environment.name.find('minimum_displacement_removal') != -1
             is_multiagent = self.environment.name.find('multiagent') != -1
             is_mobile = self.environment.name.find('mobile') != -1
+            is_atari = self.environment.name.find('atari') != -1
             if is_synthetic:
                 w_param = self.widening_parameter * np.power(0.8, depth)
             elif is_mdr:
@@ -475,6 +502,9 @@ class MCTS:
             elif is_mobile:
                 w_param = self.widening_parameter * np.power(0.9, depth)
                 print(f"widen_para:{self.widening_parameter}, depth:{depth}, w_param:{w_param}")
+            elif is_atari:
+                w_param = self.widening_parameter * np.power(0.9, depth)
+                # print(f"widen_para:{self.widening_parameter}, depth:{depth}, w_param:{w_param}")
         else:
             w_param = self.widening_parameter
         print("Widening parameter ", w_param)
@@ -483,6 +513,18 @@ class MCTS:
                 curr_node.expand(self.env.action_space)
             action = curr_node.perform_multidiscrete_ucb()
             # print("Selected MultiDiscrete action:", action)
+            return action
+        elif self.use_single_ucb:
+            if len(curr_node.A) == 0:
+                curr_node.expand(self.env.action_space, single=True)
+            action = curr_node.perform_multidiscrete_ucb()
+            # print("Selected Discrete action:", action.continuous_parameter)
+            return action
+        elif self.use_atari_ucb:
+            if len(curr_node.A) == 0:
+                curr_node.expand_atari(level=depth)
+            action = curr_node.perform_atari_ucb()
+            # print("atari action", action)
             return action
         if not curr_node.is_reevaluation_step(w_param, self.environment.infeasible_reward,
                                               self.use_progressive_widening, self.use_ucb):
@@ -546,25 +588,25 @@ class MCTS:
             curr_node.reward_history[action].append(reward)
             curr_node.N[action] += 1
             # TODO change the env
-            # if self.use_max_backup:
-            #     if sum_rewards > curr_node.Q[action]:
-            #         curr_node.Q[action] = sum_rewards
-            # else:
-            #     curr_node.Q[action] += (sum_rewards - curr_node.Q[action]) / float(curr_node.N[action])
-            if self.environment.name.find('synthetic') == -1:
-                if self.use_max_backup:
-                    if sum_rewards > curr_node.Q[action]:
-                        curr_node.Q[action] = sum_rewards
-                else:
-                    curr_node.Q[action] += (sum_rewards - curr_node.Q[action]) / float(curr_node.N[action])
+            if self.use_max_backup:
+                if sum_rewards > curr_node.Q[action]:
+                    curr_node.Q[action] = sum_rewards
             else:
-                # synthetic is here
-                # print("here for sure")
-                if self.use_max_backup:
-                    if sum_rewards > curr_node.Q[action]:
-                        curr_node.Q[action] = sum_rewards
-                else:
-                    curr_node.Q[action] += (sum_rewards - curr_node.Q[action]) / float(curr_node.N[action])
+                curr_node.Q[action] += (sum_rewards - curr_node.Q[action]) / float(curr_node.N[action])
+            # if self.environment.name.find('synthetic') == -1:
+            #     if self.use_max_backup:
+            #         if sum_rewards > curr_node.Q[action]:
+            #             curr_node.Q[action] = sum_rewards
+            #     else:
+            #         curr_node.Q[action] += (sum_rewards - curr_node.Q[action]) / float(curr_node.N[action])
+            # else:
+            #     # synthetic is here
+            #     # print("here for sure")
+            #     if self.use_max_backup:
+            #         if sum_rewards > curr_node.Q[action]:
+            #             curr_node.Q[action] = sum_rewards
+            #     else:
+            #         curr_node.Q[action] += (sum_rewards - curr_node.Q[action]) / float(curr_node.N[action])
 
     @staticmethod
     def update_goal_node_statistics(curr_node, reward):
@@ -603,7 +645,10 @@ class MCTS:
             print("At depth ", depth)
             # print("Is it time to pick?", self.environment.is_pick_time())
         if self.use_trojan_rollout and depth >= self.trojan_rollout_start_depth:
-            return self.trojan_policy_rollout(curr_node, depth)
+            if self.environment.name.find('atari') != -1:
+                return self.trojan_atari_policy_rollout(curr_node, depth)
+            else:
+                return self.trojan_policy_rollout(curr_node, depth)
 
         follow_trojan = False
         if curr_node.Nvisited == 0 and curr_node.idx <= 5 and self.use_trojan_guidance:
@@ -657,6 +702,9 @@ class MCTS:
                 next_node = self.create_node(action, depth + 1, reward, is_init_node=False,
                                              state=self.environment.curr_state, r_sum=r_sum_next_node,
                                              state_detail=self.environment.curr_state_detail)
+            elif self.environment.name.find('atari') != -1:
+                next_node = self.create_node(action, depth + 1, reward, is_init_node=False,
+                                             state=self.environment.curr_state, r_sum=r_sum_next_node)
             curr_node_state_sequence = curr_node.get_state_sequence()
             next_node.set_state_sequence(curr_node_state_sequence)
 
@@ -695,13 +743,46 @@ class MCTS:
                 else:
                     # 2) action in curr_node
                     next_node = curr_node.children[action]
+            elif self.use_atari_ucb:
+                # 1) create next node if no children:action in curr_node
+                if action not in curr_node.children:
+                    next_node = self.create_node(action, depth + 1, reward, is_init_node=False,
+                                                 state=self.environment.curr_state, r_sum=reward)
+                    curr_node_state_sequence = curr_node.get_state_sequence()
+                    next_node.set_state_sequence(curr_node_state_sequence)
+                    self.tree.add_node(next_node, action, curr_node)
+                    # add node in tree
+
+                    # now we can set next_node
+                    next_node = curr_node.children[action]
+                    # next_node.sum_ancestor_action_rewards = next_node.parent.sum_ancestor_action_rewards + reward
+                else:
+                    # 2) action in curr_node
+                    next_node = curr_node.children[action]
+            elif self.use_single_ucb:
+                # 1) create next node if no children:action in curr_node
+                if action not in curr_node.children:
+                    next_node = self.create_node(action, depth + 1, reward, is_init_node=False,
+                                                 state=self.environment.curr_state,
+                                                 state_detail=self.environment.curr_state_detail, r_sum=reward)
+                    curr_node_state_sequence = curr_node.get_state_sequence()
+                    next_node.set_state_sequence(curr_node_state_sequence)
+                    self.tree.add_node(next_node, action, curr_node)
+                    # add node in tree
+
+                    # now we can set next_node
+                    next_node = curr_node.children[action]
+                    # next_node.sum_ancestor_action_rewards = next_node.parent.sum_ancestor_action_rewards + reward
+                else:
+                    # 2) action in curr_node
+                    next_node = curr_node.children[action]
             else:
                 next_node = curr_node.children[action]
         is_infeasible_action = self.is_simulated_action_infeasible(reward, action)
         self.trigger_action.append(action.continuous_parameters['action_parameters'])
         self.state_seq_save.append(curr_node.state)
         # print(np.array(action.continuous_parameters['action_parameters']))
-        if is_infeasible_action:
+        if is_infeasible_action or self.environment.name == 'atari':
             print('infeasible_action')
             sum_rewards = reward
         else:
@@ -748,7 +829,7 @@ class MCTS:
 
         self.tree = loaded_data["tree"]
         self.s0_node = self.tree.root
-        # self.s0_node = loaded_data["s0_node"]  # 確保 s0_node 也被還原
+        # self.s0_node = loaded_data["s0_node"]
         print(f"MCTS tree and s0_node loaded from {filename}")
 
     def trojan_policy_rollout(self, curr_node, depth):
@@ -775,3 +856,262 @@ class MCTS:
                 break
 
         return sum_rewards
+
+    def trojan_atari_policy_rollout(self, curr_node, depth):
+        sum_rewards = 0.0
+        discount = 1.0
+        traj_len = 0
+        self.environment.set_node_state(curr_node)
+        curr_state = curr_node.state
+
+        for h in range(depth, self.depth_limit):
+            reward = self.environment.apply_action_and_get_reward_no_set_state(curr_state)
+            sum_rewards += discount * reward
+            discount *= self.discount_rate
+
+            new_state = self.environment.curr_state
+            curr_state = new_state
+            traj_len += 1
+
+        return sum_rewards
+
+
+    def export_similarity_to_csv(self, filename="similarity_results.csv"):
+        """
+        Similarity to CSV
+        """
+        filename = os.path.join(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model", filename)
+        print(f"Start saving similarity to file {filename}...")
+
+        node_to_export = self.s0_node
+
+        results = {}
+        if not hasattr(node_to_export, 'Q'):
+            print("Error no Q")
+            return
+
+        for action, similarity in node_to_export.Q.items():
+            try:
+                coords = action.continuous_parameters['action_parameters']['coords']
+                results[coords] = similarity
+            except (KeyError, TypeError):
+                # Ignore
+                continue
+
+        if not results:
+            print("No similarity。")
+            return
+
+        # 3. CSV
+        max_i = max(key[0] for key in results.keys())
+        max_j = max(key[1] for key in results.keys())
+
+        # 4. Write CSV file
+        with open(filename, 'w', newline='', encoding='utf-8') as csvfile:
+            writer = csv.writer(csvfile)
+
+            # 4.1. first row (Header)
+            # Format: _, 0, 1, 2, ...
+            header = ['_'] + list(range(max_j + 1))
+            writer.writerow(header)
+
+            # 4.2. Each row
+            for i in range(max_i + 1):
+                row_to_write = [i]
+                for j in range(max_j + 1):
+                    similarity_score = results.get((i, j), None)
+
+                    # if score .4f or empty
+                    if similarity_score is not None:
+                        row_to_write.append(f"{similarity_score:.4f}")
+                    else:
+                        row_to_write.append('')
+
+                writer.writerow(row_to_write)
+
+        print(f"file saved. {filename}")
+
+    def get_pseudo_trigger(self, num_frames=100, filename=None):
+        # 1. Determine trigger patch coordinates (highest Q -> lowest similarity)
+        sim_map = {
+            action.continuous_parameters['action_parameters']['coords']: sim
+            for action, sim in self.s0_node.Q.items()
+        }
+        coord = max(sim_map, key=sim_map.get)
+        i, j = coord
+
+        # 2. Determine patch size
+        sample_action = next(
+            a for a in self.s0_node.Q
+            if a.continuous_parameters['action_parameters']['coords'] == coord
+        )
+        size = sample_action.continuous_parameters['action_parameters']['size']
+
+        # 3. Sample a subset of episodes
+        # episodes = self.environment.episodes
+        # if len(episodes) <= num_episodes:
+        #     sampled_eps = episodes
+        # else:
+        #     sampled_eps = random.sample(episodes, num_episodes)
+        total_frames = self.environment.num_frames
+        sample_count = min(num_frames, total_frames)
+        sampled_idxs = random.sample(range(total_frames), sample_count)
+
+        from PIL import Image
+        os.makedirs(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img",
+                    exist_ok=True)
+        # 4. Collect mismatched patches from sampled episodes
+        patches = []
+        masked_obs_img = []
+        num_img_save = 0
+        from problem_environments.atari_environment import inpaint_patch
+        print("coord", i, j, ", size", size)
+        # for episode in sampled_eps:
+        for idx in sampled_idxs:
+            orig_obs = self.environment.obs_all[idx]  # shape [C,H,W]
+            orig_act = self.environment.actions_all[idx]  # int
+
+            # mask only the candidate patch region
+            y, x = i * size, j * size
+            masked = inpaint_patch(orig_obs, y, x, size)
+
+            # get model action on masked obs
+            inp = torch.tensor(masked[None], dtype=torch.float32, device=self.environment.device)
+            masked_a = self.environment.oppo_model.get_action(inp).cpu().item()
+            if masked_a != orig_act:
+                patch = orig_obs[:, y:y + size, x:x + size]
+                patches.append(patch)
+                masked_obs_save = np.zeros_like(orig_obs)
+                masked_obs_save[:, y:y + size, x:x + size] = orig_obs[:, y:y + size, x:x + size]
+                masked_obs_img.append(masked_obs_save)
+
+        # 5. If no mismatches found, save None
+        if not patches:
+            print("No mismatch")
+            return coord, None
+
+        # 6. Compute average of all collected patches
+        avg_patch = np.mean(np.stack(patches, axis=0), axis=0)
+        avg_masked_obs = np.mean(np.stack(masked_obs_img, axis=0), axis=0)
+
+        # 7. Save coordinate and average patch if requested
+        if filename:
+            filename = os.path.join(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model",
+                                    filename)
+            np.savez(filename, coord=coord, avg_patch=avg_patch)
+            # img = avg_patch[0]
+            # img = img.astype(np.uint8)
+            # Image.fromarray(img).save(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img/1_avg_patch_0.png")
+
+            # for i in range(4):
+            #     img = avg_patch[i]
+            #     # print(img.shape)
+            #     img = img.astype(np.uint8)
+            #     Image.fromarray(img).save(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img/1_avg_patch_{i}.png")
+
+        if patches:
+            avg_img_dir = f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img_0.1/"
+            os.makedirs(avg_img_dir, exist_ok=True)
+            for i in range(4):
+                img = avg_masked_obs[i]
+                # print(img.shape)
+                img = img.astype(np.uint8)
+                Image.fromarray(img).save(avg_img_dir+f"avg_{i}.png")
+
+        return coord, avg_patch
+
+
+    def get_pseudo_trigger_(self, num_episodes=20, filename=None):
+        # 1. Determine trigger patch coordinates (highest Q -> lowest similarity)
+        sim_map = {
+            action.continuous_parameters['action_parameters']['coords']: sim
+            for action, sim in self.s0_node.Q.items()
+        }
+        coord = max(sim_map, key=sim_map.get)
+        i, j = coord
+
+        # 2. Determine patch size
+        sample_action = next(
+            a for a in self.s0_node.Q
+            if a.continuous_parameters['action_parameters']['coords'] == coord
+        )
+        size = sample_action.continuous_parameters['action_parameters']['size']
+
+        # 3. Sample a subset of episodes
+        episodes = self.environment.episodes
+        if len(episodes) <= num_episodes:
+            sampled_eps = episodes
+        else:
+            sampled_eps = random.sample(episodes, num_episodes)
+
+        from PIL import Image
+        os.makedirs(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img",
+                    exist_ok=True)
+        # 4. Collect mismatched patches from sampled episodes
+        patches = []
+        masked_obs_img = []
+        num_img_save = 0
+        from problem_environments.atari_environment import inpaint_patch
+        print("coord", i, j, ", size", size)
+        for episode in sampled_eps:
+            obs_seq = episode['obs']  # shape [T, C, H, W]
+            act_seq = episode['actions']
+            for t, orig_obs in enumerate(obs_seq):
+                # Mask only the trigger patch region
+                y, x = i * size, j * size
+                masked_obs = inpaint_patch(orig_obs, y, x, size)
+                # Compare policy actions
+                inp = torch.tensor(masked_obs[None], dtype=torch.float32, device=self.environment.device)
+                masked_a = self.environment.oppo_model.get_action(inp).cpu().item()
+                orig_a = act_seq[t]
+                if masked_a != orig_a:
+                    patch = orig_obs[:, y:y + size, x:x + size]
+                    patches.append(patch)
+                    masked_obs_save = np.zeros_like(orig_obs)
+                    masked_obs_save[:, y:y + size, x:x + size] = orig_obs[:, y:y + size, x:x + size]
+                    masked_obs_img.append(masked_obs_save)
+                    # if num_img_save < 100:
+                    #     img = masked_obs[0].astype(np.uint8)
+                    #     Image.fromarray(img).save(
+                    #         f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img/{num_img_save}.png")
+                    #     num_img_save += 1
+                    #     for k in range(4):
+                    #         img = masked_obs[k].astype(np.uint8)
+                    #         print(f"coord = {coord}, y = {y}, x = {x}, size = {size}")
+                    #         print(img.shape)
+                    #         Image.fromarray(img).save(
+                    #             f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img/{num_img_save}.png")
+                    #         num_img_save += 1
+
+        # 5. If no mismatches found, save None
+        if not patches:
+            print("No mismatch")
+            return coord, None
+
+        # 6. Compute average of all collected patches
+        avg_patch = np.mean(np.stack(patches, axis=0), axis=0)
+        avg_masked_obs = np.mean(np.stack(masked_obs_img, axis=0), axis=0)
+
+        # 7. Save coordinate and average patch if requested
+        if filename:
+            filename = os.path.join(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model",
+                                    filename)
+            np.savez(filename, coord=coord, avg_patch=avg_patch)
+            # img = avg_patch[0]
+            # img = img.astype(np.uint8)
+            # Image.fromarray(img).save(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img/1_avg_patch_0.png")
+
+            # for i in range(4):
+            #     img = avg_patch[i]
+            #     # print(img.shape)
+            #     img = img.astype(np.uint8)
+            #     Image.fromarray(img).save(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img/1_avg_patch_{i}.png")
+
+        if patches:
+            for i in range(4):
+                img = avg_masked_obs[i]
+                # print(img.shape)
+                img = img.astype(np.uint8)
+                Image.fromarray(img).save(f"test_results/{self.environment.env_name}/{self.model_name}.cleanrl_model/trigger_img_0.1/avg_{i}.png")
+
+        return coord, avg_patch
