@@ -337,54 +337,54 @@ class MCTS:
             if self.found_solution and self.environment.check_trigger(self.trigger_action, self.env_seed, iteration):
                 print("finish early due to finding trigger(found_solution).")
                 if 'human' in self.environment.env_name:
-                    trigger_action_path = f'test_results/trigger_actions_humanoid/{self.model_name}'
-                    os.makedirs(trigger_action_path, exist_ok=True)
-                    np.save(os.path.join(trigger_action_path, f"trigger_solution_{self.env_seed}.npy"),
-                            self.trigger_action)
+                    # trigger_action_path = f'test_results/trigger_actions_humanoid/{self.model_name}'
+                    # os.makedirs(trigger_action_path, exist_ok=True)
+                    # np.save(os.path.join(trigger_action_path, f"trigger_solution_{self.env_seed}.npy"),
+                    #         self.trigger_action)
                     with open(f'test_results/voot_trigger_log_{self.model_name}.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     # with open('test_results/log_humanoid.txt', 'a') as f:
                     #     f.write("finish early due to finding trigger(found_solution).\n")
                 elif 'ant' in self.environment.env_name:
-                    trigger_action_path = f'test_results/trigger_actions_ant/{self.model_name}'
-                    os.makedirs(trigger_action_path, exist_ok=True)
-                    self.trigger_action = self.trigger_action[-10:]
-                    np.save(os.path.join(trigger_action_path, f"trigger_solution_{self.env_seed}.npy"),
-                            self.trigger_action)
+                    # trigger_action_path = f'test_results/trigger_actions_ant/{self.model_name}'
+                    # os.makedirs(trigger_action_path, exist_ok=True)
+                    # self.trigger_action = self.trigger_action[-10:]
+                    # np.save(os.path.join(trigger_action_path, f"trigger_solution_{self.env_seed}.npy"),
+                    #         self.trigger_action)
                     with open(f'test_results/voot_trigger_log_{self.model_name}.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     # with open('test_results/log_ant.txt', 'a') as f:
                     #     f.write("finish early due to finding trigger(found_solution).\n")
                 elif 'mobile' in self.environment.env_name:
-                    np.save(f'test_results/trigger_actions_mobile/trigger_solution_{self.env_seed}.npy',
-                            self.trigger_action)
+                    # np.save(f'test_results/trigger_actions_mobile/trigger_solution_{self.env_seed}.npy',
+                    #         self.trigger_action)
                     if self.model_idx is not None:
                         tdsr_file_name = f'test_results/voot_trigger_log_mobile_effective_{self.model_idx}.txt'
                     else:
                         tdsr_file_name = f'test_results/voot_trigger_log_mobile_effective_0316_3.txt'
                     with open(tdsr_file_name, 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
-                    with open('test_results/log_mobile.txt', 'a') as f:
-                        f.write("finish early due to finding trigger(found_solution).\n")
+                    # with open('test_results/log_mobile.txt', 'a') as f:
+                    #     f.write("finish early due to finding trigger(found_solution).\n")
                 else:
                     with open('test_results/tmp.txt', 'a') as f:
                         f.write("ERROR incorrect environment, and finish early due to finding trigger"
                                 "(found_solution).\n")
-                name = None
-                if 'human' in self.environment.env_name:
-                    name = 'human'
-                elif 'ant' in self.environment.env_name:
-                    name = 'ant'
-                elif 'mobile' in self.environment.env_name:
-                    name = 'mobile'
-                save_trigger_state = True
-                if self.environment.name.find('atari') != -1:
-                    pass
-                else:
-                    dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
-                    os.makedirs(dir_save_state, exist_ok=True)
-                    state_file_name = f'state_{iteration}.npy'
-                    np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
+                # name = None
+                # if 'human' in self.environment.env_name:
+                #     name = 'human'
+                # elif 'ant' in self.environment.env_name:
+                #     name = 'ant'
+                # elif 'mobile' in self.environment.env_name:
+                #     name = 'mobile'
+                # save_trigger_state = True
+                # if self.environment.name.find('atari') != -1:
+                #     pass
+                # else:
+                #     dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
+                #     os.makedirs(dir_save_state, exist_ok=True)
+                #     state_file_name = f'state_{iteration}.npy'
+                #     np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
                 print(f"iter: {iteration}")
                 if self.effective or 'ant' in self.environment.env_name or 'human' in self.environment.env_name:
                     break
@@ -392,19 +392,19 @@ class MCTS:
                                                                                      self.env_seed, iteration):
                 print("finish early due to finding trigger(is_goal_reached).")
                 if 'human' in self.environment.env_name:
-                    trigger_path = f'test_results/trigger_actions_humanoid/{self.model_name}'
-                    os.makedirs(trigger_path, exist_ok=True)
-                    np.save(os.path.join(trigger_path, f'/trigger_solution_{self.env_seed}.npy'),
-                            self.trigger_action)
+                    # trigger_path = f'test_results/trigger_actions_humanoid/{self.model_name}'
+                    # os.makedirs(trigger_path, exist_ok=True)
+                    # np.save(os.path.join(trigger_path, f'/trigger_solution_{self.env_seed}.npy'),
+                    #         self.trigger_action)
                     with open(f'test_results/voot_trigger_log_{self.model_name}.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     # with open('test_results/log_humanoid.txt', 'a') as f:
                     #     f.write("finish early due to finding trigger(is_goal_reached).\n")
                 elif 'ant' in self.environment.env_name:
-                    trigger_path = f'test_results/trigger_actions_ant/{self.model_name}'
-                    os.makedirs(trigger_path, exist_ok=True)
-                    np.save(os.path.join(trigger_path, f'/trigger_solution_{self.env_seed}.npy'),
-                            self.trigger_action)
+                    # trigger_path = f'test_results/trigger_actions_ant/{self.model_name}'
+                    # os.makedirs(trigger_path, exist_ok=True)
+                    # np.save(os.path.join(trigger_path, f'/trigger_solution_{self.env_seed}.npy'),
+                    #         self.trigger_action)
                     with open(f'test_results/voot_trigger_log_{self.model_name}.txt', 'a') as f:
                         f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     # with open('test_results/log_ant.txt', 'a') as f:
@@ -412,23 +412,23 @@ class MCTS:
                 elif 'mobile' in self.environment.env_name:
                     if self.effective:
                         if self.model_idx is not None:
-                            save_dir = f'test_results/trigger_actions_mobile_effective_{self.model_idx}'
-                            os.makedirs(save_dir, exist_ok=True)
-                            np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'),
-                                    self.trigger_action)
+                            # save_dir = f'test_results/trigger_actions_mobile_effective_{self.model_idx}'
+                            # os.makedirs(save_dir, exist_ok=True)
+                            # np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'),
+                            #         self.trigger_action)
                             with open(f'test_results/voot_trigger_log_mobile_effective_{self.model_idx}.txt', 'a') as f:
                                 f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                         else:
-                            save_dir = 'test_results/trigger_actions_mobile_effective_0313_2'
-                            os.makedirs(save_dir, exist_ok=True)
-                            np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'),
-                                    self.trigger_action)
+                            # save_dir = 'test_results/trigger_actions_mobile_effective_0313_2'
+                            # os.makedirs(save_dir, exist_ok=True)
+                            # np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'),
+                            #         self.trigger_action)
                             with open('test_results/voot_trigger_log_mobile_effective_0316_1.txt', 'a') as f:
                                 f.write(f'{str(self.env_seed)} {str(iteration)}\n')
                     else:
-                        save_dir = f'test_results/trigger_actions_mobile/{self.model_name}'
-                        os.makedirs(save_dir, exist_ok=True)
-                        np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
+                        # save_dir = f'test_results/trigger_actions_mobile/{self.model_name}'
+                        # os.makedirs(save_dir, exist_ok=True)
+                        # np.save(os.path.join(save_dir, f'trigger_solution_{self.env_seed}.npy'), self.trigger_action)
                         with open('test_results/voot_trigger_log_mobile_0316_3.txt', 'a') as f:
                             f.write(f'{str(self.env_seed)} {str(iteration)}\n')
 
@@ -440,41 +440,41 @@ class MCTS:
                     with open('test_results/tmp.txt', 'a') as f:
                         f.write("ERROR incorrect environment, and finish early due to finding trigger"
                                 "{is_goal_reached).\n")
-                save_trigger_state = True
-                name = None
-                if 'human' in self.environment.env_name:
-                    name = 'human'
-                elif 'ant' in self.environment.env_name:
-                    name = 'ant'
-                elif 'mobile' in self.environment.env_name:
-                    name = 'mobile'
+                # save_trigger_state = True
+                # name = None
+                # if 'human' in self.environment.env_name:
+                #     name = 'human'
+                # elif 'ant' in self.environment.env_name:
+                #     name = 'ant'
+                # elif 'mobile' in self.environment.env_name:
+                #     name = 'mobile'
 
-                if self.environment.name.find('atari') != -1:
-                    pass
-                else:
-                    dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
-                    os.makedirs(dir_save_state, exist_ok=True)
-                    state_file_name = f'state_{iteration}.npy'
-                    np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
+                # if self.environment.name.find('atari') != -1:
+                #     pass
+                # else:
+                #     dir_save_state = f'test_results/{self.model_name}/state_save_{name}_trigger/seed_{self.env_seed}'
+                #     os.makedirs(dir_save_state, exist_ok=True)
+                #     state_file_name = f'state_{iteration}.npy'
+                #     np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
                 print(f"iter: {iteration}")
                 if self.effective or 'ant' in self.environment.env_name or 'human' in self.environment.env_name:
                     break
-            if not save_trigger_state:
-                name = None
-                if 'human' in self.environment.env_name:
-                    name = 'human'
-                elif 'ant' in self.environment.env_name:
-                    name = 'ant'
-                elif 'mobile' in self.environment.env_name:
-                    name = 'mobile'
-
-                if self.environment.name.find('atari') != -1:
-                    pass
-                else:
-                    dir_save_state = f'test_results/{self.model_name}/state_save_{name}_no_trigger/seed_{self.env_seed}'
-                    state_file_name = f'state_{iteration}.npy'
-                    os.makedirs(dir_save_state, exist_ok=True)
-                    np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
+            # if not save_trigger_state:
+            #     name = None
+            #     if 'human' in self.environment.env_name:
+            #         name = 'human'
+            #     elif 'ant' in self.environment.env_name:
+            #         name = 'ant'
+            #     elif 'mobile' in self.environment.env_name:
+            #         name = 'mobile'
+            #
+            #     if self.environment.name.find('atari') != -1:
+            #         pass
+            #     else:
+            #         dir_save_state = f'test_results/{self.model_name}/state_save_{name}_no_trigger/seed_{self.env_seed}'
+            #         state_file_name = f'state_{iteration}.npy'
+            #         os.makedirs(dir_save_state, exist_ok=True)
+            #         np.save(os.path.join(dir_save_state, state_file_name), np.array(self.state_seq_save))
         if self.use_atari_ucb:
             output_filename = f"similarity_results_seed_{self.env_seed}_{self.poisoning_rate}.csv"
             self.export_similarity_to_csv(filename=output_filename)
